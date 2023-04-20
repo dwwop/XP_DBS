@@ -1,4 +1,4 @@
 package core.parsing.tree.clauses;
 
-public class SetClause {
+public class SetClause extends Clause {
 }

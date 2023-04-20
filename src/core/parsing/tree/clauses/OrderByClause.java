@@ -1,4 +1,4 @@
 package core.parsing.tree.clauses;
 
-public class OrderByClause {
+public class OrderByClause extends Clause {
 }

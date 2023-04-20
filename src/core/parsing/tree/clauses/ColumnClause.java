@@ -1,4 +1,4 @@
 package core.parsing.tree.clauses;
 
-public class ColumnClause {
+public class ColumnClause extends Clause {
 }

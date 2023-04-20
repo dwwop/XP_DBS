@@ -36,15 +36,15 @@ public class Table {
         return new Table(new Schema());
     }
 
-    public void insert(ColumnClause columnClause, ValueClause valueClause) {
-
+    public Table insert(ColumnClause columnClause, ValueClause valueClause) {
+        return null;
     }
 
-    public void update(WhereClause whereClause, SetClause setClause) {
-
+    public Table update(WhereClause whereClause, SetClause setClause) {
+        return null;
     }
 
-    public void delete(WhereClause whereClause) {
-
+    public Table delete(WhereClause whereClause) {
+        return null;
     }
 }

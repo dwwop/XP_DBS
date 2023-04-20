@@ -1,4 +1,4 @@
 package core.parsing.tree.clauses;
 
-public class SelectClause {
+public class SelectClause extends Clause {
 }

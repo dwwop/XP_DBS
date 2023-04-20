@@ -1,4 +1,4 @@
 package core.parsing.tree.clauses;
 
-public class OffsetClause {
+public class OffsetClause extends Clause {
 }

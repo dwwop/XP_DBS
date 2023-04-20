@@ -1,4 +1,4 @@
 package core.parsing.tree.clauses;
 
-public class ValueClause {
+public class ValueClause extends Clause {
 }
