@@ -2,21 +2,22 @@ package core.db;
 
 import core.db.table.Schema;
 import core.db.table.Table;
+import exceptions.DatabaseError;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TableManager {
 
-    private Map<String, Table> tables = new HashMap<>();
+    private final Map<String, Table> tables = new HashMap<>();
 
-    public Table getTable(String name) {
-        // TODO: no such table - return null Table object?
+    public Table getTable(String name) throws DatabaseError {
+        // TODO: no such table - raise DatabaseError
 
         return tables.get(name);
     }
 
-    public void createTable(Schema schema) {
+    public void createTable(Schema schema) throws DatabaseError {
 
     }
 }

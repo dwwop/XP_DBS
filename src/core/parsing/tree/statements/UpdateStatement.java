@@ -5,7 +5,7 @@ import core.parsing.tree.clauses.SetClause;
 import core.parsing.tree.clauses.WhereClause;
 import exceptions.DatabaseError;
 
-public class UpdateStatement extends Statement {
+public class UpdateStatement extends TableStatement {
 
     private final WhereClause whereClause;
     private final SetClause setClause;

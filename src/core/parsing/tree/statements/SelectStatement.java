@@ -3,7 +3,7 @@ package core.parsing.tree.statements;
 import core.db.table.Table;
 import exceptions.DatabaseError;
 
-public class SelectStatement extends Statement {
+public class SelectStatement extends TableStatement {
 
     public SelectStatement(String tableName) {
         super(tableName);
