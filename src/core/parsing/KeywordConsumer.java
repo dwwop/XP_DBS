@@ -17,7 +17,7 @@ public class KeywordConsumer {
         FROM
     }
 
-    private static boolean isKeyword(Keyword keyword, String token) {
+    public static boolean isKeyword(Keyword keyword, String token) {
         return token.toLowerCase().equals(keyword.toString().toLowerCase());
     }
 

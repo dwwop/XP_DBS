@@ -20,7 +20,7 @@ public class CreateFactory extends StatementFactory {
     public Statement fromTokens(Queue<String> tokens) throws SyntaxError {
         return switch (KeywordConsumer.consumeKeywordOrFail(createOptions, tokens)) {
             case TABLE -> parseCreateTable(tokens);
-            default -> throw new SyntaxError("Unknown statement.");
+            default -> throw new SyntaxError("Unknown CREATE statement.");
         };
     }
 

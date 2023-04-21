@@ -16,6 +16,14 @@ public class IdentifierExtractor {
         Identifier.ColumnName, "column name"
     );
 
+    private static String validateIdentifieOrFail(String token) throws SyntaxError {
+        if (!token.matches("^[a-zA-Z_-]+$")) {
+            throw new SyntaxError("Invalid identifier: '" + token + "'.");
+        }
+
+        return token;
+    }
+
     public static String pollIdentifierOrFail(Identifier identifier, Queue<String> tokens) throws SyntaxError {
         if (tokens.isEmpty()) {
             throw new SyntaxError(
@@ -25,6 +33,6 @@ public class IdentifierExtractor {
             );
         }
 
-        return tokens.poll();
+        return validateIdentifieOrFail(tokens.poll());
     }
 }
