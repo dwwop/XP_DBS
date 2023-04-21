@@ -7,7 +7,7 @@ import core.parsing.tree.clauses.WhereClause;
 import core.parsing.tree.clauses.factories.SetFactory;
 import core.parsing.tree.clauses.factories.WhereFactory;
 import core.parsing.tree.statements.UpdateStatement;
-import exceptions.SyntaxError;
+import exceptions.syntaxErrors.SyntaxError;
 
 import java.util.Queue;
 

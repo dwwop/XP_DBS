@@ -1,7 +1,7 @@
 package core.parsing.tree.clauses.factories;
 
 import core.parsing.tree.clauses.WhereClause;
-import exceptions.SyntaxError;
+import exceptions.syntaxErrors.SyntaxError;
 
 import java.util.Queue;
 

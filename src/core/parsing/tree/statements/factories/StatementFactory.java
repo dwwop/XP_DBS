@@ -1,7 +1,7 @@
 package core.parsing.tree.statements.factories;
 
 import core.parsing.tree.statements.Statement;
-import exceptions.SyntaxError;
+import exceptions.syntaxErrors.SyntaxError;
 
 import java.util.Queue;
 

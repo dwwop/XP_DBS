@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Schema {
 
-    private Map<String, ColumnDefinition> columns = new HashMap<>();
+    private final Map<String, ColumnDefinition> columns = new HashMap<>();
     private String primaryKeyColumn;
 
 }

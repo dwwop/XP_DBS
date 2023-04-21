@@ -1,11 +1,8 @@
 package core.db.types;
 
 public abstract sealed class Literal<T extends Comparable<T>>
-    implements Comparable<Literal<T>>
-    permits StringLiteral, IntegerLiteral
-{
-
-    public enum Type { String, Integer }
+        implements Comparable<Literal<T>>
+        permits StringLiteral, IntegerLiteral {
 
     protected final T value;
 
@@ -23,9 +20,11 @@ public abstract sealed class Literal<T extends Comparable<T>>
         }
 
         if (other.isNull()) {
-            return - other.compareTo(this);
+            return -other.compareTo(this);
         }
 
         return value.compareTo(other.value);
     }
+
+    public enum Type {String, Integer}
 }

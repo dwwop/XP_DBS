@@ -1,4 +1,4 @@
-package exceptions;
+package exceptions.syntaxErrors;
 
 public class SyntaxError extends Exception {
 

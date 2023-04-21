@@ -1,20 +1,15 @@
 package core.parsing;
 
-import exceptions.SyntaxError;
+import exceptions.syntaxErrors.EndOfFileError;
+import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntaxErrors.TokenError;
 
 import java.util.Queue;
 
 public class KeywordConsumer {
 
-    public enum Keyword {
-        WHERE, ORDER, BY, LIMIT, OFFSET,
-        INTO,
-        SET,
-        FROM
-    }
-
     private static boolean isKeyword(Keyword keyword, String token) {
-        return token.toLowerCase().equals(keyword.toString().toLowerCase());
+        return token.equalsIgnoreCase(keyword.toString());
     }
 
     public static boolean consumeKeyword(Keyword keyword, Queue<String> tokens) {
@@ -29,13 +24,22 @@ public class KeywordConsumer {
 
     public static void consumeKeywordOrFail(Keyword keyword, Queue<String> tokens) throws SyntaxError {
         if (tokens.isEmpty()) {
-            throw new SyntaxError("The end of the query was reached but '" + keyword + "' was expected.");
+            throw new EndOfFileError(keyword.toString());
         }
 
         String token = tokens.poll();
 
         if (!isKeyword(keyword, token)) {
-            throw new SyntaxError("Found '" + token + "' but '" + keyword + "' was expected.");
+            throw new TokenError(token, keyword.toString());
         }
+    }
+
+    public enum Keyword {
+        WHERE,
+        ORDER, BY, ASC, DESC,
+        LIMIT, OFFSET,
+        INTO,
+        SET,
+        FROM
     }
 }

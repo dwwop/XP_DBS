@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class TableManager {
 
-    private Map<String, Table> tables = new HashMap<>();
+    private final Map<String, Table> tables = new HashMap<>();
 
     public Table getTable(String name) {
         // TODO: no such table - return null Table object?
