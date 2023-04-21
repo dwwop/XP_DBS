@@ -5,6 +5,11 @@ import core.parsing.Parser;
 import core.parsing.tree.clauses.ColumnClause;
 import core.parsing.tree.clauses.LimitClause;
 import core.parsing.tree.clauses.OrderByClause;
+import core.parsing.tree.clauses.WhereClause;
+import core.parsing.tree.clauses.conditions.AndCondition;
+import core.parsing.tree.clauses.conditions.Expression;
+import core.parsing.tree.clauses.conditions.NotCondition;
+import core.parsing.tree.clauses.conditions.OrCondition;
 import core.parsing.tree.statements.SelectStatement;
 import exceptions.syntaxErrors.SyntaxError;
 import org.junit.Test;
@@ -165,6 +170,91 @@ public class SelectFactoryTest {
                         null,
                         null,
                         new LimitClause(10, 10));
+        try {
+            assertEquals(expectedSelectStatement, parser.parse(query));
+        } catch (SyntaxError e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void selectSimpleExpr() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name WHERE column_name = value";
+        SelectStatement expectedSelectStatement =
+                new SelectStatement("table_name",
+                        new ColumnClause(List.of("column_name")),
+                        new WhereClause(new Expression("column_name", "=", "value")),
+                        null,
+                        null);
+        try {
+            assertEquals(expectedSelectStatement, parser.parse(query));
+        } catch (SyntaxError e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void selectSimpleExprStr() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name WHERE column_name >= 'value'";
+        SelectStatement expectedSelectStatement =
+                new SelectStatement("table_name",
+                        new ColumnClause(List.of("column_name")),
+                        new WhereClause(new Expression("column_name", ">=", "value")),
+                        null,
+                        null);
+        try {
+            assertEquals(expectedSelectStatement, parser.parse(query));
+        } catch (SyntaxError e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void selectAnd() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name WHERE column_name <= 'value' AND column_name != 'value'";
+        SelectStatement expectedSelectStatement =
+                new SelectStatement("table_name",
+                        new ColumnClause(List.of("column_name")),
+                        new WhereClause(new AndCondition(new Expression("column_name", "<=", "value"), new Expression("column_name", "!=", "value"))),
+                        null,
+                        null);
+        try {
+            assertEquals(expectedSelectStatement, parser.parse(query));
+        } catch (SyntaxError e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void selectNotBrackets() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name WHERE NOT ( column_name > 'value' AND column_name < 'value' )";
+        SelectStatement expectedSelectStatement =
+                new SelectStatement("table_name",
+                        new ColumnClause(List.of("column_name")),
+                        new WhereClause(new NotCondition(new AndCondition(new Expression("column_name", ">", "value"), new Expression("column_name", "<", "value")))),
+                        null,
+                        null);
+        try {
+            assertEquals(expectedSelectStatement, parser.parse(query));
+        } catch (SyntaxError e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void selectComplexBrackets() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name WHERE ((NOT (column_name = 'value' AND column_name = 'value' ) ) OR (column_name = value ) )";
+        SelectStatement expectedSelectStatement =
+                new SelectStatement("table_name",
+                        new ColumnClause(List.of("column_name")),
+                        new WhereClause(new OrCondition(new NotCondition(new AndCondition(new Expression("column_name", "=", "value"), new Expression("column_name", "=", "value"))), new Expression("column_name", "=", "value"))),
+                        null,
+                        null);
         try {
             assertEquals(expectedSelectStatement, parser.parse(query));
         } catch (SyntaxError e) {

@@ -4,7 +4,10 @@ import exceptions.syntaxErrors.EndOfFileError;
 import exceptions.syntaxErrors.SyntaxError;
 import exceptions.syntaxErrors.TokenError;
 
+import java.util.Arrays;
 import java.util.Queue;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class KeywordConsumer {
 
@@ -34,8 +37,15 @@ public class KeywordConsumer {
         }
     }
 
+    public static boolean isStatementKeyword(String headToken) {
+        Set<Keyword> statementKeywords = Arrays.stream(Keyword.values()).collect(Collectors.toSet());
+        statementKeywords.removeAll(Set.of(Keyword.AND, Keyword.OR, Keyword.NOT));
+        return statementKeywords.stream().map(Enum::toString).collect(Collectors.toSet()).contains(headToken);
+    }
+
     public enum Keyword {
         WHERE,
+        AND, OR, NOT,
         ORDER, BY, ASC, DESC,
         LIMIT, OFFSET,
         INTO,

@@ -34,6 +34,9 @@ public class SelectFactory extends StatementFactory {
         String tableName = IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens);
 
         WhereClause whereClause = null;
+        if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.WHERE, tokens)) {
+            whereClause = whereFactory.fromTokens(tokens);
+        }
 
         OrderByClause orderByClause = null;
         if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.ORDER, tokens)) {

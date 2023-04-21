@@ -1,27 +1,26 @@
-package core.parsing.tree.clauses;
-
-import core.parsing.tree.clauses.conditions.Condition;
+package core.parsing.tree.clauses.conditions;
 
 import java.util.Objects;
 
-public class WhereClause extends Clause {
+public class NotCondition extends Condition {
     private Condition condition;
 
-    public WhereClause(Condition condition) {
+
+    public NotCondition(Condition condition) {
         this.condition = condition;
     }
 
     @Override
     public String toString() {
         return
-                "condition: " + condition;
+                "NotCondition: " + condition;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        WhereClause that = (WhereClause) o;
+        NotCondition that = (NotCondition) o;
         return Objects.equals(condition, that.condition);
     }
 
