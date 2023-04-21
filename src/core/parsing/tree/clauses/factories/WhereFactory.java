@@ -16,45 +16,45 @@ public class WhereFactory extends ClauseFactory {
     }
 
 
-    private Condition consumeCondition(String headToken, Queue<String> tokens, Condition condition) throws SyntaxError {
-        if (headToken == null || KeywordConsumer.isStatementKeyword(headToken)) {
+    private boolean consumeBracket(String bracket, Queue<String> tokens) {
+        if (tokens.isEmpty() || !bracket.equals(tokens.peek())) {
+            return false;
+        }
+
+        tokens.poll();
+
+        return true;
+    }
+
+
+
+    private Condition consumeCondition(Queue<String> tokens, Condition condition) throws SyntaxError {
+        if (tokens.isEmpty() || KeywordConsumer.isStatementKeyword(tokens)) {
             if (condition != null)
                 return condition;
-            if (headToken == null)
+            if (tokens.isEmpty())
                 throw new EndOfFileError("condition");
-            if (KeywordConsumer.isStatementKeyword(headToken)) {
+            if (KeywordConsumer.isStatementKeyword(tokens)) {
                 throw new TokenError(tokens.peek(), "condition");
             }
         }
 
-        if (headToken.equals("(")) {
-            Condition con = consumeCondition(tokens.poll(), tokens, condition);
-            return consumeCondition(tokens.poll(), tokens, con);
-        }
-        if (headToken.equals(")")) {
+        if (consumeBracket("(", tokens))
+            return consumeCondition(tokens, consumeCondition(tokens, condition));
+        if (consumeBracket(")", tokens)) {
             if (condition == null)
                 throw new TokenError(")", "condition");
             return condition;
         }
 
-        if (KeywordConsumer.Keyword.NOT.toString().equals(headToken))
-            return new NotCondition(consumeCondition(tokens.poll(), tokens, null));
-        if (KeywordConsumer.Keyword.AND.toString().equals(headToken))
-            return new AndCondition(condition, consumeCondition(tokens.poll(), tokens, null));
-        if (KeywordConsumer.Keyword.OR.toString().equals(headToken))
-            return new OrCondition(condition, consumeCondition(tokens.poll(), tokens, null));
+        if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.NOT, tokens))
+            return new NotCondition(consumeCondition(tokens, null));
+        if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.AND, tokens))
+            return new AndCondition(condition, consumeCondition(tokens, null));
+        if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.OR, tokens))
+            return new OrCondition(condition, consumeCondition(tokens, null));
 
-        if (headToken.startsWith("(")) {
-            Condition con = consumeCondition(headToken.substring(1), tokens, condition);
-            return consumeCondition(tokens.poll(), tokens, con);
-        }
-
-        if (headToken.endsWith(")")) {
-            if (condition == null)
-                throw new TokenError(")", "condition");
-            headToken = headToken.substring(0, headToken.length() - 1);
-
-        }
+        String columnName = tokens.poll();
 
         String comparator = ComparatorConsumer.consumeComparatorOrFail(tokens);
 
@@ -66,11 +66,11 @@ public class WhereFactory extends ClauseFactory {
         if (value.startsWith("'") && value.endsWith("'"))
             value = value.substring(1, value.length() - 1);
 
-        return consumeCondition(tokens.poll(), tokens, new Expression(headToken, comparator, value));
+        return consumeCondition(tokens, new Expression(columnName, comparator, value));
     }
 
     @Override
     public WhereClause fromTokens(Queue<String> tokens) throws SyntaxError {
-        return new WhereClause(consumeCondition(tokens.poll(), tokens, null));
+        return new WhereClause(consumeCondition(tokens, null));
     }
 }

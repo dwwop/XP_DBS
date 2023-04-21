@@ -37,10 +37,10 @@ public class KeywordConsumer {
         }
     }
 
-    public static boolean isStatementKeyword(String headToken) {
+    public static boolean isStatementKeyword(Queue<String> tokens) {
         Set<Keyword> statementKeywords = Arrays.stream(Keyword.values()).collect(Collectors.toSet());
         statementKeywords.removeAll(Set.of(Keyword.AND, Keyword.OR, Keyword.NOT));
-        return statementKeywords.stream().map(Enum::toString).collect(Collectors.toSet()).contains(headToken);
+        return statementKeywords.stream().map(Enum::toString).collect(Collectors.toSet()).contains(tokens.peek());
     }
 
     public enum Keyword {

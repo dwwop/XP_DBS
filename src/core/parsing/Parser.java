@@ -20,6 +20,8 @@ public class Parser {
     );
 
     public Statement parse(String query) throws SyntaxError {
+        query = query.replaceAll("\\(", " ( ");
+        query = query.replaceAll("\\)", " ) ");
         Queue<String> tokens = new LinkedList<>(Arrays.asList(query.trim().split("\\s+")));
 
         if (tokens.isEmpty()) {

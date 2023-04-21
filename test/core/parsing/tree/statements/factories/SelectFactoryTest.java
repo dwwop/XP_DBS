@@ -248,7 +248,7 @@ public class SelectFactoryTest {
     @Test
     public void selectComplexBrackets() {
         Parser parser = new Parser();
-        String query = "SELECT column_name FROM table_name WHERE ((NOT (column_name = 'value' AND column_name = 'value' ) ) OR (column_name = value ) )";
+        String query = "SELECT column_name FROM table_name WHERE ((NOT(column_name = 'value' AND column_name = 'value' )) OR(column_name = value) )";
         SelectStatement expectedSelectStatement =
                 new SelectStatement("table_name",
                         new ColumnClause(List.of("column_name")),
