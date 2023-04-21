@@ -20,7 +20,7 @@ public class SetFactory extends ClauseFactory {
 
         String rawSetClause = getRawSetClause(tokens);
 
-        List<String> columnValueAssignements = Strings.splitOnTopLevel(rawSetClause, Set.of('"'), ',');
+        List<String> columnValueAssignements = Strings.splitAndTrimOnTopLevel(rawSetClause, ',');
 
         for (String rawAssignement : columnValueAssignements) {
             parseColumnValueAssignement(rawAssignement);
@@ -51,7 +51,7 @@ public class SetFactory extends ClauseFactory {
     }
 
     private void parseColumnValueAssignement(String rawAssignement) throws SyntaxError {
-        Queue<String> tokens = new LinkedList<>(Strings.splitAndTrim(rawAssignement, "="));
+        Queue<String> tokens = new LinkedList<>(Strings.splitAndTrimOnTopLevel(rawAssignement, '='));
 
         if (tokens.size() != 2) {
             throw new SyntaxError("Invalid column value assignement: '" + rawAssignement + "'.");

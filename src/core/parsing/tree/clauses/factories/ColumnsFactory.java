@@ -15,17 +15,17 @@ public class ColumnsFactory extends ClauseFactory {
     @Override
     public ColumnsClause fromTokens(Queue<String> tokens) throws SyntaxError {
         if (tokens.isEmpty()) {
-            throw new SyntaxError("The end of the query was reached but a columns list was expected.");
+            throw new SyntaxError("The end of the query was reached but a list of columns was expected.");
         }
 
         String rawColumnsClause = getRawColumnsClause(tokens);
 
         if (!rawColumnsClause.matches("^\\(.*\\)$")) {
-            throw new SyntaxError("Ill-formed columns list: '" + rawColumnsClause + "'.");
+            throw new SyntaxError("Ill-formed list of columns: '" + rawColumnsClause + "'.");
         }
 
-        List<String> columnsList = Strings.splitAndTrim(
-            rawColumnsClause.substring(1, rawColumnsClause.length() - 1), ","
+        List<String> columnsList = Strings.splitAndTrimOnTopLevel(
+            rawColumnsClause.substring(1, rawColumnsClause.length() - 1), ','
         );
 
         List<String> columnNames = parseColumnsList(columnsList);

@@ -9,6 +9,8 @@ import core.parsing.tree.clauses.factories.ValuesFactory;
 import core.parsing.tree.statements.InsertStatement;
 import exceptions.SyntaxError;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Queue;
 
 public class InsertFactory extends StatementFactory {
@@ -27,6 +29,16 @@ public class InsertFactory extends StatementFactory {
         KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.VALUES, tokens);
 
         ValuesClause valuesClause = valuesFactory.fromTokens(tokens);
+
+        int columnsListSize = columnsClause.getColumns().size();
+        int tupleSize = valuesClause.getValues().get(0).size();
+
+        if (columnsListSize != tupleSize) {
+            throw new SyntaxError(
+                "The list of columns and the value tuples have a different size ("
+                + columnsListSize + " vs " + tupleSize + ")."
+            );
+        }
 
         return new InsertStatement(tableName, columnsClause, valuesClause);
     }
