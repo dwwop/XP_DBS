@@ -51,6 +51,8 @@ public class CreateTableFactory extends StatementFactory {
         Literal.Type dataType = LiteralExtractor.pollLiteralTypeOrFail(tokens);
         Set<ColumnDefinition.Constraint> columnConstraints = ColumnConstraintExtractor.pollAllColumnConstraintsOrFail(tokens);
 
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         if (!tokens.isEmpty()) {
             throw new TokenError(tokens.peek(), "the end of the column definition");
         }

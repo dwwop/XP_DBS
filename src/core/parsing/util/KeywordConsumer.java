@@ -17,6 +17,8 @@ public class KeywordConsumer {
     }
 
     public static boolean consumeKeyword(Keyword keyword, Queue<String> tokens) {
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         if (tokens.isEmpty() || !isKeyword(keyword, tokens.peek())) {
             return false;
         }
@@ -27,28 +29,36 @@ public class KeywordConsumer {
     }
 
     public static void consumeKeywordOrFail(Keyword keyword, Queue<String> tokens) throws SyntaxError {
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         if (tokens.isEmpty()) {
             throw new EndOfFileError(keyword.toString());
         }
 
-        String token = tokens.poll();
+        String token = tokens.peek();
 
         if (!isKeyword(keyword, token)) {
             throw new TokenError(token, keyword.toString());
         }
+
+        tokens.poll();
     }
 
     public static Keyword consumeKeywordOrFail(Set<Keyword> keywords, Queue<String> tokens) throws SyntaxError {
         String keywordsDisplayString = keywords.stream().map(Objects::toString).collect(Collectors.joining(", "));
 
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         if (tokens.isEmpty()) {
             throw new EndOfFileError("one of " + keywordsDisplayString);
         }
 
-        String token = tokens.poll();
+        String token = tokens.peek();
 
         for (Keyword keyword : keywords) {
             if (isKeyword(keyword, token)) {
+                tokens.poll();
+
                 return keyword;
             }
         }

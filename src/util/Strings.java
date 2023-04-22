@@ -29,6 +29,10 @@ public class Strings {
             currentPart.append(ch);
         }
 
+        if ((!sequence.isEmpty() && sequence.charAt(sequence.length() -1) == delimiter) || !currentPart.isEmpty()) {
+            parts.add(currentPart.toString().trim());
+        }
+
         return parts;
     }
 }

@@ -28,6 +28,8 @@ public class Parser {
     }
 
     private Statement parseStatement(Queue<String> tokens) throws SyntaxError {
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         String firstToken = tokens.poll().toLowerCase();
 
         if (!statements.containsKey(firstToken)) {

@@ -18,33 +18,44 @@ public class LiteralExtractor {
     );
 
     public static Literal pollLiteralOrFail(Queue<String> tokens) throws SyntaxError {
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         if (tokens.isEmpty()) {
             throw new EndOfFileError("literal");
         }
 
-        String token = tokens.poll();
+        String token = tokens.peek();
 
         if (token.matches("^\".*\"$")) {
+            tokens.poll();
+
             return new StringLiteral(token.substring(1, token.length() - 1));
         }
 
         try {
-            return new IntegerLiteral(Integer.valueOf(token));
+            IntegerLiteral literal = new IntegerLiteral(Integer.valueOf(token));
+            tokens.poll();
+
+            return literal;
         } catch (NumberFormatException error) {
             throw new TokenError(token, "literal");
         }
     }
 
     public static Literal.Type pollLiteralTypeOrFail(Queue<String> tokens) throws SyntaxError {
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         if (tokens.isEmpty()) {
             throw new EndOfFileError("data type");
         }
 
-        String token = tokens.poll().toLowerCase();
+        String token = tokens.peek().toLowerCase();
 
         if (!literalTypes.containsKey(token)) {
             throw new TokenError(token, "data type");
         }
+
+        tokens.poll();
 
         return literalTypes.get(token);
     }
