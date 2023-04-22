@@ -2,14 +2,21 @@ package ui;
 
 import core.QueryExecutor;
 import core.commands.Result;
+import core.db.table.ColumnDefinition;
+import core.db.table.Row;
+import core.db.table.Schema;
 import core.db.table.Table;
+import core.db.types.IntegerLiteral;
+import core.db.types.Literal;
+import core.db.types.StringLiteral;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Console {
 
@@ -35,7 +42,7 @@ public class Console {
                 case "/exit" -> shutdownAppSequence(reader);
 
                 default -> {
-                    Result result = queryExecutor.execute(input);
+//                    Result result = queryExecutor.execute(input);
                 }
             }
 
@@ -45,8 +52,117 @@ public class Console {
     }
 
     public String returnTableString(Table table) {
+        StringBuilder complete = new StringBuilder();
+        Map<String, Integer> lengthOfColSpaces = getColumnSpaceSizes(table);
+        int lengthOfLine = getColumnInfoRow(table, lengthOfColSpaces).length();
 
-        return "ahoj";
+        complete.append(getLineDivider(lengthOfLine));
+        complete.append(getColumnInfoRow(table, lengthOfColSpaces));
+        complete.append(getLineDivider(lengthOfLine));
+
+        for (Map.Entry<Literal, Row> row : table.getRows().entrySet()) {
+            complete.append(getRowString(row.getValue(), table.getSchema(), lengthOfColSpaces));
+            complete.append(getLineDivider(lengthOfLine));
+        }
+
+        return complete.toString();
+    }
+
+    public String getRowString(Row row, Schema schema, Map<String, Integer> lengthOfColSpaces) {
+        StringBuilder complete = new StringBuilder("|");
+        Map<String, List<String>> overflow = new HashMap<>();
+
+        for (String colName : schema.getColumns().keySet()) {
+            if (row.getValue(colName) == null) {
+                complete.append(" ".repeat(lengthOfColSpaces.get(colName)));
+            } else {
+                String word = row.getValue(colName).getValue().toString();
+                if (word.length() > lengthOfColSpaces.get(colName) - 2) {
+                    List<String> splitted = new ArrayList<>(List.of(word.split("(?<=\\G.{" + (lengthOfColSpaces.get(colName) - 2) + "})")));
+                    overflow.put(colName, splitted);
+                    word = splitted.remove(0);
+                }
+                complete.append(" ").append(word);
+                complete.append(" ".repeat(lengthOfColSpaces.get(colName) - word.length() - 1));
+            }
+            complete.append("|");
+        }
+
+
+        complete.append(getOverflownLines(overflow, schema, lengthOfColSpaces));
+        return complete.toString();
+
+    }
+
+    public String getOverflownLines(Map<String, List<String>> overflow, Schema schema, Map<String, Integer> lengthOfColSpaces) {
+        if (!overflow.isEmpty()) {
+            StringBuilder complete = new StringBuilder();
+
+            int numOfLines = overflow.values().stream().map(List::size).toList().stream().max(Integer::compare).get();
+            for (int i = 0; i < numOfLines; i++) {
+                complete.append("\n|");
+                for (String colName : schema.getColumns().keySet()) {
+                    if (overflow.get(colName) == null || i >= overflow.get(colName).size()) {
+                        complete.append(" ".repeat(lengthOfColSpaces.get(colName)));
+                    } else {
+                        complete.append(" ").append(overflow.get(colName).get(i).toString());
+                        complete.append(" ".repeat(lengthOfColSpaces.get(colName) - overflow.get(colName).get(i).toString().length() - 1));
+                    }
+
+                    complete.append("|");
+                }
+            }
+            return complete.toString();
+        }
+        return "";
+    }
+
+    public String getColumnInfoRow(Table table, Map<String, Integer> colLengths) {
+        Schema tableSchema = table.getSchema();
+        StringBuilder complete = new StringBuilder();
+        StringBuilder col = new StringBuilder();
+        complete.append("|");
+        for (Map.Entry<String,ColumnDefinition> entry : tableSchema.getColumns().entrySet()) {
+            col.append(" ");
+            col.append(entry.getKey());
+            col.append(" ".repeat(colLengths.get(entry.getKey()) - col.length()));
+            col.append("|");
+            complete.append(col);
+            col = new StringBuilder();
+        }
+        return complete.toString();
+    }
+
+    public Map<String, Integer> getColumnSpaceSizes(Table table) {
+        Map <String, Integer> ret = new HashMap<>();
+
+        for (String colName : table.getSchema().getColumns().keySet()) {
+            ret.put(colName, colName.length());
+        }
+
+        for (Row row : table.getRows().values()) {
+            for (String colName : table.getSchema().getColumns().keySet()) {
+                if (row.getValue(colName)!=null && row.getValue(colName).getValue().toString().length() > ret.get(colName)) {
+                    ret.replace(colName, row.getValue(colName).getValue().toString().length());
+                }
+            }
+        }
+
+
+        ret = ret.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        o -> Math.min(o.getValue() + 2, 35)));
+
+        return ret;
+    }
+
+    public int getLongestColumnNameWithSafeSpace(Schema schema) {
+        return schema.getColumns().keySet().stream().map(String::length).toList().stream().max(Integer::compare).get() + 10;
+    }
+
+    private String getLineDivider(int length) {
+        return "\n" + "-".repeat(length) + "\n";
     }
 
     public void shutdownAppSequence(BufferedReader reader) throws InterruptedException, IOException {

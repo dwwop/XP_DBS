@@ -47,4 +47,12 @@ public class Table {
     public void delete(WhereClause whereClause) {
 
     }
+
+    public Schema getSchema() {
+        return schema;
+    }
+
+    public Map<Literal, Row> getRows() {
+        return rows;
+    }
 }

@@ -28,4 +28,8 @@ public abstract sealed class Literal<T extends Comparable<T>>
 
         return value.compareTo(other.value);
     }
+
+    public T getValue() {
+        return value;
+    }
 }

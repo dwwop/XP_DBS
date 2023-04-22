@@ -15,4 +15,12 @@ public class ColumnDefinition {
         this.dataType = dataType;
         this.constraints = constraints;
     }
+
+    public Literal.Type getDataType() {
+        return dataType;
+    }
+
+    public Set<Constraint> getConstraints() {
+        return constraints;
+    }
 }
