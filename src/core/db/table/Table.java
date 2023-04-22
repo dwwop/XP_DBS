@@ -32,7 +32,7 @@ public class Table {
         return new Table(new Schema());
     }
 
-    public Table insert(ColumnClause columnClause, ValueClause valueClause) {
+    public Table insert(ColumnsClause columnsClause, ValuesClause valuesClause) {
         return null;
     }
 

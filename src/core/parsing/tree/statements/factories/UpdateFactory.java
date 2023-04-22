@@ -1,7 +1,7 @@
 package core.parsing.tree.statements.factories;
 
-import core.parsing.IdentifierExtractor;
-import core.parsing.KeywordConsumer;
+import core.parsing.util.IdentifierExtractor;
+import core.parsing.util.KeywordConsumer;
 import core.parsing.tree.clauses.SetClause;
 import core.parsing.tree.clauses.WhereClause;
 import core.parsing.tree.clauses.factories.SetFactory;

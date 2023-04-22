@@ -9,7 +9,7 @@ import exceptions.DatabaseError;
 
 import java.util.Objects;
 
-public class SelectStatement extends Statement {
+public class SelectStatement extends TableStatement {
 
     private final ColumnClause columnClause;
     private final WhereClause whereClause;

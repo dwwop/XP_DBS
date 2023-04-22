@@ -6,7 +6,9 @@ import java.util.Set;
 
 public class ColumnDefinition {
 
-    private final Literal.Type dataType;
+    public enum Constraint { PrimaryKey, NotNull }
+
+    private Literal.Type dataType;
     private final Set<Constraint> constraints;
 
     public ColumnDefinition(Literal.Type dataType, Set<Constraint> constraints) {
@@ -14,5 +16,15 @@ public class ColumnDefinition {
         this.constraints = constraints;
     }
 
-    public enum Constraint {NotNull}
+    public boolean hasConstraint(Constraint constraint) {
+        return constraints.contains(constraint);
+    }
+
+    public void addConstraint(Constraint constraint) {
+        constraints.add(constraint);
+    }
+
+    public void removeConstraint(Constraint constraint) {
+        constraints.remove(constraint);
+    }
 }
