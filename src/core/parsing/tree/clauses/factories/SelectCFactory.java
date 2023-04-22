@@ -1,6 +1,6 @@
 package core.parsing.tree.clauses.factories;
 
-import core.parsing.tree.clauses.ColumnClause;
+import core.parsing.tree.clauses.SelectClause;
 import exceptions.syntaxErrors.EndOfFileError;
 import exceptions.syntaxErrors.SyntaxError;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
-public class ColumnFactory extends ClauseFactory {
+public class SelectCFactory extends ClauseFactory {
     private static final String allToken = "*";
 
     private static void throwSyntaxError() throws SyntaxError {
@@ -17,13 +17,13 @@ public class ColumnFactory extends ClauseFactory {
     }
 
     @Override
-    public ColumnClause fromTokens(Queue<String> tokens) throws SyntaxError {
+    public SelectClause fromTokens(Queue<String> tokens) throws SyntaxError {
         if (tokens.isEmpty()) {
             throwSyntaxError();
         }
         if (Objects.equals(tokens.peek(), allToken)) {
             tokens.poll();
-            return new ColumnClause(true);
+            return new SelectClause(true);
         }
 
         List<String> columns = new ArrayList<>();
@@ -39,6 +39,6 @@ public class ColumnFactory extends ClauseFactory {
         String column = tokens.poll();
         columns.add(column);
 
-        return new ColumnClause(columns);
+        return new SelectClause(columns);
     }
 }

@@ -1,10 +1,10 @@
 package core.parsing.tree.statements.factories;
 
-import core.parsing.tree.clauses.ColumnClause;
+import core.parsing.tree.clauses.SelectClause;
 import core.parsing.tree.clauses.LimitClause;
 import core.parsing.tree.clauses.OrderByClause;
 import core.parsing.tree.clauses.WhereClause;
-import core.parsing.tree.clauses.factories.ColumnFactory;
+import core.parsing.tree.clauses.factories.SelectCFactory;
 import core.parsing.tree.clauses.factories.LimitFactory;
 import core.parsing.tree.clauses.factories.OrderByFactory;
 import core.parsing.tree.clauses.factories.WhereFactory;
@@ -19,7 +19,7 @@ public class SelectFactory extends StatementFactory {
 
 
     private static final WhereFactory whereFactory = new WhereFactory();
-    private static final ColumnFactory columnFactory = new ColumnFactory();
+    private static final SelectCFactory columnFactory = new SelectCFactory();
 
     private static final LimitFactory limitFactory = new LimitFactory();
 
@@ -27,7 +27,7 @@ public class SelectFactory extends StatementFactory {
 
     @Override
     public SelectStatement fromTokens(Queue<String> tokens) throws SyntaxError {
-        ColumnClause columnClause = columnFactory.fromTokens(tokens);
+        SelectClause selectClause = columnFactory.fromTokens(tokens);
 
         KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.FROM, tokens);
 
@@ -50,6 +50,6 @@ public class SelectFactory extends StatementFactory {
         }
 
 
-        return new SelectStatement(tableName, columnClause, whereClause, orderByClause, limitClause);
+        return new SelectStatement(tableName, selectClause, whereClause, orderByClause, limitClause);
     }
 }
