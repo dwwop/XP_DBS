@@ -36,7 +36,6 @@ public class Console {
 
                 default -> {
                     Result result = queryExecutor.execute(input);
-                    if (!result.success()) printUnknownMessage();
                 }
             }
 
