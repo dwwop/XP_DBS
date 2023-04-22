@@ -16,6 +16,8 @@ public class LiteralExtractor {
     );
 
     public static Literal pollLiteralOrFail(Queue<String> tokens) throws SyntaxError {
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         if (tokens.isEmpty()) {
             throw new SyntaxError("The end of the query was reached but a literal was expected.");
         }
@@ -34,6 +36,8 @@ public class LiteralExtractor {
     }
 
     public static Literal.Type pollLiteralTypeOrFail(Queue<String> tokens) throws SyntaxError {
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         if (tokens.isEmpty()) {
             throw new SyntaxError("The end of the query was reached but a data type was expected.");
         }

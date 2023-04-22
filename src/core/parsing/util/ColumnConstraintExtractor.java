@@ -32,7 +32,16 @@ public class ColumnConstraintExtractor {
     public static Set<ColumnDefinition.Constraint> pollAllColumnConstraintsOrFail(Queue<String> tokens) throws SyntaxError {
         currentConstraints = new HashSet<>();
 
-        while (!tokens.isEmpty() && constraintFirstWords.contains(tokens.peek().toLowerCase())) {
+        while (!tokens.isEmpty()) {
+            if (tokens.peek().isEmpty()) {
+                tokens.poll();
+                continue;
+            }
+
+            if (!constraintFirstWords.contains(tokens.peek().toLowerCase())) {
+                break;
+            }
+
             String firstWord = tokens.poll().toLowerCase();
 
             if (!isTwoWordConstraint(firstWord)) {
@@ -51,6 +60,8 @@ public class ColumnConstraintExtractor {
     private static String pollConstraintSecondWordOrFail(String firstWord, Queue<String> tokens) throws SyntaxError {
         Set<String> secondWords = constraintSecondWords.get(firstWord);
         String secondWordsDisplayString = secondWords.stream().map(String::toUpperCase).collect(Collectors.joining(", "));
+
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
 
         if (tokens.isEmpty()) {
             throw new SyntaxError(
