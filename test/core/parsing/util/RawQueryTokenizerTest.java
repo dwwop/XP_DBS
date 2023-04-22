@@ -1,6 +1,6 @@
 package core.parsing.util;
 
-import exceptions.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import org.junit.Test;
 
 import java.util.LinkedList;
@@ -13,39 +13,56 @@ public class RawQueryTokenizerTest {
 
     @Test
     public void tokenizeQueryEmpty() {
-        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("");
-
-        assertTrue(tokens.isEmpty());
+        try {
+            Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("");
+            assertTrue(tokens.isEmpty());
+        } catch (SyntaxError e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     public void tokenizeQuerySingleWord() {
-        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one");
+        try {
+            Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one");
 
-        assertEquals("one", tokens.poll());
-        assertTrue(tokens.isEmpty());
+            assertEquals("one", tokens.poll());
+            assertTrue(tokens.isEmpty());
+        } catch (SyntaxError e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     public void tokenizeQueryMutipleWords() {
-        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one t-w-o (t_h_r_e_e)");
+        try {
+            Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one t-w-o (t_h_r_e_e)");
 
-        assertEquals("one", tokens.poll());
-        assertEquals("t-w-o", tokens.poll());
-        assertEquals("(t_h_r_e_e)", tokens.poll());
-        assertTrue(tokens.isEmpty());
+            assertEquals("one", tokens.poll());
+            assertEquals("t-w-o", tokens.poll());
+            assertEquals("(", tokens.poll());
+            assertEquals("t_h_r_e_e", tokens.poll());
+            assertEquals(")", tokens.poll());
+            assertTrue(tokens.isEmpty());
+        } catch (SyntaxError e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     public void tokenizeQueryMutipleWordsMultipleConsecutiveSpaces() {
-        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one   t-w-o (t_h_r_e_e)");
+        try {
+            Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one   t-w-o (t_h_r_e_e)");
 
-        assertEquals("one", tokens.poll());
-        assertEquals("", tokens.poll());
-        assertEquals("", tokens.poll());
-        assertEquals("t-w-o", tokens.poll());
-        assertEquals("(t_h_r_e_e)", tokens.poll());
-        assertTrue(tokens.isEmpty());
+            assertEquals("one", tokens.poll());
+            assertEquals("t-w-o", tokens.poll());
+            assertEquals("(", tokens.poll());
+            assertEquals("t_h_r_e_e", tokens.poll());
+            assertEquals(")", tokens.poll());
+            assertTrue(tokens.isEmpty());
+        } catch (SyntaxError e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -102,5 +119,19 @@ public class RawQueryTokenizerTest {
         RawQueryTokenizer.consumeEmptyTokens(tokens);
 
         assertEquals("token", tokens.peek());
+    }
+
+
+    @Test
+    public void specialCharactersQouted() {
+        try {
+            Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("\"( ),\" \"three two\" ");
+
+            assertEquals("\"( ),\"", tokens.poll());
+            assertEquals("\"three two\"", tokens.poll());
+            assertTrue(tokens.isEmpty());
+        } catch (SyntaxError e){
+            throw new RuntimeException(e);
+        }
     }
 }

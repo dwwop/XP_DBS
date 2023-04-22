@@ -7,7 +7,7 @@ import core.parsing.tree.clauses.factories.ValuesFactory;
 import core.parsing.tree.statements.InsertStatement;
 import core.parsing.util.IdentifierExtractor;
 import core.parsing.util.KeywordConsumer;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.SyntaxError;
 
 import java.util.Queue;
 

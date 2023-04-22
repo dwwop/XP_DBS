@@ -5,8 +5,8 @@ import core.parsing.tree.clauses.ValuesClause;
 import core.parsing.util.LiteralExtractor;
 import core.parsing.util.RawQueryBuilder;
 import core.parsing.util.RawQueryTokenizer;
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
 import util.Strings;
 
 import java.util.ArrayList;

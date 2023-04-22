@@ -11,7 +11,7 @@ import core.parsing.tree.clauses.factories.WhereFactory;
 import core.parsing.tree.statements.SelectStatement;
 import core.parsing.util.IdentifierExtractor;
 import core.parsing.util.KeywordConsumer;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.SyntaxError;
 
 import java.util.Queue;
 
@@ -19,7 +19,7 @@ public class SelectFactory extends StatementFactory {
 
 
     private static final WhereFactory whereFactory = new WhereFactory();
-    private static final SelectCFactory columnFactory = new SelectCFactory();
+    private static final SelectCFactory selectFactory = new SelectCFactory();
 
     private static final LimitFactory limitFactory = new LimitFactory();
 
@@ -27,7 +27,7 @@ public class SelectFactory extends StatementFactory {
 
     @Override
     public SelectStatement fromTokens(Queue<String> tokens) throws SyntaxError {
-        SelectClause selectClause = columnFactory.fromTokens(tokens);
+        SelectClause selectClause = selectFactory.fromTokens(tokens);
 
         KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.FROM, tokens);
 

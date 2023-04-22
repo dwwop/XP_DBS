@@ -1,9 +1,9 @@
 package core.parsing.util;
 
 import core.db.table.ColumnDefinition;
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
-import exceptions.syntaxErrors.TokenError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
+import exceptions.syntax.TokenError;
 
 import java.util.HashSet;
 import java.util.Map;

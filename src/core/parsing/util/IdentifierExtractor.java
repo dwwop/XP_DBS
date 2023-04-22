@@ -1,7 +1,7 @@
 package core.parsing.util;
 
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
 
 import java.util.Map;
 import java.util.Queue;

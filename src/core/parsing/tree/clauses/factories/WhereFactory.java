@@ -4,9 +4,9 @@ import core.parsing.tree.clauses.WhereClause;
 import core.parsing.tree.clauses.conditions.*;
 import core.parsing.util.ComparatorConsumer;
 import core.parsing.util.KeywordConsumer;
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
-import exceptions.syntaxErrors.TokenError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
+import exceptions.syntax.TokenError;
 
 import java.util.Queue;
 

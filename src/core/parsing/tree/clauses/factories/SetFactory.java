@@ -6,7 +6,7 @@ import core.parsing.util.IdentifierExtractor;
 import core.parsing.util.KeywordConsumer;
 import core.parsing.util.LiteralExtractor;
 import core.parsing.util.RawQueryBuilder;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import util.Strings;
 
 import java.util.*;

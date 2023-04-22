@@ -1,7 +1,7 @@
 package core.parsing.tree.clauses.factories;
 
 import core.db.types.Literal;
-import exceptions.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import org.junit.Test;
 
 import java.util.LinkedList;

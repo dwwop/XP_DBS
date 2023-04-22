@@ -3,7 +3,7 @@ package core.parsing;
 import core.parsing.tree.statements.Statement;
 import core.parsing.tree.statements.factories.*;
 import core.parsing.util.RawQueryTokenizer;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.SyntaxError;
 
 import java.util.Map;
 import java.util.Queue;

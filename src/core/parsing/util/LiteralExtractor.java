@@ -3,10 +3,13 @@ package core.parsing.util;
 import core.db.types.IntegerLiteral;
 import core.db.types.Literal;
 import core.db.types.StringLiteral;
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
-import exceptions.syntaxErrors.TokenError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
+import exceptions.syntax.TokenError;
+import util.Strings;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -25,12 +28,25 @@ public class LiteralExtractor {
         }
 
         String token = tokens.peek();
-
         if (token.matches("^\".*\"$")) {
             tokens.poll();
-
-            return new StringLiteral(token.substring(1, token.length() - 1));
+            return new StringLiteral(String.join("", token.substring(1, token.length() - 1)));
         }
+//        if (token.startsWith("\"")) {
+//            List<String> stringLiteralVal = new ArrayList<>();
+//            stringLiteralVal.add(token);
+//            while (!token.endsWith("\"")) {
+//                token = tokens.poll();
+//                stringLiteralVal.add(token);
+//                if (token == null)
+//                    throw new EndOfFileError("literal");
+//            }
+//            stringLiteralVal.add(token);
+//            stringLiteralVal.set(0, stringLiteralVal.get(0).substring(1));
+//            String last = stringLiteralVal.get(0);
+//            stringLiteralVal.set(stringLiteralVal.size() - 1, last.substring(0, last.length() - 1));
+//            return new StringLiteral(String.join("", stringLiteralVal));
+//        }
 
         try {
             IntegerLiteral literal = new IntegerLiteral(Integer.valueOf(token));

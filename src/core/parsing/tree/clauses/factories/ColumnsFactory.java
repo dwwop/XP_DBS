@@ -4,8 +4,8 @@ import core.parsing.tree.clauses.ColumnsClause;
 import core.parsing.util.IdentifierExtractor;
 import core.parsing.util.RawQueryBuilder;
 import core.parsing.util.RawQueryTokenizer;
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
 
 import java.util.ArrayList;
 import java.util.List;

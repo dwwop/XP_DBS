@@ -1,4 +1,4 @@
-package exceptions.syntaxErrors;
+package exceptions.syntax;
 
 public class EndOfFileError extends SyntaxError {
     public EndOfFileError(String expectedToken) {

@@ -3,7 +3,7 @@ package core.parsing.util;
 import core.db.types.IntegerLiteral;
 import core.db.types.Literal;
 import core.db.types.StringLiteral;
-import exceptions.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import org.junit.Test;
 
 import java.util.LinkedList;

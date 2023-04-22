@@ -1,8 +1,8 @@
 package core.parsing.util;
 
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
-import exceptions.syntaxErrors.TokenError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
+import exceptions.syntax.TokenError;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -65,6 +65,7 @@ public class KeywordConsumer {
 
         throw new TokenError(token, "one of " + keywordsDisplayString);
     }
+
 
     public static boolean isStatementKeyword(Queue<String> tokens) {
         Set<Keyword> statementKeywords = Arrays.stream(Keyword.values()).collect(Collectors.toSet());

@@ -1,6 +1,6 @@
 package core.parsing.util;
 
-import exceptions.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import org.junit.Test;
 
 import java.util.LinkedList;

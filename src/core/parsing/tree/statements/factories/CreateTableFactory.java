@@ -7,8 +7,8 @@ import core.parsing.tree.statements.CreateTableStatement;
 import core.parsing.tree.statements.Statement;
 import core.parsing.util.*;
 import exceptions.DatabaseError;
-import exceptions.syntaxErrors.SyntaxError;
-import exceptions.syntaxErrors.TokenError;
+import exceptions.syntax.SyntaxError;
+import exceptions.syntax.TokenError;
 
 import java.util.Arrays;
 import java.util.LinkedList;

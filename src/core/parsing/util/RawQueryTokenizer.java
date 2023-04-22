@@ -1,7 +1,7 @@
 package core.parsing.util;
 
 
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import util.Strings;
 
 import java.util.*;
@@ -14,13 +14,40 @@ public class RawQueryTokenizer {
             TupleType.ValueTuple, "value tuple"
     );
 
-    public static Queue<String> tokenizeQuery(String rawQuery) {
+    private static final Set<Character> specialChars = Set.of('(', ')', ',');
+
+    private static String handleSpecialCharacters(String query) throws SyntaxError {
+        boolean qouteStarted = false;
+        StringBuilder newQuery = new StringBuilder();
+        for (Character ch : query.toCharArray()) {
+            if (ch == '\u200b')
+                throw new SyntaxError("Unsupported zero width space detected.");
+
+            if (ch == '\"' && qouteStarted) {
+                qouteStarted = false;
+            } else if (ch == '\"') {
+                qouteStarted = true;
+            }
+
+            if (!qouteStarted && specialChars.contains(ch))
+                newQuery.append("\u200b").append(ch).append("\u200b");
+            else if (!qouteStarted && Character.isWhitespace(ch))
+                newQuery.append('\u200b');
+            else
+                newQuery.append(ch);
+
+        }
+        if (qouteStarted)
+            throw new SyntaxError("Unclosed string bracket detected");
+        return newQuery.toString();
+    }
+
+    public static Queue<String> tokenizeQuery(String rawQuery) throws SyntaxError {
         if (rawQuery.isEmpty()) {
             return new LinkedList<>();
         }
-        rawQuery = rawQuery.replaceAll("\\(", " ( ");
-        rawQuery = rawQuery.replaceAll("\\)", " ) ");
-        return new LinkedList<>(Arrays.asList(rawQuery.split("\\s+")));
+        rawQuery = handleSpecialCharacters(rawQuery);
+        return new LinkedList<>(Arrays.asList(rawQuery.split("\u200b+")));
     }
 
     public static Queue<String> tokenizeTupleTrimmingOrFail(TupleType tupleType, String rawTuple) throws SyntaxError {

@@ -1,7 +1,7 @@
 package core.parsing.util;
 
 import core.db.table.ColumnDefinition;
-import exceptions.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import org.junit.Test;
 
 import java.util.LinkedList;
