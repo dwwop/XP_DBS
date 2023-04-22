@@ -19,7 +19,7 @@ public class KeywordConsumer {
     }
 
     public static boolean isKeyword(Keyword keyword, String token) {
-        return token.toLowerCase().equals(keyword.toString().toLowerCase());
+        return token.equalsIgnoreCase(keyword.toString());
     }
 
     public static boolean consumeKeyword(Keyword keyword, Queue<String> tokens) {
@@ -41,11 +41,13 @@ public class KeywordConsumer {
             throw new SyntaxError("The end of the query was reached but '" + keyword + "' was expected.");
         }
 
-        String token = tokens.poll();
+        String token = tokens.peek();
 
         if (!isKeyword(keyword, token)) {
             throw new SyntaxError("Found '" + token + "' but '" + keyword + "' was expected.");
         }
+
+        tokens.poll();
     }
 
     public static Keyword consumeKeywordOrFail(Set<Keyword> keywords, Queue<String> tokens) throws SyntaxError {
@@ -57,10 +59,12 @@ public class KeywordConsumer {
             throw new SyntaxError("The end of the query was reached but one of '" + keywordsDisplayString + "' was expected.");
         }
 
-        String token = tokens.poll();
+        String token = tokens.peek();
 
         for (Keyword keyword : keywords) {
             if (isKeyword(keyword, token)) {
+                tokens.poll();
+
                 return keyword;
             }
         }

@@ -18,6 +18,10 @@ public class RawQueryTokenizer {
     );
 
     public static Queue<String> tokenizeQuery(String rawQuery) {
+        if (rawQuery.isEmpty()) {
+            return new LinkedList<>();
+        }
+
         return new LinkedList<>(Arrays.asList(rawQuery.split(" ")));
     }
 

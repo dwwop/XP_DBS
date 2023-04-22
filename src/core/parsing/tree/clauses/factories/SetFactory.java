@@ -23,6 +23,10 @@ public class SetFactory extends ClauseFactory {
 
         List<String> columnValueAssignements = Strings.splitAndTrimOnTopLevel(rawSetClause, ',');
 
+        if (columnValueAssignements.isEmpty()) {
+            throw new SyntaxError("A list of column value assignments is missing.");
+        }
+
         for (String rawAssignement : columnValueAssignements) {
             parseColumnValueAssignment(rawAssignement);
         }

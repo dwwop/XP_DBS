@@ -69,13 +69,13 @@ public class ColumnConstraintExtractor {
             );
         }
 
-        String secondWord = tokens.peek().toLowerCase();
+        String secondWord = tokens.poll();
 
-        if (!secondWords.contains(secondWord)) {
-            throw new SyntaxError("Found '" + tokens.peek() + "' but '" + secondWordsDisplayString + "' was expected.");
+        if (!secondWords.contains(secondWord.toLowerCase())) {
+            throw new SyntaxError("Found '" + tokens + "' but '" + secondWordsDisplayString + "' was expected.");
         }
 
-        return secondWord;
+        return secondWord.toLowerCase();
     }
 
     private static boolean isTwoWordConstraint(String firstWord) {

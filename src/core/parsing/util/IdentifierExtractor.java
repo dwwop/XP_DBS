@@ -17,7 +17,7 @@ public class IdentifierExtractor {
     );
 
     private static String validateIdentifierOrFail(String token) throws SyntaxError {
-        if (!token.matches("^[a-zA-Z_-]+$")) {
+        if (!token.matches("^[a-zA-Z]+[a-zA-Z1-9_-]*[a-zA-Z1-9]+$")) {
             throw new SyntaxError("Invalid identifier: '" + token + "'.");
         }
 

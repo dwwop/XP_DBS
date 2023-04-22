@@ -17,6 +17,11 @@ public abstract sealed class Literal<T extends Comparable<T>>
         return value == null;
     }
 
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
     public int compareTo(Literal<T> other) {
         if (isNull()) {
             return other.isNull() ? 0 : -1;

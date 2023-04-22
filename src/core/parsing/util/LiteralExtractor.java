@@ -22,14 +22,19 @@ public class LiteralExtractor {
             throw new SyntaxError("The end of the query was reached but a literal was expected.");
         }
 
-        String token = tokens.poll();
+        String token = tokens.peek();
 
         if (token.matches("^\".*\"$")) {
+            tokens.poll();
+
             return new StringLiteral(token.substring(1, token.length() - 1));
         }
 
         try {
-            return new IntegerLiteral(Integer.valueOf(token));
+            IntegerLiteral literal = new IntegerLiteral(Integer.valueOf(token));
+            tokens.poll();
+
+            return literal;
         } catch (NumberFormatException error) {
             throw new SyntaxError("Found '" + token + "' but a literal was expected.");
         }
@@ -42,11 +47,13 @@ public class LiteralExtractor {
             throw new SyntaxError("The end of the query was reached but a data type was expected.");
         }
 
-        String token = tokens.poll().toLowerCase();
+        String token = tokens.peek().toLowerCase();
 
         if (!literalTypes.containsKey(token)) {
             throw new SyntaxError("Found '" + token + "' but a data type was expected.");
         }
+
+        tokens.poll();
 
         return literalTypes.get(token);
     }

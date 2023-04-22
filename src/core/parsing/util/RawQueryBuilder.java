@@ -7,7 +7,11 @@ public class RawQueryBuilder {
     private final StringBuilder rawQuery = new StringBuilder();
 
     public RawQueryBuilder append(String token) {
-        rawQuery.append(" ").append(token);
+        if (!rawQuery.isEmpty()) {
+            rawQuery.append(" ");
+        }
+
+        rawQuery.append(token);
 
         return this;
     }
