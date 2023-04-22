@@ -1,4 +1,4 @@
-package core.parsing;
+package core.parsing.util;
 
 import exceptions.SyntaxError;
 

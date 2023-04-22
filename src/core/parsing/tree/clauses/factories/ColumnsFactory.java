@@ -1,12 +1,12 @@
 package core.parsing.tree.clauses.factories;
 
-import core.parsing.IdentifierExtractor;
+import core.parsing.util.IdentifierExtractor;
+import core.parsing.util.RawQueryBuilder;
+import core.parsing.util.RawQueryTokenizer;
 import core.parsing.tree.clauses.ColumnsClause;
 import exceptions.SyntaxError;
-import util.Strings;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -18,14 +18,10 @@ public class ColumnsFactory extends ClauseFactory {
             throw new SyntaxError("The end of the query was reached but a list of columns was expected.");
         }
 
-        String rawColumnsClause = getRawColumnsClause(tokens);
+        String rawColumnsClause = new RawQueryBuilder().buildRawTuple(tokens);
 
-        if (!rawColumnsClause.matches("^\\(.*\\)$")) {
-            throw new SyntaxError("Ill-formed list of columns: '" + rawColumnsClause + "'.");
-        }
-
-        List<String> columnsList = Strings.splitAndTrimOnTopLevel(
-            rawColumnsClause.substring(1, rawColumnsClause.length() - 1), ','
+        Queue<String> columnsList = RawQueryTokenizer.tokenizeTupleTrimmingOrFail(
+            RawQueryTokenizer.TupleType.ColumnsList, rawColumnsClause
         );
 
         List<String> columnNames = parseColumnsList(columnsList);
@@ -33,28 +29,11 @@ public class ColumnsFactory extends ClauseFactory {
         return new ColumnsClause(columnNames);
     }
 
-    private String getRawColumnsClause(Queue<String> tokens) {
-        StringBuilder rawColumnsClause = new StringBuilder();
-
-        while (!tokens.isEmpty()) {
-            String part = tokens.poll();
-
-            rawColumnsClause.append(" ").append(part);
-
-            if (part.endsWith(")")) {
-                break;
-            }
-        }
-
-        return rawColumnsClause.toString();
-    }
-
-    private List<String> parseColumnsList(List<String> columnsList) throws SyntaxError {
-        Queue<String> tokens = new LinkedList<>(columnsList);
+    private List<String> parseColumnsList(Queue<String> columnsList) throws SyntaxError {
         List<String> columnNames = new ArrayList<>();
 
-        while (!tokens.isEmpty()) {
-            columnNames.add(IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.ColumnName, tokens));
+        while (!columnsList.isEmpty()) {
+            columnNames.add(IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.ColumnName, columnsList));
         }
 
         return columnNames;

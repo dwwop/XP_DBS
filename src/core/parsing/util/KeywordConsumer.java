@@ -1,10 +1,11 @@
-package core.parsing;
+package core.parsing.util;
 
 import exceptions.SyntaxError;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class KeywordConsumer {
@@ -43,7 +44,7 @@ public class KeywordConsumer {
         }
     }
 
-    public static Keyword consumeKeywordOrFail(List<Keyword> keywords, Queue<String> tokens) throws SyntaxError {
+    public static Keyword consumeKeywordOrFail(Set<Keyword> keywords, Queue<String> tokens) throws SyntaxError {
         String keywordsDisplayString = keywords.stream().map(Objects::toString).collect(Collectors.joining(", "));
 
         if (tokens.isEmpty()) {

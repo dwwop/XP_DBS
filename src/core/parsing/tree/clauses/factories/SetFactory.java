@@ -1,9 +1,10 @@
 package core.parsing.tree.clauses.factories;
 
 import core.db.types.Literal;
-import core.parsing.IdentifierExtractor;
-import core.parsing.KeywordConsumer;
-import core.parsing.LiteralExtractor;
+import core.parsing.util.IdentifierExtractor;
+import core.parsing.util.KeywordConsumer;
+import core.parsing.util.LiteralExtractor;
+import core.parsing.util.RawQueryBuilder;
 import core.parsing.tree.clauses.SetClause;
 import exceptions.SyntaxError;
 import util.Strings;
@@ -30,7 +31,7 @@ public class SetFactory extends ClauseFactory {
     }
 
     private String getRawSetClause(Queue<String> tokens) {
-        StringBuilder rawSetClause = new StringBuilder();
+        RawQueryBuilder rawSetClause = new RawQueryBuilder();
         boolean stringLiteralStarted = false;
 
         while (!tokens.isEmpty() && !isStartOfWhereClause(tokens, stringLiteralStarted)) {
@@ -40,10 +41,10 @@ public class SetFactory extends ClauseFactory {
                 stringLiteralStarted = !stringLiteralStarted;
             }
 
-            rawSetClause.append(" ").append(part);
+            rawSetClause.append(part);
         }
 
-        return rawSetClause.toString();
+        return rawSetClause.build();
     }
 
     private boolean isStartOfWhereClause(Queue<String> tokens, boolean stringLiteralStarted) {

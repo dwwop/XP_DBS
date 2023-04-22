@@ -1,14 +1,14 @@
 package core.parsing.tree.clauses.factories;
 
 import core.db.types.Literal;
-import core.parsing.IdentifierExtractor;
-import core.parsing.LiteralExtractor;
+import core.parsing.util.LiteralExtractor;
+import core.parsing.util.RawQueryBuilder;
+import core.parsing.util.RawQueryTokenizer;
 import core.parsing.tree.clauses.ValuesClause;
 import exceptions.SyntaxError;
 import util.Strings;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -41,27 +41,23 @@ public class ValuesFactory extends ClauseFactory {
     }
 
     private String getRawValuesClause(Queue<String> tokens) {
-        StringBuilder rawValuesClause = new StringBuilder();
+        RawQueryBuilder rawValuesClause = new RawQueryBuilder();
 
         while (!tokens.isEmpty()) {
-            rawValuesClause.append(" ").append(tokens.poll());
+            rawValuesClause.append(tokens.poll());
         }
 
-        return rawValuesClause.toString();
+        return rawValuesClause.build();
     }
 
     private List<Literal> parseTuple(String rawTuple) throws SyntaxError {
-        if (!rawTuple.matches("^\\(.*\\)$")) {
-            throw new SyntaxError("Ill-formed tuple: '" + rawTuple + "'.");
-        }
-
-        Queue<String> tokens = new LinkedList<>(
-            Strings.splitAndTrimOnTopLevel(rawTuple.substring(1, rawTuple.length() - 1), ',')
+        Queue<String> values = RawQueryTokenizer.tokenizeTupleTrimmingOrFail(
+            RawQueryTokenizer.TupleType.ColumnsList, rawTuple
         );
         List<Literal> tuple = new ArrayList<>();
 
-        while (!tokens.isEmpty()) {
-            tuple.add(LiteralExtractor.pollLiteralOrFail(tokens));
+        while (!values.isEmpty()) {
+            tuple.add(LiteralExtractor.pollLiteralOrFail(values));
         }
 
         return tuple;

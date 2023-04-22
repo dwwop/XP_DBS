@@ -1,7 +1,7 @@
 package core.parsing.tree.statements.factories;
 
-import core.parsing.IdentifierExtractor;
-import core.parsing.KeywordConsumer;
+import core.parsing.util.IdentifierExtractor;
+import core.parsing.util.KeywordConsumer;
 import core.parsing.tree.clauses.ColumnsClause;
 import core.parsing.tree.clauses.ValuesClause;
 import core.parsing.tree.clauses.factories.ColumnsFactory;
@@ -9,8 +9,6 @@ import core.parsing.tree.clauses.factories.ValuesFactory;
 import core.parsing.tree.statements.InsertStatement;
 import exceptions.SyntaxError;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Queue;
 
 public class InsertFactory extends StatementFactory {

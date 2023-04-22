@@ -8,16 +8,18 @@ import exceptions.DatabaseError;
 
 public class CreateTableStatement extends Statement {
 
+    private final String tableName;
     private final Schema schema;
 
-    public CreateTableStatement(Schema schema) {
+    public CreateTableStatement(String tableName, Schema schema) {
+        this.tableName = tableName;
         this.schema = schema;
     }
 
     @Override
     public Result execute(TableManager tableManager) {
         try {
-            tableManager.createTable(schema);
+            tableManager.createTable(tableName, schema);
 
             return new Result(true, "Table created successfully.", null);
         } catch (DatabaseError error) {

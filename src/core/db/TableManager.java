@@ -17,7 +17,7 @@ public class TableManager {
         return tables.get(name);
     }
 
-    public void createTable(Schema schema) throws DatabaseError {
+    public void createTable(String tableName, Schema schema) throws DatabaseError {
 
     }
 }

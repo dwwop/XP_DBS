@@ -2,10 +2,9 @@ package core.parsing;
 
 import core.parsing.tree.statements.Statement;
 import core.parsing.tree.statements.factories.*;
+import core.parsing.util.RawQueryTokenizer;
 import exceptions.SyntaxError;
 
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
@@ -20,7 +19,7 @@ public class Parser {
     );
 
     public Statement parse(String query) throws SyntaxError {
-        Queue<String> tokens = new LinkedList<>(Arrays.asList(query.split(" ")));
+        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery(query);
 
         if (tokens.isEmpty()) {
             throw new SyntaxError("Empty query.");
