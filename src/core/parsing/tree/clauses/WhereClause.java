@@ -5,7 +5,7 @@ import core.parsing.tree.clauses.conditions.Condition;
 import java.util.Objects;
 
 public class WhereClause extends Clause {
-    private Condition condition;
+    private final Condition condition;
 
     public WhereClause(Condition condition) {
         this.condition = condition;

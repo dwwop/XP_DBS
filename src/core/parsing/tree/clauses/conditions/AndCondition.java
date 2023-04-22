@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class AndCondition extends Condition {
     private final Condition firstCondition;
-    private Condition secondCondition;
+    private final Condition secondCondition;
 
     public AndCondition(Condition firstCondition, Condition secondCondition) {
         this.firstCondition = firstCondition;

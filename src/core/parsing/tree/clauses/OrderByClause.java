@@ -1,6 +1,7 @@
 package core.parsing.tree.clauses;
 
-import core.parsing.KeywordConsumer;
+
+import core.parsing.util.KeywordConsumer;
 
 import java.util.Map;
 import java.util.Objects;

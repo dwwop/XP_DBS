@@ -12,18 +12,7 @@ import java.util.stream.Collectors;
 
 public class KeywordConsumer {
 
-    public enum Keyword {
-        WHERE,
-        AND, OR, NOT,
-        ORDER, BY, ASC, DESC,
-        LIMIT, OFFSET,
-        TABLE,
-        INTO, VALUES,
-        SET,
-        FROM
-    }
-
-    private static boolean isKeyword(Keyword keyword, String token) {
+    public static boolean isKeyword(Keyword keyword, String token) {
         return token.equalsIgnoreCase(keyword.toString());
     }
 
@@ -53,7 +42,7 @@ public class KeywordConsumer {
         String keywordsDisplayString = keywords.stream().map(Objects::toString).collect(Collectors.joining(", "));
 
         if (tokens.isEmpty()) {
-            throw new SyntaxError("The end of the query was reached but one of '" + keywordsDisplayString + "' was expected.");
+            throw new EndOfFileError("one of " + keywordsDisplayString);
         }
 
         String token = tokens.poll();
@@ -64,12 +53,23 @@ public class KeywordConsumer {
             }
         }
 
-        throw new SyntaxError("Found '" + token + "' but one of '" + keywordsDisplayString + "' was expected.");
+        throw new TokenError(token, "one of " + keywordsDisplayString);
     }
 
     public static boolean isStatementKeyword(Queue<String> tokens) {
         Set<Keyword> statementKeywords = Arrays.stream(Keyword.values()).collect(Collectors.toSet());
         statementKeywords.removeAll(Set.of(Keyword.AND, Keyword.OR, Keyword.NOT));
         return statementKeywords.stream().map(Enum::toString).collect(Collectors.toSet()).contains(tokens.peek());
+    }
+
+    public enum Keyword {
+        WHERE,
+        AND, OR, NOT,
+        ORDER, BY, ASC, DESC,
+        LIMIT, OFFSET,
+        TABLE,
+        INTO, VALUES,
+        SET,
+        FROM
     }
 }

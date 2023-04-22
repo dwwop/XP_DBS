@@ -1,9 +1,9 @@
 package core.parsing.util;
 
 import core.db.table.ColumnDefinition;
-import core.db.types.IntegerLiteral;
-import core.db.types.StringLiteral;
-import exceptions.SyntaxError;
+import exceptions.syntaxErrors.EndOfFileError;
+import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntaxErrors.TokenError;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -14,17 +14,17 @@ import java.util.stream.Collectors;
 public class ColumnConstraintExtractor {
 
     private static final Set<String> constraintFirstWords = Set.of(
-        "primary", "not"
+            "primary", "not"
     );
 
     private static final Map<String, Set<String>> constraintSecondWords = Map.of(
-        "primary", Set.of("key"),
-        "not", Set.of("null")
+            "primary", Set.of("key"),
+            "not", Set.of("null")
     );
 
     private static final Map<String, ColumnDefinition.Constraint> constraints = Map.of(
-        "primary key", ColumnDefinition.Constraint.PrimaryKey,
-        "not null", ColumnDefinition.Constraint.NotNull
+            "primary key", ColumnDefinition.Constraint.PrimaryKey,
+            "not null", ColumnDefinition.Constraint.NotNull
     );
 
     private static Set<ColumnDefinition.Constraint> currentConstraints;
@@ -53,15 +53,13 @@ public class ColumnConstraintExtractor {
         String secondWordsDisplayString = secondWords.stream().map(String::toUpperCase).collect(Collectors.joining(", "));
 
         if (tokens.isEmpty()) {
-            throw new SyntaxError(
-                "The end of the column definition was reached but one of '" + secondWordsDisplayString + "' was expected."
-            );
+            throw new EndOfFileError("one of " + secondWordsDisplayString);
         }
 
         String secondWord = tokens.peek().toLowerCase();
 
         if (!secondWords.contains(secondWord)) {
-            throw new SyntaxError("Found '" + tokens.peek() + "' but '" + secondWordsDisplayString + "' was expected.");
+            throw new TokenError(tokens.peek(), secondWordsDisplayString);
         }
 
         return secondWord;
@@ -75,7 +73,7 @@ public class ColumnConstraintExtractor {
         ColumnDefinition.Constraint constraint = constraints.get(rawConstraint);
 
         if (currentConstraints.contains(constraint)) {
-            throw new SyntaxError("Multiple constraints of type '" + rawConstraint.toUpperCase() + "' fonund.");
+            throw new SyntaxError("Multiple constraints of type '" + rawConstraint.toUpperCase() + "' founnd.");
         }
 
         currentConstraints.add(constraint);

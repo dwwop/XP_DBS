@@ -7,9 +7,13 @@ import core.parsing.tree.statements.CreateTableStatement;
 import core.parsing.tree.statements.Statement;
 import core.parsing.util.*;
 import exceptions.DatabaseError;
-import exceptions.SyntaxError;
+import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntaxErrors.TokenError;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 
 public class CreateTableFactory extends StatementFactory {
 
@@ -26,11 +30,11 @@ public class CreateTableFactory extends StatementFactory {
         RawQueryTokenizer.consumeEmptyTokens(tokens);
 
         if (!tokens.isEmpty()) {
-            throw new SyntaxError("Found '" + tokens.peek() + "' but the end of the query was expected.");
+            throw new TokenError(tokens.peek(), "the end of the query");
         }
 
         Queue<String> rawColumnDefinitions = RawQueryTokenizer.tokenizeTupleTrimmingOrFail(
-            RawQueryTokenizer.TupleType.Schema, rawSchema
+                RawQueryTokenizer.TupleType.Schema, rawSchema
         );
 
         while (!rawColumnDefinitions.isEmpty()) {
@@ -48,7 +52,7 @@ public class CreateTableFactory extends StatementFactory {
         Set<ColumnDefinition.Constraint> columnConstraints = ColumnConstraintExtractor.pollAllColumnConstraintsOrFail(tokens);
 
         if (!tokens.isEmpty()) {
-            throw new SyntaxError("Found '" + tokens.peek() + "' but the end of the column definition was expected.");
+            throw new TokenError(tokens.peek(), "the end of the column definition");
         }
 
         if (schema.hasColumn(columnName)) {

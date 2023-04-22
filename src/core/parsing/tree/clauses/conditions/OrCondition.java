@@ -5,7 +5,7 @@ import java.util.Objects;
 public class OrCondition extends Condition {
 
     private final Condition firstCondition;
-    private Condition secondCondition;
+    private final Condition secondCondition;
 
     public OrCondition(Condition firstCondition, Condition secondCondition) {
         this.firstCondition = firstCondition;
@@ -16,7 +16,7 @@ public class OrCondition extends Condition {
     public String toString() {
         return
                 "OR (firstCondition: " + firstCondition + "\n" +
-                        "secondCondition: " + secondCondition +")";
+                        "secondCondition: " + secondCondition + ")";
     }
 
     @Override

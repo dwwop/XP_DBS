@@ -3,7 +3,6 @@ package core.parsing.tree.statements;
 import core.Result;
 import core.db.TableManager;
 import core.db.table.Schema;
-import core.parsing.tree.clauses.WhereClause;
 import exceptions.DatabaseError;
 
 public class CreateTableStatement extends Statement {

@@ -1,11 +1,11 @@
 package core.parsing.tree.clauses.factories;
 
 import core.db.types.Literal;
+import core.parsing.tree.clauses.SetClause;
 import core.parsing.util.IdentifierExtractor;
 import core.parsing.util.KeywordConsumer;
 import core.parsing.util.LiteralExtractor;
 import core.parsing.util.RawQueryBuilder;
-import core.parsing.tree.clauses.SetClause;
 import exceptions.syntaxErrors.SyntaxError;
 import util.Strings;
 

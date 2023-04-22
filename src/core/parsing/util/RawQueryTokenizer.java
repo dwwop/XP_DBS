@@ -1,24 +1,23 @@
 package core.parsing.util;
 
-import exceptions.SyntaxError;
+
+import exceptions.syntaxErrors.SyntaxError;
 import util.Strings;
 
 import java.util.*;
 
 public class RawQueryTokenizer {
 
-    public enum TupleType {
-        Schema, ColumnsList, ValueTuple
-    }
-
     private static final Map<TupleType, String> tupleTypeDisplayNames = Map.of(
-        TupleType.Schema, "schema",
-        TupleType.ColumnsList, "list of columns",
-        TupleType.ValueTuple, "value tuple"
+            TupleType.Schema, "schema",
+            TupleType.ColumnsList, "list of columns",
+            TupleType.ValueTuple, "value tuple"
     );
 
     public static Queue<String> tokenizeQuery(String rawQuery) {
-        return new LinkedList<>(Arrays.asList(rawQuery.split(" ")));
+        rawQuery = rawQuery.replaceAll("\\(", " ( ");
+        rawQuery = rawQuery.replaceAll("\\)", " ) ");
+        return new LinkedList<>(Arrays.asList(rawQuery.split("\\s+")));
     }
 
     public static Queue<String> tokenizeTupleTrimmingOrFail(TupleType tupleType, String rawTuple) throws SyntaxError {
@@ -29,7 +28,7 @@ public class RawQueryTokenizer {
         }
 
         List<String> elements = Strings.splitAndTrimOnTopLevel(
-            trimmedRawTuple.substring(1, trimmedRawTuple.length() - 1), ','
+                trimmedRawTuple.substring(1, trimmedRawTuple.length() - 1), ','
         );
 
         return new LinkedList<>(elements);
@@ -39,5 +38,9 @@ public class RawQueryTokenizer {
         while (!tokens.isEmpty() && tokens.peek().isEmpty()) {
             tokens.poll();
         }
+    }
+
+    public enum TupleType {
+        Schema, ColumnsList, ValueTuple
     }
 }

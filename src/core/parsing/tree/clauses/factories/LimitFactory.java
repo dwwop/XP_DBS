@@ -1,7 +1,7 @@
 package core.parsing.tree.clauses.factories;
 
-import core.parsing.KeywordConsumer;
 import core.parsing.tree.clauses.LimitClause;
+import core.parsing.util.KeywordConsumer;
 import exceptions.syntaxErrors.EndOfFileError;
 import exceptions.syntaxErrors.SyntaxError;
 import exceptions.syntaxErrors.TokenError;

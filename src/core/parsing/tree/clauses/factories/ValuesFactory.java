@@ -1,11 +1,12 @@
 package core.parsing.tree.clauses.factories;
 
 import core.db.types.Literal;
+import core.parsing.tree.clauses.ValuesClause;
 import core.parsing.util.LiteralExtractor;
 import core.parsing.util.RawQueryBuilder;
 import core.parsing.util.RawQueryTokenizer;
-import core.parsing.tree.clauses.ValuesClause;
-import exceptions.SyntaxError;
+import exceptions.syntaxErrors.EndOfFileError;
+import exceptions.syntaxErrors.SyntaxError;
 import util.Strings;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class ValuesFactory extends ClauseFactory {
     @Override
     public ValuesClause fromTokens(Queue<String> tokens) throws SyntaxError {
         if (tokens.isEmpty()) {
-            throw new SyntaxError("The end of the query was reached but a list of values was expected.");
+            throw new EndOfFileError("list of values");
         }
 
         String rawValuesClause = getRawValuesClause(tokens);
@@ -52,7 +53,7 @@ public class ValuesFactory extends ClauseFactory {
 
     private List<Literal> parseTuple(String rawTuple) throws SyntaxError {
         Queue<String> values = RawQueryTokenizer.tokenizeTupleTrimmingOrFail(
-            RawQueryTokenizer.TupleType.ColumnsList, rawTuple
+                RawQueryTokenizer.TupleType.ColumnsList, rawTuple
         );
         List<Literal> tuple = new ArrayList<>();
 

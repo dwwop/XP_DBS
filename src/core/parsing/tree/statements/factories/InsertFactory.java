@@ -1,13 +1,13 @@
 package core.parsing.tree.statements.factories;
 
-import core.parsing.util.IdentifierExtractor;
-import core.parsing.util.KeywordConsumer;
 import core.parsing.tree.clauses.ColumnsClause;
 import core.parsing.tree.clauses.ValuesClause;
 import core.parsing.tree.clauses.factories.ColumnsFactory;
 import core.parsing.tree.clauses.factories.ValuesFactory;
 import core.parsing.tree.statements.InsertStatement;
-import exceptions.SyntaxError;
+import core.parsing.util.IdentifierExtractor;
+import core.parsing.util.KeywordConsumer;
+import exceptions.syntaxErrors.SyntaxError;
 
 import java.util.Queue;
 
@@ -33,8 +33,8 @@ public class InsertFactory extends StatementFactory {
 
         if (columnsListSize != tupleSize) {
             throw new SyntaxError(
-                "The list of columns and the value tuples have a different size ("
-                + columnsListSize + " vs " + tupleSize + ")."
+                    "The list of columns and the value tuples have a different size ("
+                            + columnsListSize + " vs " + tupleSize + ")."
             );
         }
 

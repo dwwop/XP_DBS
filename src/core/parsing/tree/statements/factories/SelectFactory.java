@@ -1,7 +1,5 @@
 package core.parsing.tree.statements.factories;
 
-import core.parsing.IdentifierExtractor;
-import core.parsing.KeywordConsumer;
 import core.parsing.tree.clauses.ColumnClause;
 import core.parsing.tree.clauses.LimitClause;
 import core.parsing.tree.clauses.OrderByClause;
@@ -11,6 +9,8 @@ import core.parsing.tree.clauses.factories.LimitFactory;
 import core.parsing.tree.clauses.factories.OrderByFactory;
 import core.parsing.tree.clauses.factories.WhereFactory;
 import core.parsing.tree.statements.SelectStatement;
+import core.parsing.util.IdentifierExtractor;
+import core.parsing.util.KeywordConsumer;
 import exceptions.syntaxErrors.SyntaxError;
 
 import java.util.Queue;

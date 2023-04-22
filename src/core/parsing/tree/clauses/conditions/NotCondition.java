@@ -3,7 +3,7 @@ package core.parsing.tree.clauses.conditions;
 import java.util.Objects;
 
 public class NotCondition extends Condition {
-    private Condition condition;
+    private final Condition condition;
 
 
     public NotCondition(Condition condition) {

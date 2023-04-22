@@ -1,6 +1,5 @@
 package core.parsing.tree.statements.factories;
 
-import core.parsing.KeywordConsumer;
 import core.parsing.Parser;
 import core.parsing.tree.clauses.ColumnClause;
 import core.parsing.tree.clauses.LimitClause;
@@ -11,6 +10,7 @@ import core.parsing.tree.clauses.conditions.Expression;
 import core.parsing.tree.clauses.conditions.NotCondition;
 import core.parsing.tree.clauses.conditions.OrCondition;
 import core.parsing.tree.statements.SelectStatement;
+import core.parsing.util.KeywordConsumer;
 import exceptions.syntaxErrors.SyntaxError;
 import org.junit.Test;
 

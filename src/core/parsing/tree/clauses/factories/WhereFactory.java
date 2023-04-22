@@ -1,8 +1,9 @@
 package core.parsing.tree.clauses.factories;
 
-import core.parsing.KeywordConsumer;
 import core.parsing.tree.clauses.WhereClause;
 import core.parsing.tree.clauses.conditions.*;
+import core.parsing.util.ComparatorConsumer;
+import core.parsing.util.KeywordConsumer;
 import exceptions.syntaxErrors.EndOfFileError;
 import exceptions.syntaxErrors.SyntaxError;
 import exceptions.syntaxErrors.TokenError;
@@ -25,7 +26,6 @@ public class WhereFactory extends ClauseFactory {
 
         return true;
     }
-
 
 
     private Condition consumeCondition(Queue<String> tokens, Condition condition) throws SyntaxError {

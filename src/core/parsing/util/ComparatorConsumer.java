@@ -1,4 +1,4 @@
-package core.parsing.tree.clauses.conditions;
+package core.parsing.util;
 
 import exceptions.syntaxErrors.EndOfFileError;
 import exceptions.syntaxErrors.SyntaxError;

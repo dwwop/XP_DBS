@@ -1,10 +1,11 @@
 package core.parsing.tree.clauses.factories;
 
+import core.parsing.tree.clauses.ColumnsClause;
 import core.parsing.util.IdentifierExtractor;
 import core.parsing.util.RawQueryBuilder;
 import core.parsing.util.RawQueryTokenizer;
-import core.parsing.tree.clauses.ColumnsClause;
-import exceptions.SyntaxError;
+import exceptions.syntaxErrors.EndOfFileError;
+import exceptions.syntaxErrors.SyntaxError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +16,13 @@ public class ColumnsFactory extends ClauseFactory {
     @Override
     public ColumnsClause fromTokens(Queue<String> tokens) throws SyntaxError {
         if (tokens.isEmpty()) {
-            throw new SyntaxError("The end of the query was reached but a list of columns was expected.");
+            throw new EndOfFileError("a list of columns");
         }
 
         String rawColumnsClause = new RawQueryBuilder().buildRawTuple(tokens);
 
         Queue<String> columnsList = RawQueryTokenizer.tokenizeTupleTrimmingOrFail(
-            RawQueryTokenizer.TupleType.ColumnsList, rawColumnsClause
+                RawQueryTokenizer.TupleType.ColumnsList, rawColumnsClause
         );
 
         List<String> columnNames = parseColumnsList(columnsList);

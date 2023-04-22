@@ -3,10 +3,10 @@ package core.parsing.tree.clauses.conditions;
 import java.util.Objects;
 
 public class Expression extends Condition {
-    private String columnName;
+    private final String columnName;
 
-    private String comparator;
-    private String value;
+    private final String comparator;
+    private final String value;
 
     public Expression(String columnName, String comparator, String value) {
         this.columnName = columnName;

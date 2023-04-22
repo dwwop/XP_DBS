@@ -1,12 +1,12 @@
 package core.parsing.tree.statements.factories;
 
-import core.parsing.util.IdentifierExtractor;
-import core.parsing.util.KeywordConsumer;
 import core.parsing.tree.clauses.SetClause;
 import core.parsing.tree.clauses.WhereClause;
 import core.parsing.tree.clauses.factories.SetFactory;
 import core.parsing.tree.clauses.factories.WhereFactory;
 import core.parsing.tree.statements.UpdateStatement;
+import core.parsing.util.IdentifierExtractor;
+import core.parsing.util.KeywordConsumer;
 import exceptions.syntaxErrors.SyntaxError;
 
 import java.util.Queue;
