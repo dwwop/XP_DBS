@@ -13,6 +13,7 @@ import core.db.types.StringLiteral;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.InvalidObjectException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -20,9 +21,6 @@ import java.util.stream.Collectors;
 
 public class Console {
 
-
-    public final String ANSI_RESET = "\u001B[0m";
-    public final String ANSI_RED = "\u001B[31m";
     private final QueryExecutor queryExecutor = new QueryExecutor();
 
     public void run() throws IOException, InterruptedException {
@@ -42,7 +40,14 @@ public class Console {
                 case "/exit" -> shutdownAppSequence(reader);
 
                 default -> {
-//                    Result result = queryExecutor.execute(input);
+                    Result result = queryExecutor.execute(input);
+                    if (result == null) printUnknownMessage();
+                    if (!result.success()) {
+                        System.err.println(result.message());
+                    }
+                    if (result.success()) {
+                        returnTableString(result.output());
+                    }
                 }
             }
 
@@ -51,7 +56,11 @@ public class Console {
 
     }
 
-    public String returnTableString(Table table) {
+    public String returnTableString(Table table) throws InvalidObjectException {
+
+        if (table == null) throw new InvalidObjectException("Table invalid");
+        if (table.getSchema() == null || table.getSchema().getColumns().isEmpty()) throw new InvalidObjectException("Schema invalid");
+
         StringBuilder complete = new StringBuilder();
         Map<String, Integer> lengthOfColSpaces = getColumnSpaceSizes(table);
         int lengthOfLine = getColumnInfoRow(table, lengthOfColSpaces).length();
@@ -68,7 +77,7 @@ public class Console {
         return complete.toString();
     }
 
-    public String getRowString(Row row, Schema schema, Map<String, Integer> lengthOfColSpaces) {
+    private String getRowString(Row row, Schema schema, Map<String, Integer> lengthOfColSpaces) {
         StringBuilder complete = new StringBuilder("|");
         Map<String, List<String>> overflow = new HashMap<>();
 
@@ -94,7 +103,7 @@ public class Console {
 
     }
 
-    public String getOverflownLines(Map<String, List<String>> overflow, Schema schema, Map<String, Integer> lengthOfColSpaces) {
+    private String getOverflownLines(Map<String, List<String>> overflow, Schema schema, Map<String, Integer> lengthOfColSpaces) {
         if (!overflow.isEmpty()) {
             StringBuilder complete = new StringBuilder();
 
@@ -117,7 +126,7 @@ public class Console {
         return "";
     }
 
-    public String getColumnInfoRow(Table table, Map<String, Integer> colLengths) {
+    private String getColumnInfoRow(Table table, Map<String, Integer> colLengths) {
         Schema tableSchema = table.getSchema();
         StringBuilder complete = new StringBuilder();
         StringBuilder col = new StringBuilder();
@@ -133,7 +142,7 @@ public class Console {
         return complete.toString();
     }
 
-    public Map<String, Integer> getColumnSpaceSizes(Table table) {
+    private Map<String, Integer> getColumnSpaceSizes(Table table) {
         Map <String, Integer> ret = new HashMap<>();
 
         for (String colName : table.getSchema().getColumns().keySet()) {
@@ -155,10 +164,6 @@ public class Console {
                         o -> Math.min(o.getValue() + 2, 35)));
 
         return ret;
-    }
-
-    public int getLongestColumnNameWithSafeSpace(Schema schema) {
-        return schema.getColumns().keySet().stream().map(String::length).toList().stream().max(Integer::compare).get() + 10;
     }
 
     private String getLineDivider(int length) {
@@ -212,6 +217,8 @@ public class Console {
     }
 
     public String toRed(String str) {
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_RED = "\u001B[31m";
         return ANSI_RED + str + ANSI_RESET;
     }
 
