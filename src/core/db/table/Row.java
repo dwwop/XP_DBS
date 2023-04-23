@@ -20,7 +20,7 @@ public class Row {
         }
     }
 
-    private Literal getValue(String column) {
+    public Literal getValue(String column) {
         // TODO: return null Literal of correct type instead of plain null?
 
         return values.get(column);

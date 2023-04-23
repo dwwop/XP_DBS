@@ -58,4 +58,14 @@ public class Schema {
         this.primaryKeyColumn = primaryKeyColumn;
         addColumnConstraint(this.primaryKeyColumn, ColumnDefinition.Constraint.PrimaryKey);
     }
+
+    public Map<String, ColumnDefinition> getColumns(){
+        return columns;
+    }
+
+    public ColumnDefinition getColumnDefinition(String column) throws DatabaseError {
+        validateColumnExistence(column);
+
+        return columns.get(column);
+    }
 }

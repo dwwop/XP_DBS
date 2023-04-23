@@ -36,4 +36,12 @@ public class SelectClause extends Clause {
                 "allColumns: " + allColumns + "\n" +
                         "columnNames: " + columnNames;
     }
+
+    public boolean getAllColumns(){
+        return allColumns;
+    }
+
+    public List<String> getColumnNames(){
+        return columnNames;
+    }
 }
