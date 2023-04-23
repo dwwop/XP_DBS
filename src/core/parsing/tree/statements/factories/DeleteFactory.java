@@ -5,6 +5,7 @@ import core.parsing.util.KeywordConsumer;
 import core.parsing.tree.clauses.WhereClause;
 import core.parsing.tree.clauses.factories.WhereFactory;
 import core.parsing.tree.statements.DeleteStatement;
+import core.parsing.util.RawQueryTokenizer;
 import exceptions.SyntaxError;
 
 import java.util.Queue;
@@ -21,7 +22,11 @@ public class DeleteFactory extends StatementFactory {
 
         WhereClause whereClause = whereFactory.getEmptyClause();
 
-        if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.WHERE, tokens)) {
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
+        if (!tokens.isEmpty()) {
+            KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.WHERE, tokens);
+
             whereClause = whereFactory.fromTokens(tokens);
         }
 

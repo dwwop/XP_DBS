@@ -8,12 +8,16 @@ public class ColumnDefinition {
 
     public enum Constraint { PrimaryKey, NotNull }
 
-    private Literal.Type dataType;
+    private final Literal.Type dataType;
     private final Set<Constraint> constraints;
 
     public ColumnDefinition(Literal.Type dataType, Set<Constraint> constraints) {
         this.dataType = dataType;
         this.constraints = constraints;
+    }
+
+    public Literal.Type getDataType() {
+        return dataType;
     }
 
     public boolean hasConstraint(Constraint constraint) {

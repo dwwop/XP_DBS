@@ -33,7 +33,7 @@ public class Parser {
 
         String firstToken = tokens.poll().toLowerCase();
 
-        if (statements.containsKey(firstToken)) {
+        if (!statements.containsKey(firstToken)) {
             throw new SyntaxError("Unknown statement: '" + firstToken.toUpperCase() + "'.");
         }
 

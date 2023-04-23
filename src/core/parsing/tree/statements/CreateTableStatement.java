@@ -16,6 +16,14 @@ public class CreateTableStatement extends Statement {
         this.schema = schema;
     }
 
+    public String getTableName() {
+        return tableName;
+    }
+
+    public Schema getSchema() {
+        return schema;
+    }
+
     @Override
     public Result execute(TableManager tableManager) {
         try {
