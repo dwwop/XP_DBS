@@ -12,57 +12,41 @@ import static org.junit.Assert.*;
 public class RawQueryTokenizerTest {
 
     @Test
-    public void tokenizeQueryEmpty() {
-        try {
-            Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("");
-            assertTrue(tokens.isEmpty());
-        } catch (SyntaxError e) {
-            throw new RuntimeException(e);
-        }
+    public void tokenizeQueryEmpty() throws SyntaxError {
+        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("");
+        assertTrue(tokens.isEmpty());
     }
 
     @Test
-    public void tokenizeQuerySingleWord() {
-        try {
-            Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one");
+    public void tokenizeQuerySingleWord() throws SyntaxError {
+        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one");
 
-            assertEquals("one", tokens.poll());
-            assertTrue(tokens.isEmpty());
-        } catch (SyntaxError e) {
-            throw new RuntimeException(e);
-        }
+        assertEquals("one", tokens.poll());
+        assertTrue(tokens.isEmpty());
     }
 
     @Test
-    public void tokenizeQueryMutipleWords() {
-        try {
-            Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one t-w-o (t_h_r_e_e)");
+    public void tokenizeQueryMutipleWords() throws SyntaxError {
+        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one t-w-o (t_h_r_e_e)");
 
-            assertEquals("one", tokens.poll());
-            assertEquals("t-w-o", tokens.poll());
-            assertEquals("(", tokens.poll());
-            assertEquals("t_h_r_e_e", tokens.poll());
-            assertEquals(")", tokens.poll());
-            assertTrue(tokens.isEmpty());
-        } catch (SyntaxError e) {
-            throw new RuntimeException(e);
-        }
+        assertEquals("one", tokens.poll());
+        assertEquals("t-w-o", tokens.poll());
+        assertEquals("(", tokens.poll());
+        assertEquals("t_h_r_e_e", tokens.poll());
+        assertEquals(")", tokens.poll());
+        assertTrue(tokens.isEmpty());
     }
 
     @Test
-    public void tokenizeQueryMutipleWordsMultipleConsecutiveSpaces() {
-        try {
-            Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one   t-w-o (t_h_r_e_e)");
+    public void tokenizeQueryMutipleWordsMultipleConsecutiveSpaces() throws SyntaxError {
+        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("one   t-w-o (t_h_r_e_e)");
 
-            assertEquals("one", tokens.poll());
-            assertEquals("t-w-o", tokens.poll());
-            assertEquals("(", tokens.poll());
-            assertEquals("t_h_r_e_e", tokens.poll());
-            assertEquals(")", tokens.poll());
-            assertTrue(tokens.isEmpty());
-        } catch (SyntaxError e) {
-            throw new RuntimeException(e);
-        }
+        assertEquals("one", tokens.poll());
+        assertEquals("t-w-o", tokens.poll());
+        assertEquals("(", tokens.poll());
+        assertEquals("t_h_r_e_e", tokens.poll());
+        assertEquals(")", tokens.poll());
+        assertTrue(tokens.isEmpty());
     }
 
     @Test
@@ -123,15 +107,18 @@ public class RawQueryTokenizerTest {
 
 
     @Test
-    public void specialCharactersQouted() {
-        try {
-            Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("\"( ),\" \"three two\" ");
+    public void specialCharactersQouted() throws SyntaxError {
+        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("\"( ),\"  (), ");
 
-            assertEquals("\"( ),\"", tokens.poll());
-            assertEquals("\"three two\"", tokens.poll());
-            assertTrue(tokens.isEmpty());
-        } catch (SyntaxError e) {
-            throw new RuntimeException(e);
-        }
+        assertEquals("\"( ),\"", tokens.poll());
+        assertEquals("(", tokens.poll());
+        assertEquals(")", tokens.poll());
+        assertEquals(",", tokens.poll());
+        assertTrue(tokens.isEmpty());
+    }
+
+    @Test
+    public void unclosedStringQoute() {
+        assertThrows(SyntaxError.class, () -> RawQueryTokenizer.tokenizeQuery("\"uiwfah "));
     }
 }

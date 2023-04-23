@@ -8,6 +8,7 @@ public class ColumnDefinition {
 
     private final Literal.Type dataType;
     private final Set<Constraint> constraints;
+
     public ColumnDefinition(Literal.Type dataType, Set<Constraint> constraints) {
         this.dataType = dataType;
         this.constraints = constraints;

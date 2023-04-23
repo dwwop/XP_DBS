@@ -6,7 +6,7 @@ import core.parsing.tree.clauses.SelectClause;
 import core.parsing.tree.clauses.WhereClause;
 import core.parsing.tree.clauses.factories.LimitFactory;
 import core.parsing.tree.clauses.factories.OrderByFactory;
-import core.parsing.tree.clauses.factories.SelectCFactory;
+import core.parsing.tree.clauses.factories.SelectClauseFactory;
 import core.parsing.tree.clauses.factories.WhereFactory;
 import core.parsing.tree.statements.SelectStatement;
 import core.parsing.util.IdentifierExtractor;
@@ -19,7 +19,7 @@ public class SelectFactory extends StatementFactory {
 
 
     private static final WhereFactory whereFactory = new WhereFactory();
-    private static final SelectCFactory selectFactory = new SelectCFactory();
+    private static final SelectClauseFactory selectFactory = new SelectClauseFactory();
 
     private static final LimitFactory limitFactory = new LimitFactory();
 
@@ -49,6 +49,9 @@ public class SelectFactory extends StatementFactory {
             limitClause = limitFactory.fromTokens(tokens);
         }
 
+        if (!tokens.isEmpty()) {
+            throw new SyntaxError("End of file expected but '" + tokens.poll() + "' found.");
+        }
 
         return new SelectStatement(tableName, selectClause, whereClause, orderByClause, limitClause);
     }

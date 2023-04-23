@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
-public class SelectCFactory extends ClauseFactory {
+public class SelectClauseFactory extends ClauseFactory {
     private static final String allToken = "*";
 
     private static void throwSyntaxError() throws SyntaxError {
@@ -36,6 +36,8 @@ public class SelectCFactory extends ClauseFactory {
             String column = tokens.poll();
             if (column.equals(","))
                 throw new TokenError(",", "column_name");
+            else if (column.equals("*"))
+                throw new TokenError("*", "column_name");
             columns.add(column);
 
             if (tokens.peek() == null || !tokens.peek().equals(",")) {

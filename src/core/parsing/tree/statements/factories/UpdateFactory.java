@@ -24,7 +24,7 @@ public class UpdateFactory extends StatementFactory {
         KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.SET, tokens);
 
         SetClause setClause = setFactory.fromTokens(tokens);
-        WhereClause whereClause = whereFactory.getEmptyClause();
+        WhereClause whereClause = null;
 
         RawQueryTokenizer.consumeEmptyTokens(tokens);
 
