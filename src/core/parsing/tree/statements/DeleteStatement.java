@@ -14,6 +14,10 @@ public class DeleteStatement extends TableStatement {
         this.whereClause = whereClause;
     }
 
+    public WhereClause getWhereClause() {
+        return whereClause;
+    }
+
     @Override
     public Table execute(Table table) throws DatabaseError {
         return table.delete(whereClause);

@@ -13,6 +13,10 @@ public abstract class TableStatement extends Statement {
         this.tableName = tableName;
     }
 
+    public String getTableName() {
+        return tableName;
+    }
+
     public Result execute(TableManager tableManager) {
         try {
             Table table = tableManager.getTable(tableName);

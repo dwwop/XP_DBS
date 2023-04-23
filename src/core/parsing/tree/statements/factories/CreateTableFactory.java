@@ -20,7 +20,7 @@ public class CreateTableFactory extends StatementFactory {
     private Schema schema;
 
     @Override
-    public Statement fromTokens(Queue<String> tokens) throws SyntaxError {
+    public CreateTableStatement fromTokens(Queue<String> tokens) throws SyntaxError {
         schema = new Schema();
 
         String tableName = IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens);

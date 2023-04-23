@@ -17,6 +17,14 @@ public class InsertStatement extends TableStatement {
         this.valuesClause = valuesClause;
     }
 
+    public ColumnsClause getColumnsClause() {
+        return columnsClause;
+    }
+
+    public ValuesClause getValuesClause() {
+        return valuesClause;
+    }
+
     @Override
     public Table execute(Table table) throws DatabaseError {
         return table.insert(columnsClause, valuesClause);
