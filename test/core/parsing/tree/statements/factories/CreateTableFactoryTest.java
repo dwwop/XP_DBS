@@ -5,7 +5,7 @@ import core.db.table.Schema;
 import core.db.types.Literal;
 import core.parsing.tree.statements.CreateTableStatement;
 import exceptions.DatabaseError;
-import exceptions.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import org.junit.Test;
 
 import java.util.LinkedList;
@@ -21,15 +21,15 @@ public class CreateTableFactoryTest {
         Queue<String> tokens = new LinkedList<>();
 
         assertThrows(
-            SyntaxError.class,
-            () -> new CreateTableFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new CreateTableFactory().fromTokens(tokens)
         );
     }
 
     @Test
     public void fromTokensOK() throws SyntaxError, DatabaseError {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "table1", "(", "col1", "str", "primary", "key,", "col2", "int", "not", "null", ")"
+                "table1", "(", "col1", "str", "primary", "key,", "col2", "int", "not", "null", ")"
         ));
 
         CreateTableStatement statement = new CreateTableFactory().fromTokens(tokens);
@@ -51,72 +51,72 @@ public class CreateTableFactoryTest {
     @Test
     public void fromTokensMissingSchema() {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "table1"
+                "table1"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new CreateTableFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new CreateTableFactory().fromTokens(tokens)
         );
     }
 
     @Test
     public void fromTokensMultipleColumnsWithSameName() {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "table1", "(", "col1", "str", "primary", "key,", "col1", "int", "not", "null", ")"
+                "table1", "(", "col1", "str", "primary", "key,", "col1", "int", "not", "null", ")"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new CreateTableFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new CreateTableFactory().fromTokens(tokens)
         );
     }
 
     @Test
     public void fromTokensMultipleColumnsWithPrimaryKey() {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "table1", "(", "col1", "str", "primary", "key,", "col2", "int", "primary", "key", ")"
+                "table1", "(", "col1", "str", "primary", "key,", "col2", "int", "primary", "key", ")"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new CreateTableFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new CreateTableFactory().fromTokens(tokens)
         );
     }
 
     @Test
     public void fromTokensMissingDataType() {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "table1", "(", "col1", "primary", "key,", "col2", "int", "not", "null", ")"
+                "table1", "(", "col1", "primary", "key,", "col2", "int", "not", "null", ")"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new CreateTableFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new CreateTableFactory().fromTokens(tokens)
         );
     }
 
     @Test
     public void fromTokensRepetingConstraint() {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "table1", "(", "col1", "str", "primary", "key,", "col2", "int", "not", "null", "not", "null", ")"
+                "table1", "(", "col1", "str", "primary", "key,", "col2", "int", "not", "null", "not", "null", ")"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new CreateTableFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new CreateTableFactory().fromTokens(tokens)
         );
     }
 
     @Test
     public void fromTokensMissingTableName() {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "(", "col1", "str", "primary", "key,", "col2", "int", "not", "null", ")"
+                "(", "col1", "str", "primary", "key,", "col2", "int", "not", "null", ")"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new CreateTableFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new CreateTableFactory().fromTokens(tokens)
         );
 
     }
@@ -124,7 +124,7 @@ public class CreateTableFactoryTest {
     @Test
     public void fromTokensMultipleConsecutiveSpaces() throws SyntaxError, DatabaseError {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "table1", "", "(", "col1", "", "str", "", "primary", "key,", "", "", "col2", "int", "not", "null", "", ")", ""
+                "table1", "", "(", "col1", "", "str", "", "primary", "key,", "", "", "col2", "int", "not", "null", "", ")", ""
         ));
 
         CreateTableStatement statement = new CreateTableFactory().fromTokens(tokens);

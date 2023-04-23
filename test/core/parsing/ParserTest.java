@@ -3,14 +3,11 @@ package core.parsing;
 import core.parsing.tree.statements.CreateTableStatement;
 import core.parsing.tree.statements.InsertStatement;
 import core.parsing.tree.statements.Statement;
-import core.parsing.tree.statements.factories.CreateFactory;
-import exceptions.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import org.junit.Test;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 public class ParserTest {
 
@@ -19,8 +16,8 @@ public class ParserTest {
         String query = "";
 
         assertThrows(
-            SyntaxError.class,
-            () -> new Parser().parse(query)
+                SyntaxError.class,
+                () -> new Parser().parse(query)
         );
     }
 
@@ -29,15 +26,15 @@ public class ParserTest {
         String query = "  ";
 
         assertThrows(
-            SyntaxError.class,
-            () -> new Parser().parse(query)
+                SyntaxError.class,
+                () -> new Parser().parse(query)
         );
     }
 
     @Test
     public void fromTokensOK() throws SyntaxError {
         String query =
-            "insERT INTO table1 (col1, col2 ) VALUES (\"val1\",1), (2, \"val2\")";
+                "insERT INTO table1 (col1, col2 ) VALUES (\"val1\",1), (2, \"val2\")";
 
         Statement statement = new Parser().parse(query);
 
@@ -47,29 +44,29 @@ public class ParserTest {
     @Test
     public void fromTokensMissingKeyword() {
         String query =
-            "FROM table1 where a = 1";
+                "FROM table1 where a = 1";
 
         assertThrows(
-            SyntaxError.class,
-            () -> new Parser().parse(query)
+                SyntaxError.class,
+                () -> new Parser().parse(query)
         );
     }
 
     @Test
     public void fromTokensInvalidKeyword() {
         String query =
-            "unknown FROM table1 where a = 1";
+                "unknown FROM table1 where a = 1";
 
         assertThrows(
-            SyntaxError.class,
-            () -> new Parser().parse(query)
+                SyntaxError.class,
+                () -> new Parser().parse(query)
         );
     }
 
     @Test
     public void parseMultipleConsecutiveSpaces() throws SyntaxError {
         String query =
-            "  Create  TABLE  table1 ( col1 str primary key, col2 int not null )";
+                "  Create  TABLE  table1 ( col1 str primary key, col2 int not null )";
 
         Statement statement = new Parser().parse(query);
 

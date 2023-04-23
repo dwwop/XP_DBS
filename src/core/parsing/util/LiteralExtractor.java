@@ -6,10 +6,7 @@ import core.db.types.StringLiteral;
 import exceptions.syntax.EndOfFileError;
 import exceptions.syntax.SyntaxError;
 import exceptions.syntax.TokenError;
-import util.Strings;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 

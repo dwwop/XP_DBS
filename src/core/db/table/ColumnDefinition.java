@@ -6,11 +6,8 @@ import java.util.Set;
 
 public class ColumnDefinition {
 
-    public enum Constraint { PrimaryKey, NotNull }
-
     private final Literal.Type dataType;
     private final Set<Constraint> constraints;
-
     public ColumnDefinition(Literal.Type dataType, Set<Constraint> constraints) {
         this.dataType = dataType;
         this.constraints = constraints;
@@ -31,4 +28,6 @@ public class ColumnDefinition {
     public void removeConstraint(Constraint constraint) {
         constraints.remove(constraint);
     }
+
+    public enum Constraint {PrimaryKey, NotNull}
 }

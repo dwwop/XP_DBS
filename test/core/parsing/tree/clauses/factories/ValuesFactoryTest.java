@@ -17,8 +17,8 @@ public class ValuesFactoryTest {
         Queue<String> tokens = new LinkedList<>();
 
         assertThrows(
-            SyntaxError.class,
-            () -> new ValuesFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new ValuesFactory().fromTokens(tokens)
         );
     }
 
@@ -27,8 +27,8 @@ public class ValuesFactoryTest {
         Queue<String> tokens = new LinkedList<>(List.of("invalid"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new ValuesFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new ValuesFactory().fromTokens(tokens)
         );
         assertTrue(tokens.isEmpty());
     }
@@ -38,8 +38,8 @@ public class ValuesFactoryTest {
         Queue<String> tokens = new LinkedList<>(List.of("(", ")"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new ValuesFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new ValuesFactory().fromTokens(tokens)
         );
         assertTrue(tokens.isEmpty());
     }
@@ -67,8 +67,8 @@ public class ValuesFactoryTest {
         Queue<String> tokens = new LinkedList<>(List.of("(1,", "2", ",", "3", ")", "(4,", "5)", "(\"7\",", "\"8\",", "\"9\")"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new ValuesFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new ValuesFactory().fromTokens(tokens)
         );
         assertTrue(tokens.isEmpty());
     }
@@ -78,8 +78,8 @@ public class ValuesFactoryTest {
         Queue<String> tokens = new LinkedList<>(List.of("(not,", "a,", "valid,", "literal)"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new ValuesFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new ValuesFactory().fromTokens(tokens)
         );
         assertTrue(tokens.isEmpty());
     }

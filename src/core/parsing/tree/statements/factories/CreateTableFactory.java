@@ -4,7 +4,6 @@ import core.db.table.ColumnDefinition;
 import core.db.table.Schema;
 import core.db.types.Literal;
 import core.parsing.tree.statements.CreateTableStatement;
-import core.parsing.tree.statements.Statement;
 import core.parsing.util.*;
 import exceptions.DatabaseError;
 import exceptions.syntax.SyntaxError;

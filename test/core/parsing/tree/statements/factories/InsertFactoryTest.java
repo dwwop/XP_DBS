@@ -2,16 +2,15 @@ package core.parsing.tree.statements.factories;
 
 import core.db.types.Literal;
 import core.parsing.tree.statements.InsertStatement;
-import core.parsing.tree.statements.UpdateStatement;
-import exceptions.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class InsertFactoryTest {
 
@@ -20,15 +19,15 @@ public class InsertFactoryTest {
         Queue<String> tokens = new LinkedList<>();
 
         assertThrows(
-            SyntaxError.class,
-            () -> new InsertFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new InsertFactory().fromTokens(tokens)
         );
     }
 
     @Test
     public void fromTokensOK() throws SyntaxError {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "INTO", "table1", "(col1,", "col2", ")", "VALUES", "(\"val1\",1),", "(2,", "\"val2\")"
+                "INTO", "table1", "(col1,", "col2", ")", "VALUES", "(\"val1\",1),", "(2,", "\"val2\")"
         ));
 
         InsertStatement statement = new InsertFactory().fromTokens(tokens);
@@ -49,48 +48,48 @@ public class InsertFactoryTest {
     @Test
     public void fromTokensMissingValuesClause() throws SyntaxError {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "INTO", "table1", "(col1,", "col2", ")", "VALUES"
+                "INTO", "table1", "(col1,", "col2", ")", "VALUES"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new InsertFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new InsertFactory().fromTokens(tokens)
         );
     }
 
     @Test
     public void fromTokensMissingColumnsClause() {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "INTO", "table1", "VALUES", "(\"val1\",1)", "(2,", "\"val2\")"
+                "INTO", "table1", "VALUES", "(\"val1\",1)", "(2,", "\"val2\")"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new InsertFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new InsertFactory().fromTokens(tokens)
         );
     }
 
     @Test
     public void fromTokensMissingKeyword() {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "INTO", "table1", "(col1,", "col2", ")", "(\"val1\",1)", "(2,", "\"val2\")"
+                "INTO", "table1", "(col1,", "col2", ")", "(\"val1\",1)", "(2,", "\"val2\")"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new InsertFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new InsertFactory().fromTokens(tokens)
         );
     }
 
     @Test
     public void fromTokensMissingTableName() {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "INTO", "(col1,", "col2", ")", "VALUES", "(\"val1\",1)", "(2,", "\"val2\")"
+                "INTO", "(col1,", "col2", ")", "VALUES", "(\"val1\",1)", "(2,", "\"val2\")"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new InsertFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new InsertFactory().fromTokens(tokens)
         );
 
     }
@@ -98,12 +97,12 @@ public class InsertFactoryTest {
     @Test
     public void fromTokensDifferentLengthOfTheColumnsClauseAndValueTuples() {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "INTO", "table1", "(col1", ")", "VALUES", "(\"val1\",1)", "(2,", "\"val2\")"
+                "INTO", "table1", "(col1", ")", "VALUES", "(\"val1\",1)", "(2,", "\"val2\")"
         ));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new InsertFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new InsertFactory().fromTokens(tokens)
         );
 
     }
@@ -111,7 +110,7 @@ public class InsertFactoryTest {
     @Test
     public void fromTokensMultipleConsecutiveSpaces() throws SyntaxError {
         Queue<String> tokens = new LinkedList<>(List.of(
-            "", "INTO", "", "", "table1", "(col1,", "col2", ")", "", "VALUES", "", "(\"val1\",1),", "(2,", "\"val2\")"
+                "", "INTO", "", "", "table1", "(col1,", "col2", ")", "", "VALUES", "", "(\"val1\",1),", "(2,", "\"val2\")"
         ));
 
         InsertStatement statement = new InsertFactory().fromTokens(tokens);

@@ -159,7 +159,6 @@ public class SelectFactoryTest {
     }
 
 
-
     @Test
     public void selectOrderByOneColumn() {
         Parser parser = new Parser();

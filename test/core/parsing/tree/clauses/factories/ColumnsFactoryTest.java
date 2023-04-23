@@ -7,7 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class ColumnsFactoryTest {
 
@@ -16,8 +17,8 @@ public class ColumnsFactoryTest {
         Queue<String> tokens = new LinkedList<>();
 
         assertThrows(
-            SyntaxError.class,
-            () -> new ColumnsFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new ColumnsFactory().fromTokens(tokens)
         );
     }
 
@@ -26,8 +27,8 @@ public class ColumnsFactoryTest {
         Queue<String> tokens = new LinkedList<>(List.of("(", ")", "continues"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new ColumnsFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new ColumnsFactory().fromTokens(tokens)
         );
         assertEquals(1, tokens.size());
     }
@@ -49,8 +50,8 @@ public class ColumnsFactoryTest {
         Queue<String> tokens = new LinkedList<>(List.of("(one,", "t-w-/o", ",", "t_h_r_e_e", ")", "continues"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new ColumnsFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new ColumnsFactory().fromTokens(tokens)
         );
         assertEquals(1, tokens.size());
     }

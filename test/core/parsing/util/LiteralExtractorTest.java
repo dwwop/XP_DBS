@@ -19,8 +19,8 @@ public class LiteralExtractorTest {
         Queue<String> tokens = new LinkedList<>();
 
         assertThrows(
-            SyntaxError.class,
-            () -> LiteralExtractor.pollLiteralOrFail(tokens)
+                SyntaxError.class,
+                () -> LiteralExtractor.pollLiteralOrFail(tokens)
         );
     }
 
@@ -42,8 +42,8 @@ public class LiteralExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of(expected, "something", "else"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> LiteralExtractor.pollLiteralOrFail(tokens)
+                SyntaxError.class,
+                () -> LiteralExtractor.pollLiteralOrFail(tokens)
         );
         assertEquals(3, tokens.size());
     }
@@ -54,8 +54,8 @@ public class LiteralExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of(expected, "something", "else"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> LiteralExtractor.pollLiteralOrFail(tokens)
+                SyntaxError.class,
+                () -> LiteralExtractor.pollLiteralOrFail(tokens)
         );
         assertEquals(3, tokens.size());
     }
@@ -138,8 +138,8 @@ public class LiteralExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of(expected, "something", "else"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> LiteralExtractor.pollLiteralOrFail(tokens)
+                SyntaxError.class,
+                () -> LiteralExtractor.pollLiteralOrFail(tokens)
         );
         assertEquals(3, tokens.size());
     }
@@ -150,8 +150,8 @@ public class LiteralExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of(expected, "something", "else"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> LiteralExtractor.pollLiteralOrFail(tokens)
+                SyntaxError.class,
+                () -> LiteralExtractor.pollLiteralOrFail(tokens)
         );
         assertEquals(3, tokens.size());
     }
@@ -162,8 +162,8 @@ public class LiteralExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of(expected, "something", "else"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> LiteralExtractor.pollLiteralOrFail(tokens)
+                SyntaxError.class,
+                () -> LiteralExtractor.pollLiteralOrFail(tokens)
         );
         assertEquals(3, tokens.size());
     }
@@ -173,8 +173,8 @@ public class LiteralExtractorTest {
         Queue<String> tokens = new LinkedList<>();
 
         assertThrows(
-            SyntaxError.class,
-            () -> LiteralExtractor.pollLiteralTypeOrFail(tokens)
+                SyntaxError.class,
+                () -> LiteralExtractor.pollLiteralTypeOrFail(tokens)
         );
     }
 
@@ -239,8 +239,8 @@ public class LiteralExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of(expected, "constraint"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> LiteralExtractor.pollLiteralTypeOrFail(tokens)
+                SyntaxError.class,
+                () -> LiteralExtractor.pollLiteralTypeOrFail(tokens)
         );
         assertEquals(2, tokens.size());
     }

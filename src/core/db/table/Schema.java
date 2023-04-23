@@ -67,7 +67,7 @@ public class Schema {
 
     private boolean violatesSinglePrimaryKeyRestriction(String column, ColumnDefinition definition) {
         return primaryKeyColumn != null
-            && definition.hasConstraint(ColumnDefinition.Constraint.PrimaryKey)
-            && !primaryKeyColumn.equals(column);
+                && definition.hasConstraint(ColumnDefinition.Constraint.PrimaryKey)
+                && !primaryKeyColumn.equals(column);
     }
 }

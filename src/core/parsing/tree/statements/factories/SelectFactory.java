@@ -1,12 +1,12 @@
 package core.parsing.tree.statements.factories;
 
-import core.parsing.tree.clauses.SelectClause;
 import core.parsing.tree.clauses.LimitClause;
 import core.parsing.tree.clauses.OrderByClause;
+import core.parsing.tree.clauses.SelectClause;
 import core.parsing.tree.clauses.WhereClause;
-import core.parsing.tree.clauses.factories.SelectCFactory;
 import core.parsing.tree.clauses.factories.LimitFactory;
 import core.parsing.tree.clauses.factories.OrderByFactory;
+import core.parsing.tree.clauses.factories.SelectCFactory;
 import core.parsing.tree.clauses.factories.WhereFactory;
 import core.parsing.tree.statements.SelectStatement;
 import core.parsing.util.IdentifierExtractor;

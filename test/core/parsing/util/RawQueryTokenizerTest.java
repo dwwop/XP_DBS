@@ -16,7 +16,7 @@ public class RawQueryTokenizerTest {
         try {
             Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("");
             assertTrue(tokens.isEmpty());
-        } catch (SyntaxError e){
+        } catch (SyntaxError e) {
             throw new RuntimeException(e);
         }
     }
@@ -44,7 +44,7 @@ public class RawQueryTokenizerTest {
             assertEquals("t_h_r_e_e", tokens.poll());
             assertEquals(")", tokens.poll());
             assertTrue(tokens.isEmpty());
-        } catch (SyntaxError e){
+        } catch (SyntaxError e) {
             throw new RuntimeException(e);
         }
     }
@@ -60,7 +60,7 @@ public class RawQueryTokenizerTest {
             assertEquals("t_h_r_e_e", tokens.poll());
             assertEquals(")", tokens.poll());
             assertTrue(tokens.isEmpty());
-        } catch (SyntaxError e){
+        } catch (SyntaxError e) {
             throw new RuntimeException(e);
         }
     }
@@ -68,8 +68,8 @@ public class RawQueryTokenizerTest {
     @Test
     public void tokenizeTupleTrimmingOrFailEmpty() {
         assertThrows(
-            SyntaxError.class,
-            () -> RawQueryTokenizer.tokenizeTupleTrimmingOrFail(RawQueryTokenizer.TupleType.Schema, "")
+                SyntaxError.class,
+                () -> RawQueryTokenizer.tokenizeTupleTrimmingOrFail(RawQueryTokenizer.TupleType.Schema, "")
         );
     }
 
@@ -87,8 +87,8 @@ public class RawQueryTokenizerTest {
     @Test
     public void tokenizeTupleTrimmingOrFailInvalidFormat() {
         assertThrows(
-            SyntaxError.class,
-            () -> RawQueryTokenizer.tokenizeTupleTrimmingOrFail(RawQueryTokenizer.TupleType.ValueTuple, "col1, col2,  col3, col4 )")
+                SyntaxError.class,
+                () -> RawQueryTokenizer.tokenizeTupleTrimmingOrFail(RawQueryTokenizer.TupleType.ValueTuple, "col1, col2,  col3, col4 )")
         );
     }
 
@@ -130,7 +130,7 @@ public class RawQueryTokenizerTest {
             assertEquals("\"( ),\"", tokens.poll());
             assertEquals("\"three two\"", tokens.poll());
             assertTrue(tokens.isEmpty());
-        } catch (SyntaxError e){
+        } catch (SyntaxError e) {
             throw new RuntimeException(e);
         }
     }

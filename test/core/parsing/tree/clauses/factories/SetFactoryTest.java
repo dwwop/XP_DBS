@@ -18,8 +18,8 @@ public class SetFactoryTest {
         Queue<String> tokens = new LinkedList<>();
 
         assertThrows(
-            SyntaxError.class,
-            () -> new SetFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new SetFactory().fromTokens(tokens)
         );
     }
 
@@ -28,8 +28,8 @@ public class SetFactoryTest {
         Queue<String> tokens = new LinkedList<>(List.of("invalid"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new SetFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new SetFactory().fromTokens(tokens)
         );
         assertTrue(tokens.isEmpty());
     }
@@ -39,8 +39,8 @@ public class SetFactoryTest {
         Queue<String> tokens = new LinkedList<>(List.of("col1=1", "col2", "=", "2", "where"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new SetFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new SetFactory().fromTokens(tokens)
         );
         assertEquals(1, tokens.size());
     }
@@ -50,8 +50,8 @@ public class SetFactoryTest {
         Queue<String> tokens = new LinkedList<>(List.of("col1=a"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> new SetFactory().fromTokens(tokens)
+                SyntaxError.class,
+                () -> new SetFactory().fromTokens(tokens)
         );
         assertTrue(tokens.isEmpty());
     }

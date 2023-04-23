@@ -7,7 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class IdentifierExtractorTest {
 
@@ -16,8 +17,8 @@ public class IdentifierExtractorTest {
         Queue<String> tokens = new LinkedList<>();
 
         assertThrows(
-            SyntaxError.class,
-            () -> IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens)
+                SyntaxError.class,
+                () -> IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens)
         );
     }
 
@@ -46,8 +47,8 @@ public class IdentifierExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of("only-lower-UPPER-dash-underscore_no-special#"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens)
+                SyntaxError.class,
+                () -> IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens)
         );
     }
 
@@ -56,8 +57,8 @@ public class IdentifierExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of("---starting-with-dash-forbidden"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens)
+                SyntaxError.class,
+                () -> IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens)
         );
     }
 
@@ -66,8 +67,8 @@ public class IdentifierExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of("ending-with-underscore-forbidden_"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens)
+                SyntaxError.class,
+                () -> IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens)
         );
     }
 }

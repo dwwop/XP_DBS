@@ -77,8 +77,8 @@ public class ColumnConstraintExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of("not"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> ColumnConstraintExtractor.pollAllColumnConstraintsOrFail(tokens)
+                SyntaxError.class,
+                () -> ColumnConstraintExtractor.pollAllColumnConstraintsOrFail(tokens)
         );
     }
 
@@ -87,8 +87,8 @@ public class ColumnConstraintExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of("PRIMARY", "null"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> ColumnConstraintExtractor.pollAllColumnConstraintsOrFail(tokens)
+                SyntaxError.class,
+                () -> ColumnConstraintExtractor.pollAllColumnConstraintsOrFail(tokens)
         );
     }
 
@@ -108,8 +108,8 @@ public class ColumnConstraintExtractorTest {
         Queue<String> tokens = new LinkedList<>(List.of("PRIMARY", "KEY", "PRIMARY", "KEY"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> ColumnConstraintExtractor.pollAllColumnConstraintsOrFail(tokens)
+                SyntaxError.class,
+                () -> ColumnConstraintExtractor.pollAllColumnConstraintsOrFail(tokens)
         );
     }
 

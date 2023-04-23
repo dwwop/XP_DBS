@@ -84,8 +84,8 @@ public class KeywordConsumerTest {
         Queue<String> tokens = new LinkedList<>();
 
         assertThrows(
-            SyntaxError.class,
-            () -> KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.BY, tokens)
+                SyntaxError.class,
+                () -> KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.BY, tokens)
         );
     }
 
@@ -112,8 +112,8 @@ public class KeywordConsumerTest {
         Queue<String> tokens = new LinkedList<>(List.of("continues"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.LIMIT, tokens)
+                SyntaxError.class,
+                () -> KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.LIMIT, tokens)
         );
 
         assertEquals(1, tokens.size());
@@ -124,8 +124,8 @@ public class KeywordConsumerTest {
         Queue<String> tokens = new LinkedList<>(List.of("offset", "continues"));
 
         assertThrows(
-            SyntaxError.class,
-            () -> KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.ORDER, tokens)
+                SyntaxError.class,
+                () -> KeywordConsumer.consumeKeywordOrFail(KeywordConsumer.Keyword.ORDER, tokens)
         );
 
         assertEquals(2, tokens.size());
@@ -137,8 +137,8 @@ public class KeywordConsumerTest {
         Set<KeywordConsumer.Keyword> keywords = Set.of(KeywordConsumer.Keyword.TABLE, KeywordConsumer.Keyword.FROM);
 
         assertThrows(
-            SyntaxError.class,
-            () -> KeywordConsumer.consumeKeywordOrFail(keywords, tokens)
+                SyntaxError.class,
+                () -> KeywordConsumer.consumeKeywordOrFail(keywords, tokens)
         );
     }
 
@@ -168,8 +168,8 @@ public class KeywordConsumerTest {
         Set<KeywordConsumer.Keyword> keywords = Set.of(KeywordConsumer.Keyword.FROM, KeywordConsumer.Keyword.WHERE);
 
         assertThrows(
-            SyntaxError.class,
-            () -> KeywordConsumer.consumeKeywordOrFail(keywords, tokens)
+                SyntaxError.class,
+                () -> KeywordConsumer.consumeKeywordOrFail(keywords, tokens)
         );
 
         assertEquals(1, tokens.size());
@@ -181,8 +181,8 @@ public class KeywordConsumerTest {
         Set<KeywordConsumer.Keyword> keywords = Set.of(KeywordConsumer.Keyword.INTO, KeywordConsumer.Keyword.WHERE);
 
         assertThrows(
-            SyntaxError.class,
-            () -> KeywordConsumer.consumeKeywordOrFail(keywords, tokens)
+                SyntaxError.class,
+                () -> KeywordConsumer.consumeKeywordOrFail(keywords, tokens)
         );
 
         assertEquals(2, tokens.size());

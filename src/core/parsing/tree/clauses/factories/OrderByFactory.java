@@ -13,7 +13,7 @@ import java.util.Queue;
 
 public class OrderByFactory extends ClauseFactory {
 
-    private boolean consumeComma(Queue<String> tokens){
+    private boolean consumeComma(Queue<String> tokens) {
         if (tokens.peek() == null || !tokens.peek().equals(","))
             return false;
 
@@ -34,19 +34,19 @@ public class OrderByFactory extends ClauseFactory {
             if (column.equals(","))
                 throw new TokenError(",", "column_name");
 
-            if (consumeComma(tokens)){
+            if (consumeComma(tokens)) {
                 columnsAndOrders.put(column, KeywordConsumer.Keyword.ASC);
                 continue;
             }
 
-            if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.ASC, tokens)){
+            if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.ASC, tokens)) {
                 columnsAndOrders.put(column, KeywordConsumer.Keyword.ASC);
                 if (consumeComma(tokens))
                     continue;
                 return new OrderByClause(columnsAndOrders);
             }
 
-            if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.DESC, tokens)){
+            if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.DESC, tokens)) {
                 columnsAndOrders.put(column, KeywordConsumer.Keyword.DESC);
                 if (consumeComma(tokens))
                     continue;

@@ -1,9 +1,9 @@
 package core.parsing.tree.statements;
 
 import core.db.table.Table;
-import core.parsing.tree.clauses.SelectClause;
 import core.parsing.tree.clauses.LimitClause;
 import core.parsing.tree.clauses.OrderByClause;
+import core.parsing.tree.clauses.SelectClause;
 import core.parsing.tree.clauses.WhereClause;
 import exceptions.DatabaseError;
 

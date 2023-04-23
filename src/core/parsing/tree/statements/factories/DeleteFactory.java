@@ -8,7 +8,6 @@ import core.parsing.util.KeywordConsumer;
 import core.parsing.util.RawQueryTokenizer;
 import exceptions.syntax.SyntaxError;
 
-
 import java.util.Queue;
 
 public class DeleteFactory extends StatementFactory {
