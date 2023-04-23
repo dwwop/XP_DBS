@@ -16,10 +16,25 @@ public class RawQueryTokenizer {
 
     private static final Set<Character> specialChars = Set.of('(', ')', ',');
 
+    private static String extractComparator(String query, Integer index) {
+        String curChar = String.valueOf(query.charAt(index));
+        if (index + 1 < query.length()) {
+            String token = curChar + query.charAt(index + 1);
+            if (ComparatorConsumer.isComparator(token)) {
+                return token;
+            }
+        }
+        if (ComparatorConsumer.isComparator(curChar)) {
+            return curChar;
+        }
+        return null;
+    }
+
     private static String handleSpecialCharacters(String query) throws SyntaxError {
         boolean qouteStarted = false;
         StringBuilder newQuery = new StringBuilder();
-        for (Character ch : query.toCharArray()) {
+        for (int i = 0; i < query.length(); i++) {
+            Character ch = query.charAt(i);
             if (ch == '\u200b')
                 throw new SyntaxError("Unsupported zero width space detected.");
 
@@ -29,9 +44,22 @@ public class RawQueryTokenizer {
                 qouteStarted = true;
             }
 
-            if (!qouteStarted && specialChars.contains(ch))
+            if (qouteStarted) {
+                newQuery.append(ch);
+                continue;
+            }
+
+            String comparator = extractComparator(query, i);
+            if (comparator != null) {
+                if (comparator.length() == 2)
+                    i++;
+                newQuery.append("\u200b").append(comparator).append("\u200b");
+                continue;
+            }
+
+            if (specialChars.contains(ch))
                 newQuery.append("\u200b").append(ch).append("\u200b");
-            else if (!qouteStarted && Character.isWhitespace(ch))
+            else if (Character.isWhitespace(ch))
                 newQuery.append('\u200b');
             else
                 newQuery.append(ch);

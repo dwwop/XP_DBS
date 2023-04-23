@@ -108,12 +108,18 @@ public class RawQueryTokenizerTest {
 
     @Test
     public void specialCharactersQouted() throws SyntaxError {
-        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("\"( ),\"  (), ");
+        Queue<String> tokens = RawQueryTokenizer.tokenizeQuery("\"( ), = != < > <= >=\"  (), = != < > <= >=");
 
-        assertEquals("\"( ),\"", tokens.poll());
+        assertEquals("\"( ), = != < > <= >=\"", tokens.poll());
         assertEquals("(", tokens.poll());
         assertEquals(")", tokens.poll());
         assertEquals(",", tokens.poll());
+        assertEquals("=", tokens.poll());
+        assertEquals("!=", tokens.poll());
+        assertEquals("<", tokens.poll());
+        assertEquals(">", tokens.poll());
+        assertEquals("<=", tokens.poll());
+        assertEquals(">=", tokens.poll());
         assertTrue(tokens.isEmpty());
     }
 

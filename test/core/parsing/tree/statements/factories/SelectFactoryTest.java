@@ -231,7 +231,7 @@ public class SelectFactoryTest {
     @Test
     public void selectSimpleExprStr() throws SyntaxError {
         Parser parser = new Parser();
-        String query = "SELECT column_name FROM table_name WHERE column_name >= \"value\"";
+        String query = "SELECT column_name FROM table_name WHERE column_name>= \"value\"";
         SelectStatement expectedSelectStatement =
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
@@ -244,7 +244,7 @@ public class SelectFactoryTest {
     @Test
     public void selectAnd() throws SyntaxError {
         Parser parser = new Parser();
-        String query = "SELECT column_name FROM table_name WHERE column_name <= \"value\" AND column_name != \"value\"";
+        String query = "SELECT column_name FROM table_name WHERE column_name <=\"value\" AND column_name != \"value\"";
         SelectStatement expectedSelectStatement =
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
@@ -257,7 +257,7 @@ public class SelectFactoryTest {
     @Test
     public void selectNotBrackets() throws SyntaxError {
         Parser parser = new Parser();
-        String query = "SELECT column_name FROM table_name WHERE NOT ( column_name > \"value\" AND column_name < \"value\" )";
+        String query = "SELECT column_name FROM table_name WHERE NOT (column_name> \"value\" AND column_name <\"value\" )";
         SelectStatement expectedSelectStatement =
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
