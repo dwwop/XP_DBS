@@ -1,10 +1,7 @@
 package core.parsing.tree.clauses.factories;
 
 import core.parsing.tree.clauses.WhereClause;
-import core.parsing.tree.clauses.conditions.AndCondition;
-import core.parsing.tree.clauses.conditions.Expression;
-import core.parsing.tree.clauses.conditions.NotCondition;
-import core.parsing.tree.clauses.conditions.OrCondition;
+import core.parsing.tree.clauses.conditions.*;
 import exceptions.syntax.EndOfFileError;
 import exceptions.syntax.SyntaxError;
 import exceptions.syntax.TokenError;
@@ -35,7 +32,8 @@ public class WhereFactoryTest {
         ));
 
         WhereClause clause = new WhereFactory().fromTokens(tokens);
-        assertEquals(new WhereClause(new Expression("col", "=", "val")), clause);
+        WhereClause expectedClause = new WhereClause(new Expression("col", "=", "val"));
+        assertEquals(expectedClause.getCondition(), clause.getCondition());
         assertEquals("ORDER", tokens.poll());
     }
 
@@ -46,7 +44,8 @@ public class WhereFactoryTest {
         ));
 
         WhereClause clause = new WhereFactory().fromTokens(tokens);
-        assertEquals(new WhereClause(new Expression("col", "=", "val")), clause);
+        WhereClause expectedClause = new WhereClause(new Expression("col", "=", "val"));
+        assertEquals(expectedClause.getCondition(), clause.getCondition());
         assertEquals("ORDER", tokens.poll());
     }
 
@@ -94,7 +93,8 @@ public class WhereFactoryTest {
         ));
 
         WhereClause clause = new WhereFactory().fromTokens(tokens);
-        assertEquals(new WhereClause(new NotCondition(new Expression("col", "!=", "val"))), clause);
+        WhereClause expectedClause = new WhereClause(new NotCondition(new Expression("col", "!=", "val")));
+        assertEquals(expectedClause.getCondition(), clause.getCondition());
         assertEquals("ORDER", tokens.poll());
     }
 
@@ -105,7 +105,8 @@ public class WhereFactoryTest {
         ));
 
         WhereClause clause = new WhereFactory().fromTokens(tokens);
-        assertEquals(new WhereClause(new AndCondition(new Expression("col", ">", "val"), new Expression("col", "<", "val"))), clause);
+        WhereClause expectedClause = new WhereClause(new AndCondition(new Expression("col", ">", "val"), new Expression("col", "<", "val")));
+        assertEquals(expectedClause.getCondition(), clause.getCondition());
         assertEquals("ORDER", tokens.poll());
     }
 
@@ -117,7 +118,8 @@ public class WhereFactoryTest {
         ));
 
         WhereClause clause = new WhereFactory().fromTokens(tokens);
-        assertEquals(new WhereClause(new OrCondition(new Expression("col", ">=", "val"), new Expression("col", "<=", "val"))), clause);
+        WhereClause expectedClause = new WhereClause(new OrCondition(new Expression("col", ">=", "val"), new Expression("col", "<=", "val")));
+        assertEquals(expectedClause.getCondition(), clause.getCondition());
         assertEquals("ORDER", tokens.poll());
     }
 
@@ -128,7 +130,8 @@ public class WhereFactoryTest {
         ));
 
         WhereClause clause = new WhereFactory().fromTokens(tokens);
-        assertEquals(new WhereClause(new Expression("col", "=", "val")), clause);
+        WhereClause expectedClause = new WhereClause(new Expression("col", "=", "val"));
+        assertEquals(expectedClause.getCondition(), clause.getCondition());
         assertEquals("ORDER", tokens.poll());
     }
 
@@ -149,7 +152,8 @@ public class WhereFactoryTest {
         ));
 
         WhereClause clause = new WhereFactory().fromTokens(tokens);
-        assertEquals(new WhereClause(new Expression("col", "=", "val")), clause);
+        WhereClause expectedClause = new WhereClause(new Expression("col", "=", "val"));
+        assertEquals(expectedClause.getCondition(), clause.getCondition());
         assertEquals(")", tokens.poll());
     }
 
@@ -160,7 +164,7 @@ public class WhereFactoryTest {
         ));
 
         WhereClause clause = new WhereFactory().fromTokens(tokens);
-        assertEquals(new WhereClause(new NotCondition(
+        WhereClause expectedClause = new WhereClause(new NotCondition(
                 new OrCondition(
                         new AndCondition(
                                 new Expression("col", "=", "val"),
@@ -171,7 +175,8 @@ public class WhereFactoryTest {
                                 new Expression("col", "=", "val")
                         )
                 )
-        )), clause);
+        ));
+        assertEquals(expectedClause.getCondition(), clause.getCondition());
         assertEquals("ORDER", tokens.poll());
     }
 
@@ -202,6 +207,50 @@ public class WhereFactoryTest {
     public void fromTokensEmptyExpr() {
         Queue<String> tokens = new LinkedList<>(List.of(
                 "(", "col", "=", "val", ")", "(", ")", "ORDER"));
+
+        assertThrows(TokenError.class, () -> new WhereFactory().fromTokens(tokens));
+    }
+
+    @Test
+    public void fromTokensIsNullOK() throws SyntaxError {
+        Queue<String> tokens = new LinkedList<>(List.of(
+                "columnName", "IS", "NULL", "ORDER"));
+        WhereClause clause = new WhereFactory().fromTokens(tokens);
+        WhereClause expectedClause = new WhereClause(new NullCondition("columnName"));
+        assertEquals(expectedClause.getCondition(), clause.getCondition());
+        assertEquals("ORDER", tokens.poll());
+    }
+
+    @Test
+    public void fromTokensIsNotNullOK() throws SyntaxError {
+        Queue<String> tokens = new LinkedList<>(List.of(
+                "columnName", "IS", "NOT", "NULL", "ORDER"));
+        WhereClause clause = new WhereFactory().fromTokens(tokens);
+        WhereClause expectedClause = new WhereClause(new NotCondition(new NullCondition("columnName")));
+        assertEquals(expectedClause.getCondition(), clause.getCondition());
+        assertEquals("ORDER", tokens.poll());
+    }
+
+    @Test
+    public void fromTokensMissingNull() {
+        Queue<String> tokens = new LinkedList<>(List.of(
+                "columnName", "IS", "NOT", "ORDER"));
+
+        assertThrows(TokenError.class, () -> new WhereFactory().fromTokens(tokens));
+    }
+
+    @Test
+    public void fromTokensMissingIsNull() {
+        Queue<String> tokens = new LinkedList<>(List.of(
+                "columnName", "NULL", "ORDER"));
+
+        assertThrows(TokenError.class, () -> new WhereFactory().fromTokens(tokens));
+    }
+
+    @Test
+    public void fromTokensMissingISNotNull() {
+        Queue<String> tokens = new LinkedList<>(List.of(
+                "columnName", "NOT", "NULL", "ORDER"));
 
         assertThrows(TokenError.class, () -> new WhereFactory().fromTokens(tokens));
     }

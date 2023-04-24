@@ -34,7 +34,14 @@ public class SelectFactoryTest {
                         null,
                         null,
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
@@ -75,7 +82,14 @@ public class SelectFactoryTest {
                         null,
                         null,
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
 
@@ -89,7 +103,15 @@ public class SelectFactoryTest {
                         null,
                         null,
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
@@ -102,7 +124,15 @@ public class SelectFactoryTest {
                         null,
                         null,
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
 
@@ -132,7 +162,15 @@ public class SelectFactoryTest {
                         null,
                         new OrderByClause(Map.of("column_name", KeywordConsumer.Keyword.ASC)),
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
@@ -145,7 +183,15 @@ public class SelectFactoryTest {
                         null,
                         new OrderByClause(Map.of("column_name", KeywordConsumer.Keyword.DESC)),
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
@@ -158,7 +204,15 @@ public class SelectFactoryTest {
                         null,
                         new OrderByClause(Map.of("column_name1", KeywordConsumer.Keyword.DESC, "column_name2", KeywordConsumer.Keyword.ASC, "column_name3", KeywordConsumer.Keyword.ASC)),
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
@@ -171,7 +225,15 @@ public class SelectFactoryTest {
                         null,
                         new OrderByClause(Map.of("column_name1", KeywordConsumer.Keyword.ASC, "column_name2", KeywordConsumer.Keyword.DESC, "column_name3", KeywordConsumer.Keyword.DESC)),
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
@@ -199,7 +261,15 @@ public class SelectFactoryTest {
                         null,
                         new LimitClause(10, 0));
 
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause().getNumberRows(), statement.getLimitClause().getNumberRows());
+        assertEquals(expectedSelectStatement.getLimitClause().getOffsetValue(), statement.getLimitClause().getOffsetValue());
     }
 
     @Test
@@ -212,8 +282,75 @@ public class SelectFactoryTest {
                         null,
                         null,
                         new LimitClause(10, 10));
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause().getNumberRows(), statement.getLimitClause().getNumberRows());
+        assertEquals(expectedSelectStatement.getLimitClause().getOffsetValue(), statement.getLimitClause().getOffsetValue());
     }
+
+
+    @Test
+    public void wordsAfterSelect() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name SHOULDNT_CONSUME";
+
+        assertThrows(SyntaxError.class, () -> parser.parse(query));
+    }
+
+    @Test
+    public void wordsAfterSelectWhere() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name WHERE col = val SHOULDNT_CONSUME";
+
+        assertThrows(SyntaxError.class, () -> parser.parse(query));
+    }
+
+    @Test
+    public void wordsAfterSelectWhereNull() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name WHERE col IS NULL SHOULDNT_CONSUME";
+
+        assertThrows(SyntaxError.class, () -> parser.parse(query));
+    }
+
+    @Test
+    public void wordsAfterSelectOrderBy() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name ORDER BY col SHOULDNT_CONSUME";
+
+        assertThrows(SyntaxError.class, () -> parser.parse(query));
+    }
+
+    @Test
+    public void wordsAfterSelectOrderByDesc() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name ORDER BY col DESC SHOULDNT_CONSUME";
+
+        assertThrows(SyntaxError.class, () -> parser.parse(query));
+    }
+
+
+    @Test
+    public void wordsAfterSelectLimit() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name LIMIT 10  SHOULDNT_CONSUME";
+
+        assertThrows(SyntaxError.class, () -> parser.parse(query));
+    }
+
+    @Test
+    public void wordsAfterSelectOffset() {
+        Parser parser = new Parser();
+        String query = "SELECT column_name FROM table_name LIMIT 10 OFFSET 10 SHOULDNT_CONSUME";
+
+        assertThrows(SyntaxError.class, () -> parser.parse(query));
+    }
+
 
     @Test
     public void selectSimpleExpr() throws SyntaxError {
@@ -225,7 +362,13 @@ public class SelectFactoryTest {
                         new WhereClause(new Expression("column_name", "=", "value")),
                         null,
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause().getCondition(), statement.getWhereClause().getCondition());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
@@ -238,20 +381,35 @@ public class SelectFactoryTest {
                         new WhereClause(new Expression("column_name", ">=", "value")),
                         null,
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause().getCondition(), statement.getWhereClause().getCondition());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
     public void selectAnd() throws SyntaxError {
         Parser parser = new Parser();
         String query = "SELECT column_name FROM table_name WHERE column_name <=\"value\" AND column_name != \"value\"";
+
         SelectStatement expectedSelectStatement =
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
                         new WhereClause(new AndCondition(new Expression("column_name", "<=", "value"), new Expression("column_name", "!=", "value"))),
                         null,
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause().getCondition(), statement.getWhereClause().getCondition());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
@@ -264,7 +422,13 @@ public class SelectFactoryTest {
                         new WhereClause(new NotCondition(new AndCondition(new Expression("column_name", ">", "value"), new Expression("column_name", "<", "value")))),
                         null,
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause().getCondition(), statement.getWhereClause().getCondition());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
@@ -277,7 +441,13 @@ public class SelectFactoryTest {
                         new WhereClause(new OrCondition(new NotCondition(new AndCondition(new Expression("column_name", "=", "value"), new Expression("column_name", "=", "value"))), new Expression("column_name", "=", "value"))),
                         null,
                         null);
-        assertEquals(expectedSelectStatement, parser.parse(query));
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause().getCondition(), statement.getWhereClause().getCondition());
+        assertEquals(expectedSelectStatement.getOrderByClause(), statement.getOrderByClause());
+        assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
     @Test
@@ -290,6 +460,14 @@ public class SelectFactoryTest {
                         new WhereClause(new Expression("column_name", "=", "value")),
                         new OrderByClause(Map.of("column_name", KeywordConsumer.Keyword.DESC)),
                         new LimitClause(10, 5));
-        assertEquals(expectedSelectStatement, parser.parse(query));
+
+        SelectStatement statement = (SelectStatement) parser.parse(query);
+
+        assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
+        assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
+        assertEquals(expectedSelectStatement.getWhereClause().getCondition(), statement.getWhereClause().getCondition());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getLimitClause().getNumberRows(), statement.getLimitClause().getNumberRows());
+        assertEquals(expectedSelectStatement.getLimitClause().getOffsetValue(), statement.getLimitClause().getOffsetValue());
     }
 }

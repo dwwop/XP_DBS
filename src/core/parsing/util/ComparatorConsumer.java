@@ -22,6 +22,7 @@ public class ComparatorConsumer {
     }
 
     public static String consumeComparatorOrFail(Queue<String> tokens) throws SyntaxError {
+
         if (tokens.isEmpty()) {
             throw new EndOfFileError("comparator");
         }

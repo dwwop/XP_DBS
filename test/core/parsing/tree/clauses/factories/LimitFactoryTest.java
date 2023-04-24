@@ -31,7 +31,9 @@ public class LimitFactoryTest {
         ));
 
         LimitClause clause = new LimitFactory().fromTokens(tokens);
-        assertEquals(new LimitClause(10, 0), clause);
+        LimitClause expectedClause = new LimitClause(10, 0);
+        assertEquals(expectedClause.getNumberRows(), clause.getNumberRows());
+        assertEquals(expectedClause.getOffsetValue(), clause.getOffsetValue());
     }
 
     @Test
@@ -41,7 +43,9 @@ public class LimitFactoryTest {
         ));
 
         LimitClause clause = new LimitFactory().fromTokens(tokens);
-        assertEquals(new LimitClause(10, 5), clause);
+        LimitClause expectedClause = new LimitClause(10, 5);
+        assertEquals(expectedClause.getNumberRows(), clause.getNumberRows());
+        assertEquals(expectedClause.getOffsetValue(), clause.getOffsetValue());
     }
 
     @Test

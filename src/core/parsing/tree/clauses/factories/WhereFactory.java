@@ -58,6 +58,16 @@ public class WhereFactory extends ClauseFactory {
         if (ComparatorConsumer.isComparator(columnName))
             throw new TokenError(columnName, "column_name");
 
+        if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.IS, tokens)) {
+            if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.NOT, tokens) &&
+                    KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.NULL, tokens))
+                return consumeCondition(tokens, new NotCondition(new NullCondition(columnName)));
+            if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.NULL, tokens))
+                return consumeCondition(tokens, new NullCondition(columnName));
+
+            throw new TokenError(tokens.peek(), "'NOT NULL' or 'NULL'");
+        }
+
         String comparator = ComparatorConsumer.consumeComparatorOrFail(tokens);
 
         if (tokens.isEmpty())

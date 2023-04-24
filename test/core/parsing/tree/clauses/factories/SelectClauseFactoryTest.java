@@ -31,7 +31,9 @@ public class SelectClauseFactoryTest {
         ));
 
         SelectClause clause = new SelectClauseFactory().fromTokens(tokens);
-        assertEquals(new SelectClause(true), clause);
+        SelectClause expectedClause = new SelectClause(true);
+        assertEquals(expectedClause.isAllColumns(), clause.isAllColumns());
+        assertEquals(expectedClause.getColumnNames(), clause.getColumnNames());
         assertEquals("SHOULD_NOT_BE_CONSUMED", tokens.poll());
     }
 
@@ -42,7 +44,9 @@ public class SelectClauseFactoryTest {
         ));
 
         SelectClause clause = new SelectClauseFactory().fromTokens(tokens);
-        assertEquals(new SelectClause(List.of("col1")), clause);
+        SelectClause expectedClause = new SelectClause(List.of("col1"));
+        assertEquals(expectedClause.isAllColumns(), clause.isAllColumns());
+        assertEquals(expectedClause.getColumnNames(), clause.getColumnNames());
         assertEquals("SHOULD_NOT_BE_CONSUMED", tokens.poll());
     }
 
@@ -53,7 +57,9 @@ public class SelectClauseFactoryTest {
         ));
 
         SelectClause clause = new SelectClauseFactory().fromTokens(tokens);
-        assertEquals(new SelectClause(List.of("col1", "col2", "col3")), clause);
+        SelectClause expectedClause = new SelectClause(List.of("col1", "col2", "col3"));
+        assertEquals(expectedClause.isAllColumns(), clause.isAllColumns());
+        assertEquals(expectedClause.getColumnNames(), clause.getColumnNames());
         assertEquals("SHOULD_NOT_BE_CONSUMED", tokens.poll());
     }
 

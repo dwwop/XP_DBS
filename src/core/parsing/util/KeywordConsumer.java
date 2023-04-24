@@ -76,6 +76,7 @@ public class KeywordConsumer {
     public enum Keyword {
         WHERE,
         AND, OR, NOT,
+        IS, NULL,
         ORDER, BY, ASC, DESC,
         LIMIT, OFFSET,
         TABLE,
