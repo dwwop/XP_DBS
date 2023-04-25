@@ -1,5 +1,11 @@
 package core.parsing.tree.clauses.conditions;
 
+import core.db.table.Row;
+import core.db.types.IntegerLiteral;
+import core.db.types.Literal;
+import core.db.types.StringLiteral;
+import exceptions.DatabaseError;
+
 import java.util.Objects;
 
 public class Expression extends Condition {
@@ -33,5 +39,29 @@ public class Expression extends Condition {
     @Override
     public int hashCode() {
         return Objects.hash(columnName, comparator, value);
+    }
+
+    @Override
+    public boolean satisfiedOnRow(Row row) throws DatabaseError {
+        if (! row.hasColumn(columnName)){
+            throw new DatabaseError("Row doesn't have column named: " + columnName);
+        }
+        Literal rowValue = row.getValue(columnName);
+        Literal expectedValue;
+        if (rowValue instanceof IntegerLiteral) {
+            expectedValue = new IntegerLiteral(Integer.valueOf(value));
+        } else {
+            expectedValue = new StringLiteral(value);
+        }
+
+        return switch (comparator) {
+            case "=" -> rowValue.compareTo(expectedValue) == 0;
+            case "!=" -> rowValue.compareTo(expectedValue) != 0;
+            case "<" -> rowValue.compareTo(expectedValue) < 0;
+            case ">" -> rowValue.compareTo(expectedValue) > 0;
+            case "<=" -> rowValue.compareTo(expectedValue) <= 0;
+            case ">=" -> rowValue.compareTo(expectedValue) >= 0;
+            default -> false;
+        };
     }
 }

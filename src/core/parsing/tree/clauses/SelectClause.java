@@ -23,4 +23,8 @@ public class SelectClause extends Clause {
     public List<String> getColumnNames() {
         return columnNames;
     }
+
+    public boolean getAllColumns() {
+        return allColumns;
+    }
 }

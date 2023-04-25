@@ -17,7 +17,6 @@ import exceptions.syntax.TokenError;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -160,7 +159,7 @@ public class SelectFactoryTest {
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
                         null,
-                        new OrderByClause(Map.of("column_name", KeywordConsumer.Keyword.ASC)),
+                        new OrderByClause(List.of("column_name"), List.of(KeywordConsumer.Keyword.ASC)),
                         null);
 
 
@@ -169,7 +168,8 @@ public class SelectFactoryTest {
         assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
         assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
         assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
-        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumns(), statement.getOrderByClause().getColumns());
+        assertEquals(expectedSelectStatement.getOrderByClause().getOrders(), statement.getOrderByClause().getOrders());
         assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
@@ -181,7 +181,7 @@ public class SelectFactoryTest {
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
                         null,
-                        new OrderByClause(Map.of("column_name", KeywordConsumer.Keyword.DESC)),
+                        new OrderByClause(List.of("column_name"), List.of(KeywordConsumer.Keyword.DESC)),
                         null);
 
 
@@ -190,7 +190,8 @@ public class SelectFactoryTest {
         assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
         assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
         assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
-        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumns(), statement.getOrderByClause().getColumns());
+        assertEquals(expectedSelectStatement.getOrderByClause().getOrders(), statement.getOrderByClause().getOrders());
         assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
@@ -202,7 +203,7 @@ public class SelectFactoryTest {
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
                         null,
-                        new OrderByClause(Map.of("column_name1", KeywordConsumer.Keyword.DESC, "column_name2", KeywordConsumer.Keyword.ASC, "column_name3", KeywordConsumer.Keyword.ASC)),
+                        new OrderByClause(List.of("column_name1", "column_name2", "column_name3"), List.of(KeywordConsumer.Keyword.DESC, KeywordConsumer.Keyword.ASC, KeywordConsumer.Keyword.ASC)),
                         null);
 
 
@@ -211,7 +212,8 @@ public class SelectFactoryTest {
         assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
         assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
         assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
-        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumns(), statement.getOrderByClause().getColumns());
+        assertEquals(expectedSelectStatement.getOrderByClause().getOrders(), statement.getOrderByClause().getOrders());
         assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
@@ -223,7 +225,7 @@ public class SelectFactoryTest {
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
                         null,
-                        new OrderByClause(Map.of("column_name1", KeywordConsumer.Keyword.ASC, "column_name2", KeywordConsumer.Keyword.DESC, "column_name3", KeywordConsumer.Keyword.DESC)),
+                        new OrderByClause(List.of("column_name1", "column_name2", "column_name3"), List.of(KeywordConsumer.Keyword.ASC, KeywordConsumer.Keyword.DESC, KeywordConsumer.Keyword.DESC)),
                         null);
 
 
@@ -232,7 +234,8 @@ public class SelectFactoryTest {
         assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
         assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
         assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
-        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumns(), statement.getOrderByClause().getColumns());
+        assertEquals(expectedSelectStatement.getOrderByClause().getOrders(), statement.getOrderByClause().getOrders());
         assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 
@@ -458,7 +461,7 @@ public class SelectFactoryTest {
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
                         new WhereClause(new Expression("column_name", "=", "value")),
-                        new OrderByClause(Map.of("column_name", KeywordConsumer.Keyword.DESC)),
+                        new OrderByClause(List.of("column_name"), List.of(KeywordConsumer.Keyword.DESC)),
                         new LimitClause(10, 5));
 
         SelectStatement statement = (SelectStatement) parser.parse(query);
@@ -466,7 +469,8 @@ public class SelectFactoryTest {
         assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
         assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
         assertEquals(expectedSelectStatement.getWhereClause().getCondition(), statement.getWhereClause().getCondition());
-        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumns(), statement.getOrderByClause().getColumns());
+        assertEquals(expectedSelectStatement.getOrderByClause().getOrders(), statement.getOrderByClause().getOrders());
         assertEquals(expectedSelectStatement.getLimitClause().getNumberRows(), statement.getLimitClause().getNumberRows());
         assertEquals(expectedSelectStatement.getLimitClause().getOffsetValue(), statement.getLimitClause().getOffsetValue());
     }

@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 
 import static org.junit.Assert.assertEquals;
@@ -34,8 +33,9 @@ public class OrderByFactoryTest {
         ));
 
         OrderByClause clause = new OrderByFactory().fromTokens(tokens);
-        OrderByClause expectedClause = new OrderByClause(Map.of("column_name", KeywordConsumer.Keyword.ASC));
-        assertEquals(expectedClause.getColumnsAndOrders(), clause.getColumnsAndOrders());
+        OrderByClause expectedClause = new OrderByClause(List.of("column_name"), List.of(KeywordConsumer.Keyword.ASC));
+        assertEquals(expectedClause.getColumns(), clause.getColumns());
+        assertEquals(expectedClause.getOrders(), clause.getOrders());
         assertEquals("SHOULD_NOT_BE_CONSUMED", tokens.poll());
     }
 
@@ -46,8 +46,9 @@ public class OrderByFactoryTest {
         ));
 
         OrderByClause clause = new OrderByFactory().fromTokens(tokens);
-        OrderByClause expectedClause = new OrderByClause(Map.of("column_name", KeywordConsumer.Keyword.DESC));
-        assertEquals(expectedClause.getColumnsAndOrders(), clause.getColumnsAndOrders());
+        OrderByClause expectedClause = new OrderByClause(List.of("column_name"), List.of(KeywordConsumer.Keyword.DESC));
+        assertEquals(expectedClause.getColumns(), clause.getColumns());
+        assertEquals(expectedClause.getOrders(), clause.getOrders());
         assertEquals("SHOULD_NOT_BE_CONSUMED", tokens.poll());
     }
 
@@ -59,11 +60,11 @@ public class OrderByFactoryTest {
         ));
 
         OrderByClause clause = new OrderByFactory().fromTokens(tokens);
-        OrderByClause expectedClause = new OrderByClause(Map.of(
-                "col1", KeywordConsumer.Keyword.ASC,
-                "col2", KeywordConsumer.Keyword.ASC,
-                "col3", KeywordConsumer.Keyword.ASC));
-        assertEquals(expectedClause.getColumnsAndOrders(), clause.getColumnsAndOrders());
+        OrderByClause expectedClause = new OrderByClause(
+                List.of("col1", "col2", "col3"),
+                List.of(KeywordConsumer.Keyword.ASC, KeywordConsumer.Keyword.ASC, KeywordConsumer.Keyword.ASC));
+        assertEquals(expectedClause.getColumns(), clause.getColumns());
+        assertEquals(expectedClause.getOrders(), clause.getOrders());
         assertEquals("SHOULD_NOT_BE_CONSUMED", tokens.poll());
     }
 
@@ -74,11 +75,11 @@ public class OrderByFactoryTest {
         ));
 
         OrderByClause clause = new OrderByFactory().fromTokens(tokens);
-        OrderByClause expectedClause = new OrderByClause(Map.of(
-                "col1", KeywordConsumer.Keyword.ASC,
-                "col2", KeywordConsumer.Keyword.ASC,
-                "col3", KeywordConsumer.Keyword.DESC));
-        assertEquals(expectedClause.getColumnsAndOrders(), clause.getColumnsAndOrders());
+        OrderByClause expectedClause = new OrderByClause(
+                List.of("col1", "col2", "col3"),
+                List.of(KeywordConsumer.Keyword.ASC, KeywordConsumer.Keyword.ASC, KeywordConsumer.Keyword.DESC));
+        assertEquals(expectedClause.getColumns(), clause.getColumns());
+        assertEquals(expectedClause.getOrders(), clause.getOrders());
         assertEquals("SHOULD_NOT_BE_CONSUMED", tokens.poll());
     }
 

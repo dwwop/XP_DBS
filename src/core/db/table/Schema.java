@@ -70,4 +70,8 @@ public class Schema {
                 && definition.hasConstraint(ColumnDefinition.Constraint.PrimaryKey)
                 && !primaryKeyColumn.equals(column);
     }
+
+    public Map<String, ColumnDefinition> getColumns() {
+        return columns;
+    }
 }

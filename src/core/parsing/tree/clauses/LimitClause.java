@@ -16,4 +16,5 @@ public class LimitClause extends Clause {
     public Integer getOffsetValue() {
         return offsetValue;
     }
+
 }

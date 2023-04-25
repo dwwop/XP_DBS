@@ -1,5 +1,7 @@
 package core.parsing.tree.clauses.conditions;
 
+import core.db.table.Row;
+
 import java.util.Objects;
 
 public class NullCondition extends Condition {
@@ -26,5 +28,10 @@ public class NullCondition extends Condition {
     @Override
     public int hashCode() {
         return Objects.hash(columnName);
+    }
+
+    @Override
+    public boolean satisfiedOnRow(Row row) {
+        return row.getValue(columnName) == null;
     }
 }

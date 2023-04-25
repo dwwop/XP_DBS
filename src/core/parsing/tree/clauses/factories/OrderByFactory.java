@@ -7,8 +7,8 @@ import exceptions.syntax.EndOfFileError;
 import exceptions.syntax.SyntaxError;
 import exceptions.syntax.TokenError;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 public class OrderByFactory extends ClauseFactory {
@@ -26,7 +26,8 @@ public class OrderByFactory extends ClauseFactory {
         if (tokens.isEmpty())
             throw new EndOfFileError("column_name");
 
-        Map<String, KeywordConsumer.Keyword> columnsAndOrders = new HashMap<>();
+        List<String> columns = new ArrayList<>();
+        List<KeywordConsumer.Keyword> orders = new ArrayList<>();
         while (true) {
             if (tokens.isEmpty())
                 throw new EndOfFileError("column_name");
@@ -35,26 +36,29 @@ public class OrderByFactory extends ClauseFactory {
                 throw new TokenError(",", "column_name");
 
             if (consumeComma(tokens)) {
-                columnsAndOrders.put(column, KeywordConsumer.Keyword.ASC);
+                columns.add(column);
+                orders.add(KeywordConsumer.Keyword.ASC);
                 continue;
             }
 
             if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.ASC, tokens)) {
-                columnsAndOrders.put(column, KeywordConsumer.Keyword.ASC);
+                columns.add(column);
+                orders.add(KeywordConsumer.Keyword.ASC);
                 if (consumeComma(tokens))
                     continue;
-                return new OrderByClause(columnsAndOrders);
+                return new OrderByClause(columns, orders);
             }
 
             if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.DESC, tokens)) {
-                columnsAndOrders.put(column, KeywordConsumer.Keyword.DESC);
+                columns.add(column);
+                orders.add(KeywordConsumer.Keyword.DESC);
                 if (consumeComma(tokens))
                     continue;
-                return new OrderByClause(columnsAndOrders);
+                return new OrderByClause(columns, orders);
             }
-
-            columnsAndOrders.put(column, KeywordConsumer.Keyword.ASC);
-            return new OrderByClause(columnsAndOrders);
+            columns.add(column);
+            orders.add(KeywordConsumer.Keyword.ASC);
+            return new OrderByClause(columns, orders);
         }
 
     }

@@ -3,17 +3,23 @@ package core.parsing.tree.clauses;
 
 import core.parsing.util.KeywordConsumer;
 
-import java.util.Map;
+import java.util.List;
 
 public class OrderByClause extends Clause {
 
-    Map<String, KeywordConsumer.Keyword> columnsAndOrders;
+    List<String> columns;
+    List<KeywordConsumer.Keyword> orders;
 
-    public OrderByClause(Map<String, KeywordConsumer.Keyword> columnsAndOrders) {
-        this.columnsAndOrders = columnsAndOrders;
+    public OrderByClause(List<String> columns, List<KeywordConsumer.Keyword> orders) {
+        this.columns = columns;
+        this.orders = orders;
     }
 
-    public Map<String, KeywordConsumer.Keyword> getColumnsAndOrders() {
-        return columnsAndOrders;
+    public List<String> getColumns() {
+        return columns;
+    }
+
+    public List<KeywordConsumer.Keyword> getOrders() {
+        return orders;
     }
 }

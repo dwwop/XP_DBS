@@ -25,7 +25,19 @@ public class SelectStatement extends TableStatement {
 
     @Override
     public Table execute(Table table) throws DatabaseError {
-        return null;
+        if (selectClause != null){
+            table = table.select(selectClause);
+        }
+        if (whereClause != null){
+            table = table.where(whereClause);
+        }
+        if (orderByClause != null){
+            table = table.orderBy(orderByClause);
+        }
+        if (limitClause != null){
+            table = table.limit(limitClause);
+        }
+        return table;
     }
 
     public SelectClause getSelectClause() {
