@@ -1,4 +1,4 @@
 package core.parsing.tree.clauses;
 
-public class ColumnClause {
+public abstract class Clause {
 }

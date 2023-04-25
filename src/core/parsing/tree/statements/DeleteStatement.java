@@ -1,12 +1,25 @@
 package core.parsing.tree.statements;
 
-import core.Result;
-import core.db.TableManager;
+import core.db.table.Table;
+import core.parsing.tree.clauses.WhereClause;
+import exceptions.DatabaseError;
 
-public class DeleteStatement extends Statement {
+public class DeleteStatement extends TableStatement {
+
+    private final WhereClause whereClause;
+
+    public DeleteStatement(String tableName, WhereClause whereClause) {
+        super(tableName);
+
+        this.whereClause = whereClause;
+    }
+
+    public WhereClause getWhereClause() {
+        return whereClause;
+    }
 
     @Override
-    public Result execute(TableManager tableManager) {
-        return null;
+    public Table execute(Table table) throws DatabaseError {
+        return table.delete(whereClause);
     }
 }

@@ -3,6 +3,7 @@ package core;
 import core.db.TableManager;
 import core.parsing.Parser;
 import core.parsing.tree.statements.Statement;
+import exceptions.syntax.SyntaxError;
 
 public class QueryExecutor {
 
@@ -10,8 +11,12 @@ public class QueryExecutor {
     private final TableManager tableManager = new TableManager();
 
     public Result execute(String query) {
-        Statement statement = parser.parse(query);
+        try {
+            Statement statement = parser.parse(query);
 
-        return statement.execute(tableManager);
+            return statement.execute(tableManager);
+        } catch (SyntaxError error) {
+            return new Result(false, error.getMessage(), null);
+        }
     }
 }

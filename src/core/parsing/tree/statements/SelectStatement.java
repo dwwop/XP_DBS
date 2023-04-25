@@ -1,12 +1,46 @@
 package core.parsing.tree.statements;
 
-import core.Result;
-import core.db.TableManager;
+import core.db.table.Table;
+import core.parsing.tree.clauses.LimitClause;
+import core.parsing.tree.clauses.OrderByClause;
+import core.parsing.tree.clauses.SelectClause;
+import core.parsing.tree.clauses.WhereClause;
+import exceptions.DatabaseError;
 
-public class SelectStatement extends Statement {
+public class SelectStatement extends TableStatement {
+
+    private final SelectClause selectClause;
+    private final WhereClause whereClause;
+    private final OrderByClause orderByClause;
+    private final LimitClause limitClause;
+
+
+    public SelectStatement(String tableName, SelectClause selectClause, WhereClause whereClause, OrderByClause orderByClause, LimitClause limitClause) {
+        super(tableName);
+        this.selectClause = selectClause;
+        this.whereClause = whereClause;
+        this.orderByClause = orderByClause;
+        this.limitClause = limitClause;
+    }
 
     @Override
-    public Result execute(TableManager tableManager) {
+    public Table execute(Table table) throws DatabaseError {
         return null;
+    }
+
+    public SelectClause getSelectClause() {
+        return selectClause;
+    }
+
+    public WhereClause getWhereClause() {
+        return whereClause;
+    }
+
+    public OrderByClause getOrderByClause() {
+        return orderByClause;
+    }
+
+    public LimitClause getLimitClause() {
+        return limitClause;
     }
 }
