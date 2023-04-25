@@ -133,8 +133,8 @@ public class Table {
             }
             resultTable.addRow(rowValues.get(primaryKeyIndex), newRow);
         }
-
-        return resultTable;
+        rows = resultTable.rows;
+        return this;
     }
 
     public Table update(WhereClause whereClause, SetClause setClause) throws DatabaseError {
@@ -154,7 +154,8 @@ public class Table {
             }
             resultTable.rows.put(key, row);
         }
-        return resultTable;
+        rows = resultTable.rows;
+        return this;
     }
 
     public Table delete(WhereClause whereClause) throws DatabaseError {
@@ -166,7 +167,8 @@ public class Table {
                 resultTable.rows.put(key, row);
             }
         }
-        return resultTable;
+        rows = resultTable.rows;
+        return this;
     }
 
     private void addRow(Literal literal, Row row) throws DatabaseError {
