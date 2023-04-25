@@ -27,4 +27,8 @@ public class ColumnDefinition {
     }
 
     public enum Constraint {PrimaryKey, NotNull}
+
+    public Literal.Type getDataType(){
+        return dataType;
+    }
 }

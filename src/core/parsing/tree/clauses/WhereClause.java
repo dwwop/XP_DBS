@@ -1,5 +1,6 @@
 package core.parsing.tree.clauses;
 
+import core.db.table.Row;
 import core.parsing.tree.clauses.conditions.Condition;
 
 import java.util.Objects;
@@ -28,5 +29,9 @@ public class WhereClause extends Clause {
     @Override
     public int hashCode() {
         return Objects.hash(condition);
+    }
+
+    public boolean satisfiedOnRow(Row row){
+        return condition.satisfiedOnRow(row);
     }
 }

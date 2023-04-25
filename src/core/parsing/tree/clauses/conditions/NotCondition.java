@@ -1,5 +1,7 @@
 package core.parsing.tree.clauses.conditions;
 
+import core.db.table.Row;
+
 import java.util.Objects;
 
 public class NotCondition extends Condition {
@@ -27,5 +29,10 @@ public class NotCondition extends Condition {
     @Override
     public int hashCode() {
         return Objects.hash(condition);
+    }
+
+    @Override
+    public boolean satisfiedOnRow(Row row) {
+        return !condition.satisfiedOnRow(row);
     }
 }

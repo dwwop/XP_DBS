@@ -1,5 +1,7 @@
 package core.parsing.tree.clauses.conditions;
 
+import core.db.table.Row;
+
 import java.util.Objects;
 
 public class OrCondition extends Condition {
@@ -30,5 +32,9 @@ public class OrCondition extends Condition {
     @Override
     public int hashCode() {
         return Objects.hash(firstCondition, secondCondition);
+    }
+
+    public boolean satisfiedOnRow(Row row){
+        return firstCondition.satisfiedOnRow(row) || secondCondition.satisfiedOnRow(row);
     }
 }

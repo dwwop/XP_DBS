@@ -1,5 +1,10 @@
 package core.parsing.tree.clauses.conditions;
 
+import core.db.table.Row;
+import core.db.types.IntegerLiteral;
+import core.db.types.Literal;
+import core.db.types.StringLiteral;
+
 import java.util.Objects;
 
 public class Expression extends Condition {
@@ -33,5 +38,26 @@ public class Expression extends Condition {
     @Override
     public int hashCode() {
         return Objects.hash(columnName, comparator, value);
+    }
+
+    @Override
+    public boolean satisfiedOnRow(Row row) {
+        Literal rowValue = row.getValue(columnName);
+        Literal expectedValue;
+        if (rowValue instanceof IntegerLiteral){
+            expectedValue = new IntegerLiteral(Integer.valueOf(value));
+        } else {
+            expectedValue = new StringLiteral(value);
+        }
+
+        return switch (comparator) {
+            case "=" -> rowValue == expectedValue;
+            case "!=" -> !(rowValue == expectedValue);
+            case "<" -> rowValue.compareTo(expectedValue) < 0;
+            case ">" -> rowValue.compareTo(expectedValue) > 0;
+            case "<=" -> rowValue.compareTo(expectedValue) <= 0;
+            case ">=" -> rowValue.compareTo(expectedValue) >= 0;
+            default -> false;
+        };
     }
 }

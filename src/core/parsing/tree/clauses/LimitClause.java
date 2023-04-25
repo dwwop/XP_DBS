@@ -30,4 +30,12 @@ public class LimitClause extends Clause {
                 "numberRows: " + numberRows + "\n" +
                         "offsetValue: " + offsetValue;
     }
+
+    public Integer getNumberRows(){
+        return numberRows;
+    }
+
+    public Integer getOffsetValue(){
+        return offsetValue;
+    }
 }

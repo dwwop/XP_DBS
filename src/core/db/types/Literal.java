@@ -27,4 +27,10 @@ public abstract sealed class Literal<T extends Comparable<T>>
     }
 
     public enum Type {String, Integer}
+
+    public abstract Type getType();
+
+    public T getValue(){
+        return value;
+    }
 }

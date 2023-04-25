@@ -83,7 +83,7 @@ public class SelectFactoryTest {
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
                         null,
-                        new OrderByClause(Map.of("column_name", KeywordConsumer.Keyword.ASC)),
+                        new OrderByClause(List.of("column_name"), List.of(KeywordConsumer.Keyword.ASC)),
                         null);
         try {
             assertEquals(expectedSelectStatement, parser.parse(query));
@@ -100,7 +100,7 @@ public class SelectFactoryTest {
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
                         null,
-                        new OrderByClause(Map.of("column_name", KeywordConsumer.Keyword.DESC)),
+                        new OrderByClause(List.of("column_name"), List.of(KeywordConsumer.Keyword.DESC)),
                         null);
         try {
             assertEquals(expectedSelectStatement, parser.parse(query));
@@ -117,7 +117,7 @@ public class SelectFactoryTest {
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
                         null,
-                        new OrderByClause(Map.of("column_name1", KeywordConsumer.Keyword.ASC, "column_name2", KeywordConsumer.Keyword.ASC)),
+                        new OrderByClause(List.of("column_name1", "column_name2"), List.of(KeywordConsumer.Keyword.ASC, KeywordConsumer.Keyword.ASC)),
                         null);
         try {
             assertEquals(expectedSelectStatement, parser.parse(query));
@@ -134,7 +134,7 @@ public class SelectFactoryTest {
                 new SelectStatement("table_name",
                         new SelectClause(List.of("column_name")),
                         null,
-                        new OrderByClause(Map.of("column_name1", KeywordConsumer.Keyword.ASC, "column_name2", KeywordConsumer.Keyword.DESC)),
+                        new OrderByClause(List.of("column_name1", "column_name2"), List.of(KeywordConsumer.Keyword.ASC, KeywordConsumer.Keyword.DESC)),
                         null);
         try {
             assertEquals(expectedSelectStatement, parser.parse(query));

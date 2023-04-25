@@ -6,9 +6,7 @@ import core.parsing.util.KeywordConsumer;
 import exceptions.syntaxErrors.EndOfFileError;
 import exceptions.syntaxErrors.SyntaxError;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 public class OrderByFactory extends ClauseFactory {
 
@@ -17,21 +15,24 @@ public class OrderByFactory extends ClauseFactory {
         if (tokens.isEmpty())
             throw new EndOfFileError("column_name");
 
-        Map<String, KeywordConsumer.Keyword> columnsAndOrders = new HashMap<>();
+        List<String> columns = new ArrayList<>();
+        List<KeywordConsumer.Keyword> orders = new ArrayList<>();
         while (true) {
             if (tokens.isEmpty())
                 throw new EndOfFileError("column_name");
             String column = tokens.poll();
             if (column.endsWith(",")) {
                 column = column.substring(0, column.length() - 1);
-                columnsAndOrders.put(column, KeywordConsumer.Keyword.ASC);
+                columns.add(column);
+                orders.add(KeywordConsumer.Keyword.ASC);
                 continue;
             }
 
             String peekedKeyword = tokens.peek();
             if (peekedKeyword == null) {
-                columnsAndOrders.put(column, KeywordConsumer.Keyword.ASC);
-                return new OrderByClause(columnsAndOrders);
+                columns.add(column);
+                orders.add(KeywordConsumer.Keyword.ASC);
+                return new OrderByClause(columns, orders);
             }
 
             boolean isAtEnd = !peekedKeyword.endsWith(",");
@@ -41,16 +42,18 @@ public class OrderByFactory extends ClauseFactory {
 
             if (KeywordConsumer.Keyword.ASC.toString().equalsIgnoreCase(peekedKeyword)) {
                 tokens.poll();
-                columnsAndOrders.put(column, KeywordConsumer.Keyword.ASC);
+                columns.add(column);
+                orders.add(KeywordConsumer.Keyword.ASC);
             }
 
             if (KeywordConsumer.Keyword.DESC.toString().equalsIgnoreCase(peekedKeyword)) {
                 tokens.poll();
-                columnsAndOrders.put(column, KeywordConsumer.Keyword.DESC);
+                columns.add(column);
+                orders.add(KeywordConsumer.Keyword.DESC);
             }
 
             if (isAtEnd)
-                return new OrderByClause(columnsAndOrders);
+                return new OrderByClause(columns, orders);
         }
 
     }

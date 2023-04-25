@@ -3,15 +3,18 @@ package core.parsing.tree.clauses;
 
 import core.parsing.util.KeywordConsumer;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class OrderByClause extends Clause {
 
-    Map<String, KeywordConsumer.Keyword> columnsAndOrders;
+    List<String> columns;
+    List<KeywordConsumer.Keyword> orders;
 
-    public OrderByClause(Map<String, KeywordConsumer.Keyword> columnsAndOrders) {
-        this.columnsAndOrders = columnsAndOrders;
+    public OrderByClause(List<String> columns, List<KeywordConsumer.Keyword> orders) {
+        this.columns = columns;
+        this.orders = orders;
     }
 
     @Override
@@ -19,17 +22,25 @@ public class OrderByClause extends Clause {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderByClause that = (OrderByClause) o;
-        return Objects.equals(columnsAndOrders, that.columnsAndOrders);
+        return Objects.equals(columns, that.columns) && Objects.equals(orders, that.orders);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(columnsAndOrders);
+        return Objects.hash(columns, orders);
     }
 
     @Override
     public String toString() {
         return
-                "columnsAndOrders: " + columnsAndOrders;
+                "columns: " + columns + " orders: " + orders;
+    }
+
+    public List<String> getColumns(){
+        return columns;
+    }
+
+    public List<KeywordConsumer.Keyword> getOrders(){
+        return orders;
     }
 }
