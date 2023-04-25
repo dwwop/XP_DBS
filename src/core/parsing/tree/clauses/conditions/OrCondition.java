@@ -34,7 +34,7 @@ public class OrCondition extends Condition {
         return Objects.hash(firstCondition, secondCondition);
     }
 
-    public boolean satisfiedOnRow(Row row){
+    public boolean satisfiedOnRow(Row row) {
         return firstCondition.satisfiedOnRow(row) || secondCondition.satisfiedOnRow(row);
     }
 }

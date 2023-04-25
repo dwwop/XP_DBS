@@ -17,11 +17,4 @@ public class LimitClause extends Clause {
         return offsetValue;
     }
 
-    public Integer getNumberRows(){
-        return numberRows;
-    }
-
-    public Integer getOffsetValue(){
-        return offsetValue;
-    }
 }

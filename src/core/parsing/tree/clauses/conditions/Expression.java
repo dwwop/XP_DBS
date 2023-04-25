@@ -44,7 +44,7 @@ public class Expression extends Condition {
     public boolean satisfiedOnRow(Row row) {
         Literal rowValue = row.getValue(columnName);
         Literal expectedValue;
-        if (rowValue instanceof IntegerLiteral){
+        if (rowValue instanceof IntegerLiteral) {
             expectedValue = new IntegerLiteral(Integer.valueOf(value));
         } else {
             expectedValue = new StringLiteral(value);

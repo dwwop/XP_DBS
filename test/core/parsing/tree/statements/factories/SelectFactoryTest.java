@@ -17,7 +17,6 @@ import exceptions.syntax.TokenError;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -169,7 +168,8 @@ public class SelectFactoryTest {
         assertEquals(expectedSelectStatement.getSelectClause().getColumnNames(), statement.getSelectClause().getColumnNames());
         assertEquals(expectedSelectStatement.getSelectClause().isAllColumns(), statement.getSelectClause().isAllColumns());
         assertEquals(expectedSelectStatement.getWhereClause(), statement.getWhereClause());
-        assertEquals(expectedSelectStatement.getOrderByClause().getColumnsAndOrders(), statement.getOrderByClause().getColumnsAndOrders());
+        assertEquals(expectedSelectStatement.getOrderByClause().getColumns(), statement.getOrderByClause().getColumns());
+        assertEquals(expectedSelectStatement.getOrderByClause().getOrders(), statement.getOrderByClause().getOrders());
         assertEquals(expectedSelectStatement.getLimitClause(), statement.getLimitClause());
     }
 

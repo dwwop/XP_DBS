@@ -7,7 +7,9 @@ import exceptions.syntax.EndOfFileError;
 import exceptions.syntax.SyntaxError;
 import exceptions.syntax.TokenError;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 
 public class OrderByFactory extends ClauseFactory {
 
@@ -49,7 +51,7 @@ public class OrderByFactory extends ClauseFactory {
 
             if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.DESC, tokens)) {
                 columns.add(column);
-                orders.add(KeywordConsumer.Keyword.ASC);
+                orders.add(KeywordConsumer.Keyword.DESC);
                 if (consumeComma(tokens))
                     continue;
                 return new OrderByClause(columns, orders);

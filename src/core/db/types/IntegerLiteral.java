@@ -6,7 +6,7 @@ public final class IntegerLiteral extends Literal<Integer> {
         super(value);
     }
 
-    public Literal.Type getType(){
+    public Literal.Type getType() {
         return Type.Integer;
     }
 }

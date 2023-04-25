@@ -15,11 +15,11 @@ public class OrderByClause extends Clause {
         this.orders = orders;
     }
 
-    public List<String> getColumns(){
+    public List<String> getColumns() {
         return columns;
     }
 
-    public List<KeywordConsumer.Keyword> getOrders(){
+    public List<KeywordConsumer.Keyword> getOrders() {
         return orders;
     }
 }

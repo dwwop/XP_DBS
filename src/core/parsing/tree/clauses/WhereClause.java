@@ -14,7 +14,7 @@ public class WhereClause extends Clause {
         return condition;
     }
 
-    public boolean satisfiedOnRow(Row row){
+    public boolean satisfiedOnRow(Row row) {
         return condition.satisfiedOnRow(row);
     }
 }

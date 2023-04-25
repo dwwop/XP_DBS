@@ -31,11 +31,11 @@ public abstract sealed class Literal<T extends Comparable<T>>
         return value.compareTo(other.value);
     }
 
-    public enum Type {String, Integer}
-
     public abstract Type getType();
 
-    public T getValue(){
+    public T getValue() {
         return value;
     }
+
+    public enum Type {String, Integer}
 }
