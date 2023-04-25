@@ -53,6 +53,7 @@ public class Console {
             }
 
 
+
         }
 
     }
@@ -192,7 +193,7 @@ public class Console {
 
     public void printWelcomeMessage() {
         System.out.println("----------------------------------------------------------------------\n" +
-                "> Extreme Database Systems are online | " + getCurrentTime() + "\n\n" +
+                "> Extreme Database System are online | " + getCurrentTime() + "\n\n" +
                 "> type your query after the \">\" symbol\n" +
                 "> type /help for list of commands\n" +
                 "> type /exit for list of commands\n" +
@@ -204,7 +205,7 @@ public class Console {
     }
 
     public void printUnknownMessage() {
-        System.out.println(toItalic(toRed(">> Unknown command")));
+        System.out.println(toItalic(toRed("> Unknown command")));
     }
 
     public String getCurrentTime() {
