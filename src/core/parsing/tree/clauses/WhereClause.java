@@ -7,6 +7,10 @@ import exceptions.DatabaseError;
 public class WhereClause extends Clause {
     private final Condition condition;
 
+    public WhereClause() {
+        condition = null;
+    }
+
     public WhereClause(Condition condition) {
         this.condition = condition;
     }
@@ -16,6 +20,8 @@ public class WhereClause extends Clause {
     }
 
     public boolean satisfiedOnRow(Row row) throws DatabaseError {
+        if (condition == null)
+            return true;
         return condition.satisfiedOnRow(row);
     }
 }
