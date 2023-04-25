@@ -39,12 +39,15 @@ public class Console {
 
                 default -> {
                     Result result = queryExecutor.execute(input);
-                    if (result == null) printUnknownMessage();
-                    if (!result.success()) {
+                    if (result == null)  {
+                        System.out.println("An error occured.");
+                    }
+                    if (!result.success() || result.message() == null) {
                         System.err.println(result.message());
                     }
                     if (result.success()) {
-                        returnTableString(result.output());
+                        System.out.println(result.message());
+                        if (result.output() != null) returnTableString(result.output());
                     }
                 }
             }
