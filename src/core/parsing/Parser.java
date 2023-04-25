@@ -3,7 +3,7 @@ package core.parsing;
 import core.parsing.tree.statements.Statement;
 import core.parsing.tree.statements.factories.*;
 import core.parsing.util.RawQueryTokenizer;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.SyntaxError;
 
 import java.util.Map;
 import java.util.Queue;
@@ -28,6 +28,8 @@ public class Parser {
     }
 
     private Statement parseStatement(Queue<String> tokens) throws SyntaxError {
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         String firstToken = tokens.poll().toLowerCase();
 
         if (!statements.containsKey(firstToken)) {

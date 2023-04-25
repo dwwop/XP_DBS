@@ -1,15 +1,16 @@
 package core.parsing.tree.clauses.factories;
 
 import core.parsing.tree.clauses.SelectClause;
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
+import exceptions.syntax.TokenError;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
-public class SelectCFactory extends ClauseFactory {
+public class SelectClauseFactory extends ClauseFactory {
     private static final String allToken = "*";
 
     private static void throwSyntaxError() throws SyntaxError {
@@ -27,17 +28,23 @@ public class SelectCFactory extends ClauseFactory {
         }
 
         List<String> columns = new ArrayList<>();
-        while (tokens.peek().endsWith(",")) {
-            String column = tokens.poll();
-            column = column.substring(0, column.length() - 1);
-
-            columns.add(column);
-            if (tokens.isEmpty())
+        while (true) {
+            if (tokens.isEmpty()) {
                 throwSyntaxError();
-        }
+            }
 
-        String column = tokens.poll();
-        columns.add(column);
+            String column = tokens.poll();
+            if (column.equals(","))
+                throw new TokenError(",", "column_name");
+            else if (column.equals("*"))
+                throw new TokenError("*", "column_name");
+            columns.add(column);
+
+            if (tokens.peek() == null || !tokens.peek().equals(",")) {
+                break;
+            }
+            tokens.poll();
+        }
 
         return new SelectClause(columns);
     }

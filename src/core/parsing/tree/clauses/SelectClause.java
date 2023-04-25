@@ -1,7 +1,6 @@
 package core.parsing.tree.clauses;
 
 import java.util.List;
-import java.util.Objects;
 
 public class SelectClause extends Clause {
     private boolean allColumns;
@@ -17,24 +16,12 @@ public class SelectClause extends Clause {
         this.columnNames = columnNames;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SelectClause that = (SelectClause) o;
-        return allColumns == that.allColumns && Objects.equals(columnNames, that.columnNames);
+    public boolean isAllColumns() {
+        return allColumns;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(allColumns, columnNames);
-    }
-
-    @Override
-    public String toString() {
-        return
-                "allColumns: " + allColumns + "\n" +
-                        "columnNames: " + columnNames;
+    public List<String> getColumnNames() {
+        return columnNames;
     }
 
     public boolean getAllColumns(){

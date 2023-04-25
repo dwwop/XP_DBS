@@ -15,13 +15,19 @@ public class Schema {
     }
 
     private void validateColumnExistence(String column) throws DatabaseError {
-        if (!hasColumn(primaryKeyColumn)) {
+        if (!hasColumn(column)) {
             throw new DatabaseError("Column '" + column + "' does not exist.");
         }
     }
 
+    public ColumnDefinition getColumnDefinition(String column) throws DatabaseError {
+        validateColumnExistence(column);
+
+        return columns.get(column);
+    }
+
     public void setColumnDefinition(String column, ColumnDefinition definition) throws DatabaseError {
-        if (definition.hasConstraint(ColumnDefinition.Constraint.PrimaryKey) && !primaryKeyColumn.equals(column)) {
+        if (violatesSinglePrimaryKeyRestriction(column, definition)) {
             throw new DatabaseError("Multiple primary-key columns not allowed.");
         }
 
@@ -51,21 +57,20 @@ public class Schema {
     public void setPrimaryKeyColumn(String primaryKeyColumn) throws DatabaseError {
         validateColumnExistence(primaryKeyColumn);
 
-        if (!this.primaryKeyColumn.isEmpty()) {
+        if (this.primaryKeyColumn != null) {
             removeColumnConstraint(this.primaryKeyColumn, ColumnDefinition.Constraint.PrimaryKey);
         }
 
         this.primaryKeyColumn = primaryKeyColumn;
         addColumnConstraint(this.primaryKeyColumn, ColumnDefinition.Constraint.PrimaryKey);
     }
+    private boolean violatesSinglePrimaryKeyRestriction(String column, ColumnDefinition definition) {
+        return primaryKeyColumn != null
+                && definition.hasConstraint(ColumnDefinition.Constraint.PrimaryKey)
+                && !primaryKeyColumn.equals(column);
+    }
 
     public Map<String, ColumnDefinition> getColumns(){
         return columns;
-    }
-
-    public ColumnDefinition getColumnDefinition(String column) throws DatabaseError {
-        validateColumnExistence(column);
-
-        return columns.get(column);
     }
 }

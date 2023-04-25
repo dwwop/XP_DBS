@@ -17,6 +17,14 @@ public class UpdateStatement extends TableStatement {
         this.setClause = setClause;
     }
 
+    public WhereClause getWhereClause() {
+        return whereClause;
+    }
+
+    public SetClause getSetClause() {
+        return setClause;
+    }
+
     @Override
     public Table execute(Table table) throws DatabaseError {
         return table.update(whereClause, setClause);

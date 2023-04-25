@@ -1,9 +1,9 @@
 package core.parsing.util;
 
 import core.db.table.ColumnDefinition;
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
-import exceptions.syntaxErrors.TokenError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
+import exceptions.syntax.TokenError;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -32,7 +32,16 @@ public class ColumnConstraintExtractor {
     public static Set<ColumnDefinition.Constraint> pollAllColumnConstraintsOrFail(Queue<String> tokens) throws SyntaxError {
         currentConstraints = new HashSet<>();
 
-        while (!tokens.isEmpty() && constraintFirstWords.contains(tokens.peek().toLowerCase())) {
+        while (!tokens.isEmpty()) {
+            if (tokens.peek().isEmpty()) {
+                tokens.poll();
+                continue;
+            }
+
+            if (!constraintFirstWords.contains(tokens.peek().toLowerCase())) {
+                break;
+            }
+
             String firstWord = tokens.poll().toLowerCase();
 
             if (!isTwoWordConstraint(firstWord)) {
@@ -52,17 +61,19 @@ public class ColumnConstraintExtractor {
         Set<String> secondWords = constraintSecondWords.get(firstWord);
         String secondWordsDisplayString = secondWords.stream().map(String::toUpperCase).collect(Collectors.joining(", "));
 
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         if (tokens.isEmpty()) {
             throw new EndOfFileError("one of " + secondWordsDisplayString);
         }
 
-        String secondWord = tokens.peek().toLowerCase();
+        String secondWord = tokens.poll();
 
-        if (!secondWords.contains(secondWord)) {
-            throw new TokenError(tokens.peek(), secondWordsDisplayString);
+        if (!secondWords.contains(secondWord.toLowerCase())) {
+            throw new TokenError(tokens.toString(), secondWordsDisplayString);
         }
 
-        return secondWord;
+        return secondWord.toLowerCase();
     }
 
     private static boolean isTwoWordConstraint(String firstWord) {

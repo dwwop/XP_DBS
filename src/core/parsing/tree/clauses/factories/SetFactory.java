@@ -6,7 +6,7 @@ import core.parsing.util.IdentifierExtractor;
 import core.parsing.util.KeywordConsumer;
 import core.parsing.util.LiteralExtractor;
 import core.parsing.util.RawQueryBuilder;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.SyntaxError;
 import util.Strings;
 
 import java.util.*;
@@ -23,8 +23,12 @@ public class SetFactory extends ClauseFactory {
 
         List<String> columnValueAssignements = Strings.splitAndTrimOnTopLevel(rawSetClause, ',');
 
+        if (columnValueAssignements.isEmpty()) {
+            throw new SyntaxError("A list of column value assignments is missing.");
+        }
+
         for (String rawAssignement : columnValueAssignements) {
-            parseColumnValueAssignement(rawAssignement);
+            parseColumnValueAssignment(rawAssignement);
         }
 
         return new SetClause(columnValues);
@@ -51,11 +55,11 @@ public class SetFactory extends ClauseFactory {
         return KeywordConsumer.isKeyword(KeywordConsumer.Keyword.WHERE, tokens.peek()) && !stringLiteralStarted;
     }
 
-    private void parseColumnValueAssignement(String rawAssignement) throws SyntaxError {
+    private void parseColumnValueAssignment(String rawAssignement) throws SyntaxError {
         Queue<String> tokens = new LinkedList<>(Strings.splitAndTrimOnTopLevel(rawAssignement, '='));
 
         if (tokens.size() != 2) {
-            throw new SyntaxError("Invalid column value assignement: '" + rawAssignement + "'.");
+            throw new SyntaxError("Invalid column value assignment: '" + rawAssignement + "'.");
         }
 
         String columnName = IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.ColumnName, tokens);

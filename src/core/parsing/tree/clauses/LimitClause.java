@@ -1,7 +1,5 @@
 package core.parsing.tree.clauses;
 
-import java.util.Objects;
-
 public class LimitClause extends Clause {
     Integer numberRows;
     Integer offsetValue;
@@ -11,24 +9,12 @@ public class LimitClause extends Clause {
         this.offsetValue = offsetValue;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LimitClause that = (LimitClause) o;
-        return Objects.equals(numberRows, that.numberRows) && Objects.equals(offsetValue, that.offsetValue);
+    public Integer getNumberRows() {
+        return numberRows;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(numberRows, offsetValue);
-    }
-
-    @Override
-    public String toString() {
-        return
-                "numberRows: " + numberRows + "\n" +
-                        "offsetValue: " + offsetValue;
+    public Integer getOffsetValue() {
+        return offsetValue;
     }
 
     public Integer getNumberRows(){

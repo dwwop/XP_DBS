@@ -4,18 +4,13 @@ import core.parsing.tree.clauses.WhereClause;
 import core.parsing.tree.clauses.conditions.*;
 import core.parsing.util.ComparatorConsumer;
 import core.parsing.util.KeywordConsumer;
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
-import exceptions.syntaxErrors.TokenError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
+import exceptions.syntax.TokenError;
 
 import java.util.Queue;
 
 public class WhereFactory extends ClauseFactory {
-
-    public WhereClause getEmptyClause() {
-        return null;
-    }
-
 
     private boolean consumeBracket(String bracket, Queue<String> tokens) {
         if (tokens.isEmpty() || !bracket.equals(tokens.peek())) {
@@ -39,12 +34,17 @@ public class WhereFactory extends ClauseFactory {
             }
         }
 
-        if (consumeBracket("(", tokens))
-            return consumeCondition(tokens, consumeCondition(tokens, condition));
-        if (consumeBracket(")", tokens)) {
-            if (condition == null)
-                throw new TokenError(")", "condition");
+        if (")".equals(tokens.peek())) {
             return condition;
+        }
+
+        if (consumeBracket("(", tokens)) {
+            if (")".equals(tokens.peek()))
+                throw new TokenError(tokens.peek(), "condition");
+            Condition returnedCondition = consumeCondition(tokens, condition);
+            if (consumeBracket(")", tokens))
+                return consumeCondition(tokens, returnedCondition);
+            throw new TokenError(tokens.poll(), ")");
         }
 
         if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.NOT, tokens))
@@ -55,6 +55,18 @@ public class WhereFactory extends ClauseFactory {
             return new OrCondition(condition, consumeCondition(tokens, null));
 
         String columnName = tokens.poll();
+        if (ComparatorConsumer.isComparator(columnName))
+            throw new TokenError(columnName, "column_name");
+
+        if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.IS, tokens)) {
+            if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.NOT, tokens) &&
+                    KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.NULL, tokens))
+                return consumeCondition(tokens, new NotCondition(new NullCondition(columnName)));
+            if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.NULL, tokens))
+                return consumeCondition(tokens, new NullCondition(columnName));
+
+            throw new TokenError(tokens.peek(), "'NOT NULL' or 'NULL'");
+        }
 
         String comparator = ComparatorConsumer.consumeComparatorOrFail(tokens);
 
@@ -62,9 +74,13 @@ public class WhereFactory extends ClauseFactory {
             throw new EndOfFileError("value");
 
         String value = tokens.poll();
+        if (ComparatorConsumer.isComparator(value))
+            throw new TokenError(value, "value");
 
-        if (value.startsWith("'") && value.endsWith("'"))
+        if (value.startsWith("\"") && value.endsWith("\""))
             value = value.substring(1, value.length() - 1);
+        else if (value.startsWith("\"") || value.endsWith("\""))
+            throw new SyntaxError("Unclosed string found.");
 
         return consumeCondition(tokens, new Expression(columnName, comparator, value));
     }

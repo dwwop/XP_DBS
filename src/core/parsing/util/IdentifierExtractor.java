@@ -1,7 +1,7 @@
 package core.parsing.util;
 
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
 
 import java.util.Map;
 import java.util.Queue;
@@ -13,8 +13,8 @@ public class IdentifierExtractor {
             Identifier.ColumnName, "column name"
     );
 
-    private static String validateIdentifieOrFail(String token) throws SyntaxError {
-        if (!token.matches("^[a-zA-Z_-]+$")) {
+    private static String validateIdentifierOrFail(String token) throws SyntaxError {
+        if (!token.matches("^[a-zA-Z]+[a-zA-Z1-9_-]*[a-zA-Z1-9]+$")) {
             throw new SyntaxError("Invalid identifier: '" + token + "'.");
         }
 
@@ -22,11 +22,13 @@ public class IdentifierExtractor {
     }
 
     public static String pollIdentifierOrFail(Identifier identifier, Queue<String> tokens) throws SyntaxError {
+        RawQueryTokenizer.consumeEmptyTokens(tokens);
+
         if (tokens.isEmpty()) {
             throw new EndOfFileError(identifierDisplayNames.get(identifier));
         }
 
-        return validateIdentifieOrFail(tokens.poll());
+        return validateIdentifierOrFail(tokens.poll());
     }
 
     public enum Identifier {

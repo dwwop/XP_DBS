@@ -3,12 +3,21 @@ package core.parsing.tree.clauses.factories;
 
 import core.parsing.tree.clauses.OrderByClause;
 import core.parsing.util.KeywordConsumer;
-import exceptions.syntaxErrors.EndOfFileError;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.EndOfFileError;
+import exceptions.syntax.SyntaxError;
+import exceptions.syntax.TokenError;
 
 import java.util.*;
 
 public class OrderByFactory extends ClauseFactory {
+
+    private boolean consumeComma(Queue<String> tokens) {
+        if (tokens.peek() == null || !tokens.peek().equals(","))
+            return false;
+
+        tokens.poll();
+        return true;
+    }
 
     @Override
     public OrderByClause fromTokens(Queue<String> tokens) throws SyntaxError {
@@ -21,39 +30,33 @@ public class OrderByFactory extends ClauseFactory {
             if (tokens.isEmpty())
                 throw new EndOfFileError("column_name");
             String column = tokens.poll();
-            if (column.endsWith(",")) {
-                column = column.substring(0, column.length() - 1);
+            if (column.equals(","))
+                throw new TokenError(",", "column_name");
+
+            if (consumeComma(tokens)) {
                 columns.add(column);
                 orders.add(KeywordConsumer.Keyword.ASC);
                 continue;
             }
 
-            String peekedKeyword = tokens.peek();
-            if (peekedKeyword == null) {
+            if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.ASC, tokens)) {
                 columns.add(column);
                 orders.add(KeywordConsumer.Keyword.ASC);
+                if (consumeComma(tokens))
+                    continue;
                 return new OrderByClause(columns, orders);
             }
 
-            boolean isAtEnd = !peekedKeyword.endsWith(",");
-            if (peekedKeyword.endsWith(",")) {
-                peekedKeyword = peekedKeyword.substring(0, peekedKeyword.length() - 1);
-            }
-
-            if (KeywordConsumer.Keyword.ASC.toString().equalsIgnoreCase(peekedKeyword)) {
-                tokens.poll();
+            if (KeywordConsumer.consumeKeyword(KeywordConsumer.Keyword.DESC, tokens)) {
                 columns.add(column);
                 orders.add(KeywordConsumer.Keyword.ASC);
-            }
-
-            if (KeywordConsumer.Keyword.DESC.toString().equalsIgnoreCase(peekedKeyword)) {
-                tokens.poll();
-                columns.add(column);
-                orders.add(KeywordConsumer.Keyword.DESC);
-            }
-
-            if (isAtEnd)
+                if (consumeComma(tokens))
+                    continue;
                 return new OrderByClause(columns, orders);
+            }
+            columns.add(column);
+            orders.add(KeywordConsumer.Keyword.ASC);
+            return new OrderByClause(columns, orders);
         }
 
     }

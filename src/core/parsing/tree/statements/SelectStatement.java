@@ -1,13 +1,11 @@
 package core.parsing.tree.statements;
 
 import core.db.table.Table;
-import core.parsing.tree.clauses.SelectClause;
 import core.parsing.tree.clauses.LimitClause;
 import core.parsing.tree.clauses.OrderByClause;
+import core.parsing.tree.clauses.SelectClause;
 import core.parsing.tree.clauses.WhereClause;
 import exceptions.DatabaseError;
-
-import java.util.Objects;
 
 public class SelectStatement extends TableStatement {
 
@@ -30,25 +28,19 @@ public class SelectStatement extends TableStatement {
         return null;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SelectStatement that = (SelectStatement) o;
-        return Objects.equals(selectClause, that.selectClause) && Objects.equals(whereClause, that.whereClause) && Objects.equals(orderByClause, that.orderByClause) && Objects.equals(limitClause, that.limitClause);
+    public SelectClause getSelectClause() {
+        return selectClause;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(selectClause, whereClause, orderByClause, limitClause);
+    public WhereClause getWhereClause() {
+        return whereClause;
     }
 
-    @Override
-    public String toString() {
-        return
-                "columnClause: " + selectClause + "\n" +
-                        "whereClause: " + whereClause + "\n" +
-                        "orderByClause: " + orderByClause + "\n" +
-                        "limitClause: " + limitClause;
+    public OrderByClause getOrderByClause() {
+        return orderByClause;
+    }
+
+    public LimitClause getLimitClause() {
+        return limitClause;
     }
 }

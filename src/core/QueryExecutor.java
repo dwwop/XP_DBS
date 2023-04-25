@@ -3,7 +3,7 @@ package core;
 import core.db.TableManager;
 import core.parsing.Parser;
 import core.parsing.tree.statements.Statement;
-import exceptions.syntaxErrors.SyntaxError;
+import exceptions.syntax.SyntaxError;
 
 public class QueryExecutor {
 
