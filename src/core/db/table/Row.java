@@ -13,16 +13,14 @@ public class Row {
     }
 
     public void setValue(String column, Literal value) {
-        // TODO: check if value is of correct type somewhere
-
-        if (values.containsKey(column)) {
-            values.put(column, value);
-        }
+        values.put(column, value);
     }
 
     public Literal getValue(String column) {
-        // TODO: return null Literal of correct type instead of plain null?
-
         return values.get(column);
+    }
+
+    public boolean hasColumn(String column){
+        return values.containsKey(column);
     }
 }
