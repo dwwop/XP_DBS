@@ -1,14 +1,12 @@
 package ui;
 
 import core.QueryExecutor;
-import core.commands.Result;
+import core.Result;
 import core.db.table.ColumnDefinition;
 import core.db.table.Row;
 import core.db.table.Schema;
 import core.db.table.Table;
-import core.db.types.IntegerLiteral;
 import core.db.types.Literal;
-import core.db.types.StringLiteral;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,7 +57,8 @@ public class Console {
     public String returnTableString(Table table) throws InvalidObjectException {
 
         if (table == null) throw new InvalidObjectException("Table invalid");
-        if (table.getSchema() == null || table.getSchema().getColumns().isEmpty()) throw new InvalidObjectException("Schema invalid");
+        if (table.getSchema() == null || table.getSchema().getColumns().isEmpty())
+            throw new InvalidObjectException("Schema invalid");
 
         StringBuilder complete = new StringBuilder();
         Map<String, Integer> lengthOfColSpaces = getColumnSpaceSizes(table);
@@ -114,8 +113,8 @@ public class Console {
                     if (overflow.get(colName) == null || i >= overflow.get(colName).size()) {
                         complete.append(" ".repeat(lengthOfColSpaces.get(colName)));
                     } else {
-                        complete.append(" ").append(overflow.get(colName).get(i).toString());
-                        complete.append(" ".repeat(lengthOfColSpaces.get(colName) - overflow.get(colName).get(i).toString().length() - 1));
+                        complete.append(" ").append(overflow.get(colName).get(i));
+                        complete.append(" ".repeat(lengthOfColSpaces.get(colName) - overflow.get(colName).get(i).length() - 1));
                     }
 
                     complete.append("|");
@@ -131,7 +130,7 @@ public class Console {
         StringBuilder complete = new StringBuilder();
         StringBuilder col = new StringBuilder();
         complete.append("|");
-        for (Map.Entry<String,ColumnDefinition> entry : tableSchema.getColumns().entrySet()) {
+        for (Map.Entry<String, ColumnDefinition> entry : tableSchema.getColumns().entrySet()) {
             col.append(" ");
             col.append(entry.getKey());
             col.append(" ".repeat(colLengths.get(entry.getKey()) - col.length()));
@@ -143,7 +142,7 @@ public class Console {
     }
 
     private Map<String, Integer> getColumnSpaceSizes(Table table) {
-        Map <String, Integer> ret = new HashMap<>();
+        Map<String, Integer> ret = new HashMap<>();
 
         for (String colName : table.getSchema().getColumns().keySet()) {
             ret.put(colName, colName.length());
@@ -151,7 +150,7 @@ public class Console {
 
         for (Row row : table.getRows().values()) {
             for (String colName : table.getSchema().getColumns().keySet()) {
-                if (row.getValue(colName)!=null && row.getValue(colName).getValue().toString().length() > ret.get(colName)) {
+                if (row.getValue(colName) != null && row.getValue(colName).getValue().toString().length() > ret.get(colName)) {
                     ret.replace(colName, row.getValue(colName).getValue().toString().length());
                 }
             }

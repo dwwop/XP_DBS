@@ -7,7 +7,7 @@ import core.db.table.Table;
 import core.db.types.IntegerLiteral;
 import core.db.types.Literal;
 import core.db.types.StringLiteral;
-import ui.Console.*;
+import exceptions.DatabaseError;
 import org.junit.Test;
 
 import java.io.InvalidObjectException;
@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class TablePrintingTest {
 
@@ -44,36 +45,30 @@ public class TablePrintingTest {
     }
 
     @Test
-    public void emptyTableFullSchema() throws InvalidObjectException {
+    public void emptyTableFullSchema() throws InvalidObjectException, DatabaseError {
         Console cs = new Console();
-        Map<String, ColumnDefinition> testColumns = new HashMap<>();
-        testColumns.put("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
-        testColumns.put("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-
-
         Schema testSchema = new Schema();
-        testSchema.setColumns(testColumns);
+        testSchema.setColumnDefinition("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+
 
         Table testTable = new Table(testSchema);
-        assertEquals(   "\n-------------------------------------------------------\n" +
-                                "| a | ahojRiadokJeden | RiadokDvaTRISTYRI | RiadokDva |" +
-                                "\n-------------------------------------------------------\n", cs.returnTableString(testTable));
+        assertEquals("\n-------------------------------------------------------\n" +
+                "| a | ahojRiadokJeden | RiadokDvaTRISTYRI | RiadokDva |" +
+                "\n-------------------------------------------------------\n", cs.returnTableString(testTable));
     }
 
     @Test
-    public void oneRecordIncompleteTableFullSchema() throws InvalidObjectException {
+    public void oneRecordIncompleteTableFullSchema() throws InvalidObjectException, DatabaseError {
         Console cs = new Console();
-        Map<String, ColumnDefinition> testColumns = new HashMap<>();
-        testColumns.put("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
-        testColumns.put("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-
-
         Schema testSchema = new Schema();
-        testSchema.setColumns(testColumns);
+        testSchema.setColumnDefinition("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+
         Table testTable = new Table(testSchema);
 
         Map<String, Literal> vals = new HashMap<>();
@@ -81,7 +76,7 @@ public class TablePrintingTest {
         vals.put("ahojRiadokJeden", new IntegerLiteral(23));
         testTable.getRows().put(new IntegerLiteral(1), new Row(vals));
 
-        assertEquals(   "\n-------------------------------------------------------\n" +
+        assertEquals("\n-------------------------------------------------------\n" +
                 "| a | ahojRiadokJeden | RiadokDvaTRISTYRI | RiadokDva |" +
                 "\n-------------------------------------------------------\n" +
                 "|   | 23              |                   | atuhu     |" +
@@ -89,17 +84,14 @@ public class TablePrintingTest {
     }
 
     @Test
-    public void oneRecordCompleteTableFullSchema() throws InvalidObjectException {
+    public void oneRecordCompleteTableFullSchema() throws InvalidObjectException, DatabaseError {
         Console cs = new Console();
-        Map<String, ColumnDefinition> testColumns = new HashMap<>();
-        testColumns.put("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
-        testColumns.put("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-
-
         Schema testSchema = new Schema();
-        testSchema.setColumns(testColumns);
+        testSchema.setColumnDefinition("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+
         Table testTable = new Table(testSchema);
 
         Map<String, Literal> vals = new HashMap<>();
@@ -109,7 +101,7 @@ public class TablePrintingTest {
         vals.put("RiadokDvaTRISTYRI", new StringLiteral("trystiri"));
         testTable.getRows().put(new IntegerLiteral(1), new Row(vals));
 
-        assertEquals(   "\n-------------------------------------------------------\n" +
+        assertEquals("\n-------------------------------------------------------\n" +
                 "| a | ahojRiadokJeden | RiadokDvaTRISTYRI | RiadokDva |" +
                 "\n-------------------------------------------------------\n" +
                 "| 1 | 23              | trystiri          | atuhu     |" +
@@ -117,17 +109,14 @@ public class TablePrintingTest {
     }
 
     @Test
-    public void oneRecordCompleteTableFullSchemaRecordLargerThanColName() throws InvalidObjectException {
+    public void oneRecordCompleteTableFullSchemaRecordLargerThanColName() throws InvalidObjectException, DatabaseError {
         Console cs = new Console();
-        Map<String, ColumnDefinition> testColumns = new HashMap<>();
-        testColumns.put("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
-        testColumns.put("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-
-
         Schema testSchema = new Schema();
-        testSchema.setColumns(testColumns);
+        testSchema.setColumnDefinition("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+
         Table testTable = new Table(testSchema);
 
         Map<String, Literal> vals = new HashMap<>();
@@ -137,7 +126,7 @@ public class TablePrintingTest {
         vals.put("RiadokDvaTRISTYRI", new StringLiteral("trystiri"));
         testTable.getRows().put(new IntegerLiteral(1), new Row(vals));
 
-        assertEquals(   "\n----------------------------------------------------------\n" +
+        assertEquals("\n----------------------------------------------------------\n" +
                 "| a    | ahojRiadokJeden | RiadokDvaTRISTYRI | RiadokDva |" +
                 "\n----------------------------------------------------------\n" +
                 "| ahoj | 23              | trystiri          | atuhu     |" +
@@ -145,17 +134,14 @@ public class TablePrintingTest {
     }
 
     @Test
-    public void oneRecordCompleteTableFullSchemaRecordLargerThanColNameAndOverflow() throws InvalidObjectException {
+    public void oneRecordCompleteTableFullSchemaRecordLargerThanColNameAndOverflow() throws InvalidObjectException, DatabaseError {
         Console cs = new Console();
-        Map<String, ColumnDefinition> testColumns = new HashMap<>();
-        testColumns.put("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
-        testColumns.put("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-
-
         Schema testSchema = new Schema();
-        testSchema.setColumns(testColumns);
+        testSchema.setColumnDefinition("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+
         Table testTable = new Table(testSchema);
 
         Map<String, Literal> vals = new HashMap<>();
@@ -165,7 +151,7 @@ public class TablePrintingTest {
         vals.put("RiadokDvaTRISTYRI", new StringLiteral("abcdefghijklmnopqrstuvwxyz0123456789"));
         testTable.getRows().put(new IntegerLiteral(1), new Row(vals));
 
-        assertEquals(   "\n--------------------------------------------------------------------------\n" +
+        assertEquals("\n--------------------------------------------------------------------------\n" +
                 "| a    | ahojRiadokJeden | RiadokDvaTRISTYRI                 | RiadokDva |\n" +
                 "--------------------------------------------------------------------------\n" +
                 "| ahoj | 23              | abcdefghijklmnopqrstuvwxyz0123456 | atuhu     |\n" +
@@ -174,17 +160,15 @@ public class TablePrintingTest {
     }
 
     @Test
-    public void multipleRecordCompleteTableEmptySchema() {
+    public void multipleRecordCompleteTableEmptySchema() throws DatabaseError {
         Console cs = new Console();
-        Map<String, ColumnDefinition> testColumns = new HashMap<>();
-        testColumns.put("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
-        testColumns.put("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-
-
         Schema testSchema = new Schema();
-        testSchema.setColumns(testColumns);
+        testSchema.setColumnDefinition("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+
+
         Table testTable = new Table(null);
 
         Map<String, Literal> vals = new HashMap<>();
@@ -204,17 +188,14 @@ public class TablePrintingTest {
     }
 
     @Test
-    public void multipleRecordCompleteTableInvalidSchema() {
+    public void multipleRecordCompleteTableInvalidSchema() throws DatabaseError {
         Console cs = new Console();
-        Map<String, ColumnDefinition> testColumns = new HashMap<>();
-        testColumns.put("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
-        testColumns.put("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("aaaaa", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-
-
         Schema testSchema = new Schema();
-        testSchema.setColumns(testColumns);
+        testSchema.setColumnDefinition("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("aaaaa", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+
         Table testTable = new Table(null);
 
         Map<String, Literal> vals = new HashMap<>();
@@ -234,17 +215,14 @@ public class TablePrintingTest {
     }
 
     @Test
-    public void multipleRecordCompleteTableFullSchemaRecordLargerThanColNameAndOverflow() throws InvalidObjectException {
+    public void multipleRecordCompleteTableFullSchemaRecordLargerThanColNameAndOverflow() throws InvalidObjectException, DatabaseError {
         Console cs = new Console();
-        Map<String, ColumnDefinition> testColumns = new HashMap<>();
-        testColumns.put("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
-        testColumns.put("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-        testColumns.put("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
-
-
         Schema testSchema = new Schema();
-        testSchema.setColumns(testColumns);
+        testSchema.setColumnDefinition("ahojRiadokJeden", new ColumnDefinition(Literal.Type.Integer, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDva", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("RiadokDvaTRISTYRI", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+        testSchema.setColumnDefinition("a", new ColumnDefinition(Literal.Type.String, new HashSet<>()));
+
         Table testTable = new Table(testSchema);
 
         Map<String, Literal> vals = new HashMap<>();
@@ -261,7 +239,7 @@ public class TablePrintingTest {
         vals.put("RiadokDva", new StringLiteral("wuatatatata"));
         testTable.getRows().put(new IntegerLiteral(2), new Row(vals));
 
-        assertEquals(   "\n----------------------------------------------------------------------------\n" +
+        assertEquals("\n----------------------------------------------------------------------------\n" +
                 "| a    | ahojRiadokJeden | RiadokDvaTRISTYRI                 | RiadokDva   |\n" +
                 "----------------------------------------------------------------------------\n" +
                 "| ahoj | 23              | abcdefghijklmnopqrstuvwxyz0123456 | atuhu       |\n" +

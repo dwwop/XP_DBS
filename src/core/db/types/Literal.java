@@ -6,8 +6,6 @@ public abstract sealed class Literal<T extends Comparable<T>>
 
     protected final T value;
 
-    public enum Type {String, Integer}
-
     public Literal(T value) {
         this.value = value;
     }
@@ -36,4 +34,6 @@ public abstract sealed class Literal<T extends Comparable<T>>
     public T getValue() {
         return value;
     }
+
+    public enum Type {String, Integer}
 }
