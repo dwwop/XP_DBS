@@ -22,13 +22,9 @@ public class Console {
     private final QueryExecutor queryExecutor = new QueryExecutor();
 
     public void run() throws IOException, InterruptedException {
-        // TODO: implement the main loop
-
         printWelcomeMessage();
-
         while (true) {
             System.out.print("> ");
-
             BufferedReader reader;
             reader = new BufferedReader(new InputStreamReader(System.in));
             String input = reader.readLine();
@@ -43,11 +39,11 @@ public class Console {
                         System.out.println("An error occured.");
                     }
                     if (!result.success() || result.message() == null) {
-                        System.err.println(result.message());
+                        System.out.println(toRed(result.message()));
                     }
                     if (result.success()) {
-                        System.out.println(result.message());
-                        if (result.output() != null) returnTableString(result.output());
+                        System.out.println(toGreen(result.message()));
+                        if (result.output() != null) System.out.println(returnTableString(result.output()));
                     }
                 }
             }
@@ -174,7 +170,7 @@ public class Console {
     }
 
     public void shutdownAppSequence(BufferedReader reader) throws InterruptedException, IOException {
-        System.out.print(">> Do you really want to exit? Y/N\n> ");
+        System.out.print("> Do you really want to exit? Y/N\n> ");
         String input = reader.readLine();
 
         if (Objects.equals(input, "N")) return;
@@ -193,7 +189,7 @@ public class Console {
 
     public void printWelcomeMessage() {
         System.out.println("----------------------------------------------------------------------\n" +
-                "> Extreme Database System are online | " + getCurrentTime() + "\n\n" +
+                "> Extreme Database System is online | " + getCurrentTime() + "\n\n" +
                 "> type your query after the \">\" symbol\n" +
                 "> type /help for list of commands\n" +
                 "> type /exit for list of commands\n" +
@@ -204,26 +200,24 @@ public class Console {
         System.out.println("list of commands\nTBA");
     }
 
-    public void printUnknownMessage() {
-        System.out.println(toItalic(toRed("> Unknown command")));
-    }
-
     public String getCurrentTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);
     }
 
-    public String toItalic(String str) {
-        String ITALIC_TEXT = "\033[3m";
-        return ITALIC_TEXT + str + ITALIC_TEXT;
-    }
-
-    public String toRed(String str) {
+    private String toRed(String str) {
         String ANSI_RESET = "\u001B[0m";
         String ANSI_RED = "\u001B[31m";
         return ANSI_RED + str + ANSI_RESET;
     }
+
+    private String toGreen(String str) {
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_GREEN = "\u001B[32m";
+        return ANSI_GREEN + str + ANSI_RESET;
+    }
+
 
 
 }
