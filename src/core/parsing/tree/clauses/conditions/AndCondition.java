@@ -1,6 +1,7 @@
 package core.parsing.tree.clauses.conditions;
 
 import core.db.table.Row;
+import exceptions.DatabaseError;
 
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class AndCondition extends Condition {
         return Objects.hash(firstCondition, secondCondition);
     }
 
-    public boolean satisfiedOnRow(Row row) {
+    public boolean satisfiedOnRow(Row row) throws DatabaseError {
         return firstCondition.satisfiedOnRow(row) && secondCondition.satisfiedOnRow(row);
     }
 }

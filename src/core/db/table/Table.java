@@ -1,5 +1,6 @@
 package core.db.table;
 
+import core.db.types.IntegerLiteral;
 import core.db.types.Literal;
 import core.parsing.tree.clauses.*;
 import core.parsing.util.KeywordConsumer;
@@ -46,7 +47,7 @@ public class Table {
         return resultTable;
     }
 
-    public Table where(WhereClause whereClause) {
+    public Table where(WhereClause whereClause) throws DatabaseError {
         Table resultTable = new Table(this.schema);
         for (Literal key : rows.keySet()) {
             Row row = rows.get(key);
@@ -57,10 +58,15 @@ public class Table {
         return resultTable;
     }
 
-    public Table orderBy(OrderByClause orderByClause) {
+    public Table orderBy(OrderByClause orderByClause) throws DatabaseError{
         Table resultTable = new Table(this.schema);
         List<String> columns = orderByClause.getColumns();
         List<KeywordConsumer.Keyword> orders = orderByClause.getOrders();
+        for (String column : columns){
+            if (! schema.getColumns().keySet().contains(column)){
+                throw new DatabaseError("Row doesn't have column named: " + column);
+            }
+        }
 
         resultTable.customComparator = (l1, l2) -> {
             Row row1 = rows.get(l1);
@@ -84,11 +90,14 @@ public class Table {
         return resultTable;
     }
 
-    public Table limit(LimitClause limitClause) {
+    public Table limit(LimitClause limitClause) throws DatabaseError {
         Table resultTable = new Table(this.schema);
         resultTable.customComparator = customComparator;
         resultTable.rows = new TreeMap<>(customComparator);
-        Iterator it = rows.entrySet().iterator();
+
+        if (limitClause.getOffsetValue() < 0 || limitClause.getNumberRows() < 0){
+            throw new DatabaseError("Limit or offset can't be < 0");
+        }
 
         Integer offset = limitClause.getOffsetValue();
         Integer limit = limitClause.getNumberRows() + offset;
@@ -97,6 +106,7 @@ public class Table {
             if (index >= offset && index < limit) {
                 resultTable.rows.put(entry.getKey(), entry.getValue());
             }
+            index++;
         }
 
         return resultTable;
@@ -107,6 +117,9 @@ public class Table {
         resultTable.rows.putAll(rows);
 
         List<String> columns = columnsClause.getColumns();
+        if (schema.getPrimaryKeyColumn() == null){
+            throw new DatabaseError("Primary key is not set");
+        }
         int primaryKeyIndex = columns.indexOf(schema.getPrimaryKeyColumn());
         if (primaryKeyIndex == -1) {
             throw new DatabaseError("Primary key column must have a value");
@@ -126,29 +139,31 @@ public class Table {
 
     public Table update(WhereClause whereClause, SetClause setClause) throws DatabaseError {
         Table resultTable = new Table(this.schema);
-        resultTable.rows.putAll(rows);
 
         Map<String, Literal> columnValues = setClause.getColumnValues();
-        for (Literal key : resultTable.rows.keySet()) {
-            Row row = resultTable.rows.get(key);
+        for (Literal key : rows.keySet()) {
+            Row row = rows.get(key);
             if (whereClause.satisfiedOnRow(row)) {
                 for (String columnName : columnValues.keySet()) {
                     resultTable.validateValue(columnName, columnValues.get(columnName));
                     row.setValue(columnName, columnValues.get(columnName));
+                    if (schema.getPrimaryKeyColumn() != null && schema.getPrimaryKeyColumn().equals(columnName)){
+                        key = columnValues.get(columnName);
+                    }
                 }
             }
+            resultTable.rows.put(key, row);
         }
-        return this;
+        return resultTable;
     }
 
-    public Table delete(WhereClause whereClause) {
+    public Table delete(WhereClause whereClause) throws DatabaseError {
         Table resultTable = new Table(this.schema);
-        resultTable.rows.putAll(rows);
 
-        for (Literal key : resultTable.rows.keySet()) {
-            Row row = resultTable.rows.get(key);
-            if (whereClause.satisfiedOnRow(row)) {
-                resultTable.rows.remove(key);
+        for (Literal key : rows.keySet()) {
+            Row row = rows.get(key);
+            if (! whereClause.satisfiedOnRow(row)) {
+                resultTable.rows.put(key, row);
             }
         }
         return resultTable;
@@ -178,11 +193,15 @@ public class Table {
             String primaryKeyColumn = schema.getPrimaryKeyColumn();
             for (Literal key : rows.keySet()) {
                 Row row = rows.get(key);
-                if (row.getValue(primaryKeyColumn).equals(literal)) {
+                if (row.getValue(primaryKeyColumn).getValue().equals(literal.getValue())) {
                     throw new DatabaseError("Duplicate primary key in column: " + column);
                 }
             }
         }
         return true;
+    }
+
+    public Map<Literal, Row> getRows(){
+        return rows;
     }
 }

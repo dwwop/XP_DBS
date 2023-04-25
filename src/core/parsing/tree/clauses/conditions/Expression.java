@@ -4,6 +4,7 @@ import core.db.table.Row;
 import core.db.types.IntegerLiteral;
 import core.db.types.Literal;
 import core.db.types.StringLiteral;
+import exceptions.DatabaseError;
 
 import java.util.Objects;
 
@@ -41,7 +42,10 @@ public class Expression extends Condition {
     }
 
     @Override
-    public boolean satisfiedOnRow(Row row) {
+    public boolean satisfiedOnRow(Row row) throws DatabaseError {
+        if (! row.hasColumn(columnName)){
+            throw new DatabaseError("Row doesn't have column named: " + columnName);
+        }
         Literal rowValue = row.getValue(columnName);
         Literal expectedValue;
         if (rowValue instanceof IntegerLiteral) {
@@ -51,8 +55,8 @@ public class Expression extends Condition {
         }
 
         return switch (comparator) {
-            case "=" -> rowValue == expectedValue;
-            case "!=" -> !(rowValue == expectedValue);
+            case "=" -> rowValue.compareTo(expectedValue) == 0;
+            case "!=" -> rowValue.compareTo(expectedValue) != 0;
             case "<" -> rowValue.compareTo(expectedValue) < 0;
             case ">" -> rowValue.compareTo(expectedValue) > 0;
             case "<=" -> rowValue.compareTo(expectedValue) <= 0;

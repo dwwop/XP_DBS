@@ -1,6 +1,7 @@
 package core.parsing.tree.clauses.conditions;
 
 import core.db.table.Row;
+import exceptions.DatabaseError;
 
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ public class NotCondition extends Condition {
     }
 
     @Override
-    public boolean satisfiedOnRow(Row row) {
+    public boolean satisfiedOnRow(Row row) throws DatabaseError {
         return !condition.satisfiedOnRow(row);
     }
 }
