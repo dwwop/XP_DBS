@@ -1,4 +1,4 @@
-package core.commands;
+package core;
 
 import core.db.table.Table;
 

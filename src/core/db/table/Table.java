@@ -8,9 +8,9 @@ import java.util.TreeMap;
 
 public class Table {
 
-    private Schema schema;
+    private final Schema schema;
 
-    private Map<Literal, Row> rows = new TreeMap<>();
+    private final Map<Literal, Row> rows = new TreeMap<>();
 
     public Table(Schema schema) {
         this.schema = schema;
@@ -32,20 +32,16 @@ public class Table {
         return new Table(new Schema());
     }
 
-    public Table offset(OffsetClause offsetClause) {
-        return new Table(new Schema());
+    public Table insert(ColumnsClause columnsClause, ValuesClause valuesClause) {
+        return null;
     }
 
-    public void insert(ColumnClause columnClause, ValueClause valueClause) {
-
+    public Table update(WhereClause whereClause, SetClause setClause) {
+        return null;
     }
 
-    public void update(WhereClause whereClause, SetClause setClause) {
-
-    }
-
-    public void delete(WhereClause whereClause) {
-
+    public Table delete(WhereClause whereClause) {
+        return null;
     }
 
     public Schema getSchema() {

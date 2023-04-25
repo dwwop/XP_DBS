@@ -1,8 +1,9 @@
 package core.parsing.tree.statements;
 
-import core.commands.Command;
+import core.Result;
+import core.db.TableManager;
 
 public abstract class Statement {
 
-    public abstract Command toCommand();
+    public abstract Result execute(TableManager tableManager);
 }
