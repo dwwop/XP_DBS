@@ -12,6 +12,10 @@ import java.util.Queue;
 
 public class WhereFactory extends ClauseFactory {
 
+    public WhereClause getEmptyClause(){
+        return new WhereClause();
+    }
+
     private boolean consumeBracket(String bracket, Queue<String> tokens) {
         if (tokens.isEmpty() || !bracket.equals(tokens.peek())) {
             return false;

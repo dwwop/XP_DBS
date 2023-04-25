@@ -30,5 +30,9 @@ public class ColumnDefinition {
         constraints.remove(constraint);
     }
 
+    public Set<Constraint> getConstraints() {
+        return constraints;
+    }
+
     public enum Constraint {PrimaryKey, NotNull}
 }

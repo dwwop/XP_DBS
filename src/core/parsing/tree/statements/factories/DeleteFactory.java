@@ -20,7 +20,7 @@ public class DeleteFactory extends StatementFactory {
 
         String tableName = IdentifierExtractor.pollIdentifierOrFail(IdentifierExtractor.Identifier.TableName, tokens);
 
-        WhereClause whereClause = null;
+        WhereClause whereClause = whereFactory.getEmptyClause();
 
         RawQueryTokenizer.consumeEmptyTokens(tokens);
 
