@@ -201,9 +201,6 @@ public class Table {
         return true;
     }
 
-    public Map<Literal, Row> getRows(){
-        return rows;
-    }
 
     public Schema getSchema() {
         return schema;
